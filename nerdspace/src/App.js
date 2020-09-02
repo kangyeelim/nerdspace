@@ -3,21 +3,20 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
+import Login from './pages/Login';
+import Home from './Home';
 
 function App() {
   return (
     <div className="App">
-      <header>
-        Insert Navbar component here.
-      </header>
-      <body>
-      <p>
-        Insert routing here.
-      </p>
-      </body>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Login}/>
+          <Route exact path="/home" component={Home}/>
+        </Switch>
+      </Router>
     </div>
   );
 }
