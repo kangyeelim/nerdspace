@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { UPDATE_PROFILE, DELETE_PROFILE } from './actions';
 
+
 const profileReducer = (state=[], action) => {
   switch (action.type) {
     case UPDATE_PROFILE:
