@@ -54,7 +54,7 @@ class NavBar extends React.Component {
 
   render() {
     return (
-        <Navbar expand="lg" className="shadow">
+        <Navbar expand="lg" className="shadow" style={{ backgroundColor: "#D3D3D3" }}>
           <Navbar.Brand href="#">
             Nerdspace
           </Navbar.Brand>

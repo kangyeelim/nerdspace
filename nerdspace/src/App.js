@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Login from './pages/Login';
 import Home from './Home';
+import Community from './Community';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Login}/>
           <Route exact path="/home" component={Home}/>
+          <Route exact path="/community" component={Community}/>
         </Switch>
       </Router>
     </div>
