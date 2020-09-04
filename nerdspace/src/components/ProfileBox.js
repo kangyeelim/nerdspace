@@ -1,19 +1,20 @@
 import React from "react";
 import { Card } from 'react-bootstrap';
 import { MDBContainer } from "mdbreact";
+import { connect } from 'react-redux';
 
 class ProfileBox extends React.Component {
     render() {
         return (
             <MDBContainer className="ml-5 mr-5">
-                <Card text="white" border="light" style={{ width: '18rem', borderRadius: "10%", backgroundColor: "#A9A9A9", marginLeft: 0 }}>
+                <Card text="white" border="light" style={styles.card}>
                     <Card.Header style={styles.header}>
-                        <img src="https://purepng.com/public/uploads/large/purepng.com-winnie-the-pooh-babywinnie-poohwinniepoohpooh-bearbearwinnie-the-poohteddy-bearcharacterbook-winnie-the-pooh-1926pooh-corner-1928winnie-pooh-and-piglet-1701528660495rcn1r.png" alt="Pooh" style={styles.img}/>
-                        <Card.Title>Lim Kang Yee</Card.Title>
+                        <img src={this.props.profile[0].imageUrl} alt="Profile Picture" style={styles.img}/>
+                        <Card.Title>{this.props.profile[0].name}</Card.Title>
                     </Card.Header>
                     <Card.Body>
                         <Card.Text>
-                            Connections:  50 
+                            Connections:  50
                         </Card.Text>
                     </Card.Body>
                 </Card>
@@ -33,13 +34,25 @@ const styles = {
     width: "10vw",
     margin: "10px",
     outlineWidth: "1px",
-    outlineStyle: "solid",
-    outlineColor: "white",
+    //outlineStyle: "solid",
+    //outlineColor: "white",
     borderRadius: "50%",
     overflow: 'hidden',
     // WebkitBorderRadius: "500px",
     // MozBorderRadius: "500px",
-
+  },
+  card: {
+    width: '18rem',
+    height: "auto",
+    borderRadius: "10%",
+    backgroundColor: "#A9A9A9",
+    marginLeft: 0
   }
 }
-export default ProfileBox;
+const mapStateToProps = (state) => {
+  return {
+    profile: state.profile,
+  }
+}
+
+export default connect(mapStateToProps, {}) (ProfileBox);

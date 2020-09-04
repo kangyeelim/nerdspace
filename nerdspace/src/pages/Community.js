@@ -1,15 +1,9 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
 import { connect } from 'react-redux';
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
-import CommunitySideBar from './components/CommunitySideBar';
-import CommunityContent from './components/CommunityContent';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
+import CommunitySideBar from '../components/CommunitySideBar';
+import CommunityContent from '../components/CommunityContent';
 
 class Community extends React.Component {
   render() {
@@ -28,5 +22,10 @@ class Community extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+    return {
+      profile: state.profile,
+    }
+}
 
-export default Community;
+export default connect(mapStateToProps, {}) (Community);
