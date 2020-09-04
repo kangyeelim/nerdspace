@@ -29,7 +29,7 @@ class NavBar extends React.Component {
   }
 
   goCommunity() {
-    //this.props.history.push("/community");
+    this.props.history.push("/community");
   }
 
   goHome() {

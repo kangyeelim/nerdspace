@@ -16,9 +16,9 @@ class Footer extends React.Component {
                 </MDBRow>
                 </MDBContainer>
             </div>
-            <MDBContainer className="mt-4 mb-3 text-center text-md-left">
+            <MDBContainer className="mt-4 mb-3 text-center">
                 <MDBRow className="mt-3">
-                <MDBCol md="3" lg="4" xl="3" className="mb-4">
+                <MDBCol md="auto" lg="4" xl="3" className="mb-4">
                     <h6 className="text-uppercase font-weight-bold">
                     <strong>Project Description</strong>
                     </h6>
@@ -27,19 +27,21 @@ class Footer extends React.Component {
                     This is a project designed to faciliate the process of finding a study buddy with common interests.
                     </p>
                 </MDBCol>
-                <MDBCol md="4" lg="3" xl="3" className="mb-4">
+                <MDBCol>
+                </MDBCol>
+                <MDBCol md="auto" lg="4" xl="3" className="mb-4">
                     <h6 className="text-uppercase font-weight-bold">
-                    <strong>Contact</strong>
+                    <strong>Contact Us</strong>
                     </h6>
                     <hr className="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{ width: "60px" }} />
                     <p>
-                    <i className="fa fa-home mr-3" /> National University of Singapore
+                    <i className="fa fa-home mr-3" />National University of Singapore
                     </p>
                     <p>
-                    <i className="fa fa-envelope mr-3" /> info@example.com
+                    <i className="fa fa-envelope mr-3" />info@example.com
                     </p>
                     <p>
-                    <i className="fa fa-phone mr-3" /> + 01 234 567 88
+                    <i className="fa fa-phone mr-3" />+ 01 234 567 88
                     </p>
                 </MDBCol>
                 </MDBRow>
@@ -57,10 +59,11 @@ class Footer extends React.Component {
 const styles = {
     footer: {
         position: "absolute",
-        bottom: 0,
+        bottom: -300,
         width: "100%",
-        height: "30px",   /* Height of the footer */
+        height: "50px",   /* Height of the footer */
         background: "#6cf",
+
      }
 }
 export default Footer;
