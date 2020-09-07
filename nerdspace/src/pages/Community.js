@@ -5,27 +5,33 @@ import './General.css';
 import { Col, Row, Form, Button, FormControl } from 'react-bootstrap';
 import RoomBox from '../components/RoomBox';
 
-const stub = [ {name:"GP resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900"},
-{name:"A Maths resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900"},
-{name:"Physics resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900"},
-{name:"Chem resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900"}];
+const stub = [ {id:1, name:"GP resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
+{id:2, name:"A Maths resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
+{id:3, name:"Physics resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: false},
+{id:4, name:"Chem resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true}];
 
 class Community extends React.Component {
 
   constructor() {
     super();
     this.enterRoom = this.enterRoom.bind(this);
+    this.requestJoinRoom = this.requestJoinRoom.bind(this);
   }
 
-  enterRoom(room, url) {
+  enterRoom(id, room, url) {
     console.log("enter");
     this.props.history.push({
       pathname:'/room',
       state: {
         roomName: room,
-        imageUrl: url
+        imageUrl: url,
+        id: id
       }
     });
+  }
+
+  requestJoinRoom(id) {
+    console.log("request");
   }
 
   render() {
@@ -42,7 +48,13 @@ class Community extends React.Component {
           </Form>
           { stub && stub.map((room) => {
             return (
-                <RoomBox roomName={room.name} enter={() => this.enterRoom(room.name, room.url)} imageUrl={room.url}/>
+                <RoomBox roomName={room.name}
+                hasAccess={room.hasAccess}
+                key={room.id}
+                id={room.id}
+                requestJoin={()=> this.requestJoinRoom(room.id)}
+                enter={() => this.enterRoom(room.id, room.name, room.url)}
+                imageUrl={room.url}/>
             );
           })}
           </Col>

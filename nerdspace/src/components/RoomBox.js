@@ -9,7 +9,9 @@ class RoomBox extends React.Component {
             <Image variant="top" src={this.props.imageUrl} style={styles.image} />
             <Card.Body>
               <Card.Title>{this.props.roomName}</Card.Title>
-              <Button variant="primary" onClick={this.props.enter}>Enter</Button>
+              <Card.Text>Room ID: {this.props.id}</Card.Text>
+              {this.props.hasAccess && <Button variant="primary" onClick={this.props.enter}>Enter</Button>}
+              {!this.props.hasAccess && <Button variant="info" onClick={this.props.requestJoin}>Request to Join</Button>}
             </Card.Body>
           </Card>
         );
