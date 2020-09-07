@@ -5,7 +5,10 @@ import './General.css';
 import { Col, Row, Form, Button, FormControl } from 'react-bootstrap';
 import RoomBox from '../components/RoomBox';
 
-const stub = ["GP resources sharing group", "AMaths sucks", "Physics group", "Chemistry Fun"];
+const stub = [ {name:"GP resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900"},
+{name:"A Maths resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900"},
+{name:"Physics resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900"},
+{name:"Chem resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900"}];
 
 class Community extends React.Component {
 
@@ -14,8 +17,15 @@ class Community extends React.Component {
     this.enterRoom = this.enterRoom.bind(this);
   }
 
-  enterRoom() {
+  enterRoom(room, url) {
     console.log("enter");
+    this.props.history.push({
+      pathname:'/room',
+      state: {
+        roomName: room,
+        imageUrl: url
+      }
+    });
   }
 
   render() {
@@ -32,7 +42,7 @@ class Community extends React.Component {
           </Form>
           { stub && stub.map((room) => {
             return (
-                <RoomBox roomName={room} enter={this.enterRoom}/>
+                <RoomBox roomName={room.name} enter={() => this.enterRoom(room.name, room.url)} imageUrl={room.url}/>
             );
           })}
           </Col>

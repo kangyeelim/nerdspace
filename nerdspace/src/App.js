@@ -8,6 +8,7 @@ import {
 import Login from './pages/Login';
 import UserHome from './pages/UserHome';
 import Community from './pages/Community';
+import StudyRoom from './pages/StudyRoom';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route exact path="/" component={Login}/>
           <Route exact path="/home" component={UserHome}/>
           <Route exact path="/community" component={Community}/>
+          <Route exact path="/room" component={StudyRoom}/>
         </Switch>
       </Router>
     </div>

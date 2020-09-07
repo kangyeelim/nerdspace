@@ -6,7 +6,7 @@ class RoomBox extends React.Component {
     render() {
         return (
           <Card style={styles.card}>
-            <Image variant="top" src="https://source.unsplash.com/aJnHSrgSWkk/1600x900" style={styles.image} />
+            <Image variant="top" src={this.props.imageUrl} style={styles.image} />
             <Card.Body>
               <Card.Title>{this.props.roomName}</Card.Title>
               <Button variant="primary" onClick={this.props.enter}>Enter</Button>
