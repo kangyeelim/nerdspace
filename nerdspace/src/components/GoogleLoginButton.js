@@ -10,8 +10,7 @@ export default function GoogleButton(props) {
     onSuccess={props.responseGoogleSuccess}
     onFailure={props.responseGoogleFailure}
     responseType='code,token'
+    cookiePolicy={'single_host_origin'}
     />
   );
 }
-
-//    cookiePolicy={'single_host_origin'}

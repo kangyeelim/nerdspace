@@ -3,9 +3,6 @@
     flex-direction: row;
     margin: 2rem 2rem;
     padding: 3rem 3rem;
-}
-
-.leftCol {
-    display: flex;
-    flex-direction: column;
+    text-align: center;
+    justify-content: center;
 }
