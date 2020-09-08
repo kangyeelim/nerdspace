@@ -33,7 +33,7 @@ class NavBar extends React.Component {
   }
 
   goHome() {
-    //this.props.history.push("/home");
+    this.props.history.push("/home");
   }
 
   goMessaging() {
@@ -105,7 +105,7 @@ const styles = {
     marginLeft:20,
   },
   dropdownContainer: {
-    marginLeft: 20,
+    marginLeft: 28,
     marginBottom: -28,
   },
   navlink: {
