@@ -5,6 +5,8 @@ import './General.css';
 import { Col, Row, Form, Button, Image } from 'react-bootstrap';
 import RoomBox from '../components/RoomBox';
 import TitleCard from '../components/TitleCard';
+import RoomSideBar from '../components/RoomSideBar';
+import RoomPostsSection from '../components/RoomPostsSection';
 
 class StudyRoom extends React.Component {
 
@@ -12,6 +14,11 @@ class StudyRoom extends React.Component {
     super();
     this.state={
     }
+    this.viewAll = this.viewAll.bind(this);
+  }
+
+  viewAll() {
+    console.log("view all page");
   }
 
   render() {
@@ -20,14 +27,15 @@ class StudyRoom extends React.Component {
         <NavBar history={this.props.history}/>
         <div className='container'>
           <Col>
-            <TitleCard imageUrl={this.props.location.state.imageUrl}
-             roomName={this.props.location.state.roomName}/>
+            <TitleCard
+              imageUrl={this.props.location.state.imageUrl}
+              roomName={this.props.location.state.roomName}/>
             <Row>
-              <Col>
-                POSTS
+              <Col xs="auto">
+                <RoomPostsSection viewAll={this.viewAll}/>
               </Col>
-              <Col>
-                Sidebar
+              <Col xs={1}>
+                <RoomSideBar />
               </Col>
             </Row>
           </Col>

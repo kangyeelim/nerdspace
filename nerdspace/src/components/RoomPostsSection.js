@@ -2,18 +2,13 @@ import React from "react";
 import { Card, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-class RoomSideBar extends React.Component {
+class RoomPostsSection extends React.Component {
     render() {
         return (
           <Card style={styles.card}>
             <Card.Body>
-              <Card.Title>Members</Card.Title>
-            </Card.Body>
-            <Card.Body>
-              <Card.Title>Files</Card.Title>
-            </Card.Body>
-            <Card.Body>
-              <Card.Title>Requests</Card.Title>
+              <Card.Title>Recent Posts</Card.Title>
+              <Button variant="primary" onClick={this.props.viewAll}>View All</Button>
             </Card.Body>
           </Card>
         );
@@ -28,8 +23,8 @@ const styles = {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
-    width: "20vw",
-    minWidth: "280px",
+    minWidth: "475px",
+    width: "58vw"
   }
 }
 
@@ -39,4 +34,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {}) (RoomSideBar);
+export default connect(mapStateToProps, {}) (RoomPostsSection);
