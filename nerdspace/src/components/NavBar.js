@@ -41,7 +41,7 @@ class NavBar extends React.Component {
   }
 
   goProfile() {
-    //this.props.history.push("/account");
+    this.props.history.push("/account");
   }
 
   goSettings() {
@@ -75,7 +75,7 @@ class NavBar extends React.Component {
                             {this.props.profile[0].name}
                         </div>
                     }>
-                <NavDropdown.Item onClick={this.goPrfile}>Profile</NavDropdown.Item>
+                <NavDropdown.Item onClick={this.goProfile}>Profile</NavDropdown.Item>
                 <NavDropdown.Item onClick={this.goSettings}>Settings</NavDropdown.Item>
                 <NavDropdown.Item onClick={this.goHelp}>Help</NavDropdown.Item>
                 <NavDropdown.Divider />
