@@ -12,9 +12,10 @@ app.use(cors());
 app.use(express.json());
 
 const usersRouter = require('./routes/users');
+const studyRoomPostsRouter = require('./routes/studyRoomPosts');
 
 app.use('/users', usersRouter);
-
+app.use('/studyroomposts', studyRoomPostsRouter);
 //starts server
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
