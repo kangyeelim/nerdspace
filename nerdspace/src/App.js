@@ -6,6 +6,7 @@ import {
   Route
 } from "react-router-dom";
 import Login from './pages/Login';
+import BuddyFinder from './pages/BuddyFinder';
 import UserHome from './pages/UserHome';
 import Community from './pages/Community';
 import StudyRoom from './pages/StudyRoom';
@@ -17,6 +18,7 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/" component={Login}/>
+          <Route exact path="/buddy-finder" component={BuddyFinder}/>
           <Route exact path="/home" component={UserHome}/>
           <Route exact path="/community" component={Community}/>
           <Route exact path="/room" component={StudyRoom}/>

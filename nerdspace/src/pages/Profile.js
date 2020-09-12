@@ -40,7 +40,7 @@ class Profile extends React.Component {
         return (
             <div>
                 <NavBar history={this.props.history}/>
-                <div class="container">
+                <div className="container">
                 <Col>
                     <Row style={styles.image}>
                     <img className="thumbnail-image"
