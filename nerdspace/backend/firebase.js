@@ -14,7 +14,7 @@ const firebaseApp = firebase.initializeApp({
   measurementId: process.env.MEASUREMENT_ID
 });
 
-const db = firebaseApp.firestore();
+const db = firebaseApp.database();
 const auth = firebase.auth();
 const storage = firebase.storage();
 
