@@ -11,6 +11,7 @@ class NavBar extends React.Component {
       profilePic: null
     }
     this.handleLogout = this.handleLogout.bind(this);
+    this.goFindBuddyPage = this.goFindBuddyPage.bind(this);
     this.goCommunity = this.goCommunity.bind(this);
     this.goMessaging = this.goMessaging.bind(this);
     this.goHome = this.goHome.bind(this);
@@ -26,6 +27,10 @@ class NavBar extends React.Component {
   handleLogout(){
     this.props.deleteProfile();
     this.props.history.push("/");
+  }
+
+  goFindBuddyPage() {
+    this.props.history.push("/buddy-finder");
   }
 
   goCommunity() {
@@ -57,9 +62,10 @@ class NavBar extends React.Component {
         <Navbar expand="lg" className="shadow" style={{ backgroundColor: "#D3D3D3" }}>
           <Navbar.Brand href="#">
             Nerdspace
-          </Navbar.Brand>
+          </Navbar.Brand>     
           <Navbar.Toggle style={styles.navlink} aria-controls="basic-navbar-nav" />
           <Navbar.Collapse style={styles.navlink} id="basic-navbar-nav">
+          <Nav.Link style={styles.navlink} onClick={this.goFindBuddyPage}>Find Study Buddies</Nav.Link>
             <Nav style={styles.navlink} activeKey={this.props.activeKey} className="ml-auto">
               <Nav.Link eventKey={1} style={styles.navlink} onClick={this.goHome}>Home</Nav.Link>
               <Nav.Link eventKey={2} style={styles.navlink} onClick={this.goCommunity}>Community</Nav.Link>
