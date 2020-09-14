@@ -15,7 +15,7 @@ export default function TitleCard(props) {
 
 const styles = {
   card: {
-    width: '80vw',
+    width: '83vw',
     justifyContent:'center',
     alignText: 'center',
     alignItems: 'center',
