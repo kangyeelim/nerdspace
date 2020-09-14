@@ -19,7 +19,6 @@ class Community extends React.Component {
   }
 
   enterRoom(id, room, url) {
-    console.log("enter");
     this.props.history.push({
       pathname:'/room',
       state: {

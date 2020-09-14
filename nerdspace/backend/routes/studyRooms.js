@@ -2,7 +2,7 @@ const router = require('express').Router();
 const db = require('../firebase').db;
 
 router.route('/').get((req, res) => {
-  db.ref('studyRoomPosts').once('value',
+  db.ref('studyRooms').once('value',
   function (snapshot) {
     var resArr = [];
     snapshot.forEach(function (child) {
@@ -10,10 +10,11 @@ router.route('/').get((req, res) => {
       var data = child.val();
       resArr.push({
         key: key,
-        title: data.title,
-        content: data.content,
+        name: data.name,
         imageUrl: data.imageUrl,
-        isThereImage: data.isThereimage
+        isThereImage: data.isThereImage,
+        members: data.members,
+        posts: data.posts
       });
     });
 
@@ -27,15 +28,17 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/').post((req, res) => {
-  const title = req.body.title;
-  const content = req.body.content;
+  const name = req.body.name;
   const imageUrl = req.body.imageUrl;
-  const isThereimage = req.body.isThereImage;
-  db.ref('studyRoomPosts').push().set({
-    'title': title,
-    'content': content,
+  const isThereImage = req.body.isThereImage;
+  const members = data.members;
+  const posts = [];
+  db.ref('studyRooms').push().set({
+    'name': name,
     'imageUrl': imageUrl,
-    'isThereimage': isThereimage
+    'members': members,
+    'isThereimage': isThereimage,
+    'posts': posts
   }, function (error) {
     if (error) {
       res.send(error);
@@ -49,15 +52,17 @@ router.route('/').post((req, res) => {
 
 router.route('/update').post((req, res) => {
   const key = req.body.key;
-  const title = req.body.title;
-  const content = req.body.content;
+  const name = req.body.name;
+  const members = req.body.members;
   const imageUrl = req.body.imageUrl;
   const isThereImage = req.body.isThereImage;
-  db.ref('studyRoomPosts').child(key).update({
-    'title': title,
-    'content': content,
+  const posts = req.body.posts;
+  db.ref('studyRooms').child(key).update({
+    'name': name,
     'imageUrl': imageUrl,
-    'isThereimage': isThereImage
+    'members': members,
+    'isThereimage': isThereimage,
+    'posts': posts
   }, function (error) {
     if (error) {
       res.send(error);
@@ -71,7 +76,7 @@ router.route('/update').post((req, res) => {
 
 router.route('/').delete((req, res) => {
   const key = req.body.key;
-  db.ref('studyRoomPosts').child(key).remove(
+  db.ref('studyRooms').child(key).remove(
     function (error) {
       if (error) {
         res.send(error);

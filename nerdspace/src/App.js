@@ -11,6 +11,7 @@ import UserHome from './pages/UserHome';
 import Community from './pages/Community';
 import StudyRoom from './pages/StudyRoom';
 import Profile from './pages/Profile';
+import CreatePostForm from './pages/CreatePostForm';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route exact path="/community" component={Community}/>
           <Route exact path="/room" component={StudyRoom}/>
           <Route exact path="/account" component={Profile}/>
+          <Route exact path="/createPost" component={CreatePostForm}/>
         </Switch>
       </Router>
     </div>

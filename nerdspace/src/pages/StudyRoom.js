@@ -16,21 +16,11 @@ class StudyRoom extends React.Component {
       viewAllPosts: false,
       searchKeyWord: null
     }
-    this.handleSearchInput = this.handleSearchInput.bind(this);
-    this.search = this.search.bind(this);
     this.createPost = this.createPost.bind(this);
   }
 
-  handleSearchInput(e) {
-    this.setState({searchKeyWord:e.currentTarget.value});
-  }
-
-  search() {
-
-  }
-
   createPost() {
-
+    this.props.history.push('/createPost');
   }
 
   render() {
@@ -41,20 +31,16 @@ class StudyRoom extends React.Component {
           <Col>
             <TitleCard
               imageUrl={this.props.location.state.imageUrl}
-              roomName={this.props.location.state.roomName}/>
-              <div style={{display: "flex", width: "80vw", marginTop: "30px"}}>
-                <FormControl onChange={this.handleSearchInput} type="text" placeholder="Search for posts" className="mr-sm-2" style={{maxWidth: "65vw"}}/>
-                <Button  variant="outline-primary"onClick={this.search} style={{marginRight: "20px"}}>Search</Button>
-                <Button variant="primary" onClick={this.createPost} style={{marginLeft: "auto"}}>Create post</Button>
-              </div>
-                <Row>
-                  <Col md="auto">
-                    <RoomPostsSection/>
-                  </Col>
-                  <Col xs={1}>
-                    <RoomSideBar />
-                  </Col>
-                </Row>
+              roomName={this.props.location.state.roomName}
+            />
+            <Row>
+              <Col md={11}>
+                <RoomPostsSection createPost={this.createPost}/>
+              </Col>
+              <Col xs={1}>
+                <RoomSideBar />
+              </Col>
+            </Row>
           </Col>
         </div>
       </div>
