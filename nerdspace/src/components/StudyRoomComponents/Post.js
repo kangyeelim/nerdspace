@@ -7,7 +7,7 @@ export default function Post(props) {
   return (
     <Card className="shadow-sm p-3 mb-5 bg-white rounded" style={styles.card}>
       <Card.Body>
-        {props.isThereimage && <Image variant="top" src={props.imageUrl} style={styles.image} />}
+
         <Card.Title>{props.title}</Card.Title>
         {props.content}
         <Row style={{marginLeft: 10, marginRight:10, alignSelf:'right'}}>
