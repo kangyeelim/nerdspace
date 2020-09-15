@@ -50,7 +50,7 @@ function TodoBox() {
     return (
         <div>
             <header>
-                <Typography variant="h6">Todo List</Typography>
+                <Typography variant="h6">Reminders</Typography>
                 <TodoForm addTodo={addTodo} />
                 <TodoList 
                     todos={todos}
