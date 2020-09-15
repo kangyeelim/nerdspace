@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
+import Typography from "@material-ui/core/Typography";
 
 const LOCAL_STORAGE_KEY = "react-todo-list-todos";
 
@@ -44,8 +45,8 @@ function TodoBox() {
 
     return (
         <div>
-            <header className="App-header">
-                <p>Todo List</p>
+            <header>
+                <Typography variant="h6">Todo List</Typography>
                 <TodoForm addTodo={addTodo} />
                 <TodoList 
                     todos={todos}
