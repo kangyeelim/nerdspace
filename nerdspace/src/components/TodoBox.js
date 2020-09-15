@@ -3,6 +3,10 @@ import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
 import Typography from "@material-ui/core/Typography";
 
+/**
+ * TodoBox is the component that updates, populates and stores the todos
+ */
+
 const LOCAL_STORAGE_KEY = "react-todo-list-todos";
 
 function TodoBox() {

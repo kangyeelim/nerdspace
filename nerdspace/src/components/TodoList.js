@@ -1,8 +1,6 @@
 import React from "react";
 import Todo from "./Todo";
 import { List } from "@material-ui/core";
-import { Checkbox, IconButton, ListItem, Typography } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
 
 /**
  * TodoList renders a list of todos

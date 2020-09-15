@@ -2,6 +2,10 @@ import React from "react";
 import { Checkbox, IconButton, ListItem, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 
+/**
+ * Todo renders a todo object and handles its actions
+ */
+
 function Todo({ todo, toggleComplete, removeTodo }) {
     
     function handleCheckboxClick() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import ProfileBox from '../components/ProfileBox';
 import GroupBox from '../components/GroupBox';
 import Postbar from '../components/Postbar';
