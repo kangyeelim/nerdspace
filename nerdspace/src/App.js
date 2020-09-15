@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Login from './pages/Login';
 import BuddyFinder from './pages/BuddyFinder';
+import BuddyFinderForm from './pages/BuddyFinderForm';
 import UserHome from './pages/UserHome';
 import Community from './pages/StudyRoomPages/Community';
 import StudyRoom from './pages/StudyRoomPages/StudyRoom';
@@ -20,6 +21,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Login}/>
           <Route exact path="/buddy-finder" component={BuddyFinder}/>
+          <Route exact path="/createBuddyForm" component={BuddyFinderForm}/>
           <Route exact path="/home" component={UserHome}/>
           <Route exact path="/community" component={Community}/>
           <Route exact path="/room" component={StudyRoom}/>
