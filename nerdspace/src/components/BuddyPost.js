@@ -9,7 +9,7 @@ export default function BuddyPost(props) {
     <Card text="white" border="light" style={styles.card}>
     text="white" border="light" style={styles.card}
         <i class="fas fa-paper-plane"></i>
-      
+
     </Card>
   );
 }
