@@ -6,7 +6,7 @@ import './General.css';
 import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
 import RoomSideBar from '../components/RoomSideBar';
 import ChatMessageSection from '../components/ChatMessagesSection';
-//                                <ChatMessageSection />
+
 class ChatRoom extends React.Component {
     constructor() {
         super();
@@ -50,7 +50,9 @@ class ChatRoom extends React.Component {
                     <Col>
                         <Row>
                             <Col md={11}>
-                                <input placeholder="send a message" onChange={this.handleMsgChange} onKeyDown={this.handleKeyDown} value={this.msg} /><br />
+                                <ChatMessageSection />
+                                <input placeholder="send a message" onChange={this.handleMsgChange} onKeyDown={this.handleKeyDown}
+                                    value={this.msg} style={{ borderRadius: "12px", width: "50vw" }} /><br />
                             </Col>
                             <Col xs={1}>
                                 <RoomSideBar />
@@ -64,7 +66,10 @@ class ChatRoom extends React.Component {
 }
 
 const styles = {
-
+    /*#messageBar: {
+        border: "2px",
+        borderRadius: "12px"
+    }*/
 }
 
 const mapStateToProps = (state) => {
