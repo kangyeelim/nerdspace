@@ -12,9 +12,11 @@ app.use(cors());
 app.use(express.json());
 
 const usersRouter = require('./routes/users');
+const studyRoomPostsRouter = require('./routes/studyRoomPosts');
 const messageRouter = require('./routes/message');
 
 app.use('/users', usersRouter);
+app.use('/studyroomposts', studyRoomPostsRouter);
 app.use('/message', messageRouter);
 
 //starts server

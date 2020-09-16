@@ -11,6 +11,7 @@ class NavBar extends React.Component {
       profilePic: null
     }
     this.handleLogout = this.handleLogout.bind(this);
+    this.goFindBuddyPage = this.goFindBuddyPage.bind(this);
     this.goCommunity = this.goCommunity.bind(this);
     this.goMessaging = this.goMessaging.bind(this);
     this.goHome = this.goHome.bind(this);
@@ -28,12 +29,16 @@ class NavBar extends React.Component {
     this.props.history.push("/");
   }
 
+  goFindBuddyPage() {
+    this.props.history.push("/buddy-finder");
+  }
+
   goCommunity() {
-    //this.props.history.push("/community");
+    this.props.history.push("/community");
   }
 
   goHome() {
-    //this.props.history.push("/home");
+    this.props.history.push("/home");
   }
 
   goMessaging() {
@@ -41,7 +46,7 @@ class NavBar extends React.Component {
   }
 
   goProfile() {
-    //this.props.history.push("/account");
+    this.props.history.push("/account");
   }
 
   goSettings() {
@@ -57,9 +62,10 @@ class NavBar extends React.Component {
         <Navbar expand="lg" className="shadow" style={{ backgroundColor: "#D3D3D3" }}>
           <Navbar.Brand href="#">
             Nerdspace
-          </Navbar.Brand>
+          </Navbar.Brand>     
           <Navbar.Toggle style={styles.navlink} aria-controls="basic-navbar-nav" />
           <Navbar.Collapse style={styles.navlink} id="basic-navbar-nav">
+          <Nav.Link style={styles.navlink} onClick={this.goFindBuddyPage}>Find Study Buddies</Nav.Link>
             <Nav style={styles.navlink} activeKey={this.props.activeKey} className="ml-auto">
               <Nav.Link eventKey={1} style={styles.navlink} onClick={this.goHome}>Home</Nav.Link>
               <Nav.Link eventKey={2} style={styles.navlink} onClick={this.goCommunity}>Community</Nav.Link>
@@ -75,7 +81,7 @@ class NavBar extends React.Component {
                             {this.props.profile[0].name}
                         </div>
                     }>
-                <NavDropdown.Item onClick={this.goPrfile}>Profile</NavDropdown.Item>
+                <NavDropdown.Item onClick={this.goProfile}>Profile</NavDropdown.Item>
                 <NavDropdown.Item onClick={this.goSettings}>Settings</NavDropdown.Item>
                 <NavDropdown.Item onClick={this.goHelp}>Help</NavDropdown.Item>
                 <NavDropdown.Divider />
@@ -105,7 +111,7 @@ const styles = {
     marginLeft:20,
   },
   dropdownContainer: {
-    marginLeft: 20,
+    marginLeft: 28,
     marginBottom: -28,
   },
   navlink: {
