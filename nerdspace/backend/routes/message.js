@@ -8,11 +8,10 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/').post((req, res) => {
-    const name = req.body.name;
     const message = req.body.message;
     const timestamp = Date.now();
-    db.ref('users').push().set({
-        'username': name,
+    db.ref('messages/room1').push().set({
+        //'username': name,
         'message': message,
         'timestamp': timestamp
     });
