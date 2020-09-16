@@ -12,8 +12,10 @@ app.use(cors());
 app.use(express.json());
 
 const usersRouter = require('./routes/users');
+const messageRouter = require('./routes/message');
 
 app.use('/users', usersRouter);
+app.use('/message', messageRouter);
 
 //starts server
 app.listen(port, () => {

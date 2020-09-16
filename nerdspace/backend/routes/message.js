@@ -9,12 +9,12 @@ router.route('/').get((req, res) => {
 
 router.route('/').post((req, res) => {
     const name = req.body.name;
-    const age = req.body.age;
-    const interests = req.body.interests;
+    const message = req.body.message;
+    const timestamp = Date.now();
     db.ref('users').push().set({
         'username': name,
-        'age': age,
-        'interests': interests
+        'message': message,
+        'timestamp': timestamp
     });
 
     res.send({

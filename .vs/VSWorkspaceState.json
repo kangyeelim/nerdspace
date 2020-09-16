@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\nerdspace",
+    "\\nerdspace\\backend",
+    "\\nerdspace\\backend\\routes",
+    "\\nerdspace\\public",
+    "\\nerdspace\\src",
+    "\\nerdspace\\src\\components",
+    "\\nerdspace\\src\\pages",
+    "\\nerdspace\\src\\redux"
+  ],
+  "SelectedNode": "\\nerdspace\\backend\\server.js",
+  "PreviewInSolutionExplorer": false
+}
