@@ -15,10 +15,10 @@ class QuoteAndAuthor extends React.Component {
                     <div className="fadeIn" key={Math.random()} style={{ color: randomColor }}>
                         <Typography variant="h6" style={styles.quote}>
                             "{this.props.quote}"
-                </Typography>
+                        </Typography>
                         <Typography variant="body2" style={styles.author}>
                             - {this.props.author} -
-                </Typography>
+                        </Typography>
                     </div>
                 </CardContent>
                 <CardActions style={{ justifyContent: "flex-end" }}>
