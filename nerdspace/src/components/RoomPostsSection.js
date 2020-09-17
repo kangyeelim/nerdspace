@@ -18,6 +18,7 @@ class RoomPostsSection extends React.Component {
       this.deletePost = this.deletePost.bind(this);
       this.handleSearchInput = this.handleSearchInput.bind(this);
       this.search = this.search.bind(this);
+      this.createPost = this.createPost.bind(this);
     }
 
     componentDidMount() {
@@ -29,6 +30,10 @@ class RoomPostsSection extends React.Component {
 
     handleSearchInput(e) {
       this.setState({searchKeyWord:e.currentTarget.value});
+    }
+
+    createPost() {
+      this.props.history.push('/createPost');
     }
 
     search() {
@@ -49,7 +54,7 @@ class RoomPostsSection extends React.Component {
           <div style={{display: "flex", marginTop: "30px"}}>
             <FormControl onChange={this.handleSearchInput} type="text" placeholder="Search for posts" className="mr-sm-2" style={{maxWidth: "44vw"}}/>
             <Button  variant="outline-primary"onClick={this.search} style={{marginRight: "20px"}}>Search</Button>
-            <Button variant="primary" onClick={this.props.createPost} style={{marginRight: "30px"}}>Create post</Button>
+            <Button variant="primary" onClick={this.createPost} style={{marginRight: "30px"}}>Create post</Button>
           </div>
           <Card style={styles.card}>
             <Card.Body>

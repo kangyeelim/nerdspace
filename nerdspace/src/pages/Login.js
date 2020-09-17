@@ -3,37 +3,67 @@ import GoogleButton from '../components/GoogleLoginButton';
 import { connect } from 'react-redux';
 import { updateProfile, deleteProfile } from '../redux/actions';
 import { Redirect } from 'react-router-dom';
+import { addUserOnFirstLogin } from '../services/Auth';
+import axios from 'axios';
 
 class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      isFailure: false,
-      isSuccess: false,
+      isAuthenticated: false,
     }
     this.responseGoogleSuccess = this.responseGoogleSuccess.bind(this);
     this.responseGoogleFailure = this.responseGoogleFailure.bind(this);
+    this.addUserOnFirstLogin = this.addUserOnFirstLogin.bind(this);
   }
 
-  async componentDidMount() {
-    //TO DO: check if user is authenticated already and redirect if yes
+  componentDidMount() {
+    //check if user is authenticated already and redirect if yes
+    if (this.props.profile.length > 0) {
+      this.setState({isAuthenticated: true});
+    }
   }
 
   responseGoogleSuccess(response) {
-    //TO DO: add to database if first time user
-    this.props.updateProfile(response.profileObj);
-    console.log("success");
-    console.log(response.profileObj);
-    this.setState({isSuccess:true});
+    const profile = response.profileObj;
+    this.props.updateProfile(profile);
+    //adds user in database on first login
+    this.addUserOnFirstLogin(profile, () => {
+      this.setState({isAuthenticated: true})
+      }, () => {
+        alert("Login failed. Please try again.")
+      });
+  }
+
+  addUserOnFirstLogin(profile, _callback, _callback2) {
+    axios.get(`http://localhost:5000/users/byGoogleID/${profile.googleId}/`)
+    .then((response) => {
+      if (response.data.message == 'User does not exist.') {
+        axios.post('http://localhost:5000/users', {
+          name: profile.name,
+          imageUrl: profile.imageUrl,
+          googleID: profile.googleId,
+          email: profile.email,
+        })
+        .catch(err => {
+          _callback2();
+        })
+      }
+    })
+    .then(() => {
+      _callback();
+    })
+    .catch(err => {
+      _callback2();
+    })
   }
 
   responseGoogleFailure(response) {
-    console.log("failed");
-    this.setState({isFailure: true});
+    alert("Login failed. Please try again.");
   }
 
   render() {
-    if (this.state.isSuccess) {
+    if (this.state.isAuthenticated) {
       return <Redirect to="/home"/>
     }
     return (
