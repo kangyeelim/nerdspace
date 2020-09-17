@@ -3,7 +3,6 @@ import GoogleButton from '../components/GoogleLoginButton';
 import { connect } from 'react-redux';
 import { updateProfile, deleteProfile } from '../redux/actions';
 import { Redirect } from 'react-router-dom';
-import { addUserOnFirstLogin } from '../services/Auth';
 import axios from 'axios';
 
 class Login extends React.Component {
