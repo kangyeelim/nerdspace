@@ -14,8 +14,26 @@ class Community extends React.Component {
 
   constructor() {
     super();
+    this.state = {
+      keyword: ""
+    }
     this.enterRoom = this.enterRoom.bind(this);
     this.requestJoinRoom = this.requestJoinRoom.bind(this);
+    this.searchRooms = this.searchRooms.bind(this);
+    this.keywordInput = this.keywordInput.bind(this);
+    this.makeNewRoom = this.makeNewRoom.bind(this);
+  }
+
+  makeNewRoom() {
+
+  }
+
+  keywordInput(e) {
+    this.setState({keyword: e.currentTarget.value});
+  }
+
+  searchRooms() {
+    console.log("search room");
   }
 
   enterRoom(id, room, url) {
@@ -41,8 +59,12 @@ class Community extends React.Component {
           <Col>
           <Form className="ml-auto">
             <div style={styles.form}>
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" style={styles.searchbar}/>
-              <Button type="submit">Submit</Button>
+              <FormControl type="text"
+                placeholder="Search"
+                className="mr-sm-2"
+                onChange={this.keywordInput}/>
+              <Button onClick={this.searchRooms}>Submit</Button>
+              <Button style={styles.button} onClick={this.makeNewRoom}>New Room</Button>
             </div>
           </Form>
           { stub && stub.map((room) => {
@@ -69,8 +91,11 @@ const styles = {
     width: '80vw',
     justifyContent: "center"
   },
-  searchbar: {
-
+  button: {
+    marginLeft: "20px",
+    display: "flex",
+    justifyContent:'center',
+    minWidth: "120px"
   }
 }
 

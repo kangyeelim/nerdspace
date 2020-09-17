@@ -13,7 +13,9 @@ router.route('/').get((req, res) => {
         title: data.title,
         content: data.content,
         imageUrl: data.imageUrl,
-        isThereImage: data.isThereimage
+        isThereImage: data.isThereImage,
+        roomID: data.roomID,
+        googleID: data.googleID
       });
     });
 
@@ -30,12 +32,16 @@ router.route('/').post((req, res) => {
   const title = req.body.title;
   const content = req.body.content;
   const imageUrl = req.body.imageUrl;
-  const isThereimage = req.body.isThereImage;
+  const isThereImage = req.body.isThereImage;
+  const roomID = req.body.roomID;
+  const poster = req.body.googleID;
   db.ref('studyRoomPosts').push().set({
     'title': title,
     'content': content,
     'imageUrl': imageUrl,
-    'isThereimage': isThereimage
+    'isThereImage': isThereImage,
+    'roomID': roomID,
+    'googleID': googleID
   }, function (error) {
     if (error) {
       res.send(error);
@@ -53,11 +59,15 @@ router.route('/update').post((req, res) => {
   const content = req.body.content;
   const imageUrl = req.body.imageUrl;
   const isThereImage = req.body.isThereImage;
+  const roomID = req.body.roomID;
+  const poster = req.body.googleID;
   db.ref('studyRoomPosts').child(key).update({
     'title': title,
     'content': content,
     'imageUrl': imageUrl,
-    'isThereimage': isThereImage
+    'isThereImage': isThereImage,
+    'roomID': roomID,
+    'googleID': googleID
   }, function (error) {
     if (error) {
       res.send(error);
