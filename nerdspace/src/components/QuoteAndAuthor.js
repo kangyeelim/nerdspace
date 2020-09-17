@@ -9,30 +9,17 @@ import Typography from "@material-ui/core/Typography";
 class QuoteAndAuthor extends React.Component {
     render() {
         const randomColor = this.props.displayColor();
-        const html = document.documentElement;
-        html.style.backgroundCOlor = randomColor;
-    
         return (
-            <Card style={{ backgroundColor: "white" }} className="quoteBox">
+            <Card className="quoteBox">
                 <CardContent>
-                <div
-                    className="fadeIn"
-                    key={Math.random()}
-                    style={{ color: randomColor }}
-                >
-                    <Typography
-                        variant="h5"
-                        style={styles.quote}
-                    >
-                        "{this.props.quote}"
-                    </Typography>
-                    <Typography
-                        variant="body1"
-                        style={styles.author}
-                    >
-                        -{this.props.author ? this.props.author : "Unknown"}-
-                    </Typography>
-                </div>
+                    <div className="fadeIn" key={Math.random()} style={{ color: randomColor }}>
+                        <Typography variant="h6" style={styles.quote}>
+                            "{this.props.quote}"
+                </Typography>
+                        <Typography variant="body2" style={styles.author}>
+                            - {this.props.author} -
+                </Typography>
+                    </div>
                 </CardContent>
                 <CardActions style={{ justifyContent: "flex-end" }}>
                     <Button
@@ -50,13 +37,13 @@ class QuoteAndAuthor extends React.Component {
                     </Button>
                 </CardActions>
             </Card>
-        );
+        )
     }
 }
 
 const styles = {
     quote: {
-        margin: "20px",
+        margin: "10px",
         textAlign: "left",
     },
     author: {
