@@ -13,8 +13,8 @@ router.route('/').get((req, res) => {
         name: data.name,
         imageUrl: data.imageUrl,
         isThereImage: data.isThereImage,
-        members: data.members,
-        posts: data.posts
+        memberIDs: data.memberIDs,
+        postIDs: data.postIDs
       });
     });
 
@@ -31,14 +31,14 @@ router.route('/').post((req, res) => {
   const name = req.body.name;
   const imageUrl = req.body.imageUrl;
   const isThereImage = req.body.isThereImage;
-  const members = data.members;
-  const posts = [];
+  const memberIDs = data.memberIDs;
+  const postIDs = [];
   db.ref('studyRooms').push().set({
     'name': name,
     'imageUrl': imageUrl,
-    'members': members,
-    'isThereimage': isThereimage,
-    'posts': posts
+    'memberIDs': memberIDs,
+    'isThereImage': isThereImage,
+    'postIDs': postIDs
   }, function (error) {
     if (error) {
       res.send(error);
@@ -53,16 +53,16 @@ router.route('/').post((req, res) => {
 router.route('/update').post((req, res) => {
   const key = req.body.key;
   const name = req.body.name;
-  const members = req.body.members;
+  const memberIDs = req.body.memberIDs;
   const imageUrl = req.body.imageUrl;
   const isThereImage = req.body.isThereImage;
-  const posts = req.body.posts;
+  const postIDs = req.body.postIDs;
   db.ref('studyRooms').child(key).update({
     'name': name,
     'imageUrl': imageUrl,
-    'members': members,
-    'isThereimage': isThereimage,
-    'posts': posts
+    'memberIDs': memberIDs,
+    'isThereImage': isThereImage,
+    'postIDs': postIDs
   }, function (error) {
     if (error) {
       res.send(error);

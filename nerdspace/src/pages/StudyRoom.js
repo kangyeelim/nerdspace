@@ -10,19 +10,6 @@ import RoomPostsSection from '../components/RoomPostsSection';
 
 class StudyRoom extends React.Component {
 
-  constructor() {
-    super();
-    this.state={
-      viewAllPosts: false,
-      searchKeyWord: null
-    }
-    this.createPost = this.createPost.bind(this);
-  }
-
-  createPost() {
-    this.props.history.push('/createPost');
-  }
-
   render() {
     return (
       <div>
@@ -35,7 +22,7 @@ class StudyRoom extends React.Component {
             />
             <Row>
               <Col md={11}>
-                <RoomPostsSection createPost={this.createPost}/>
+                <RoomPostsSection/>
               </Col>
               <Col xs={1}>
                 <RoomSideBar />
