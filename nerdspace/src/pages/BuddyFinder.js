@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import NavBar from '../components/NavBar';
 import './General.css';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
 import BuddyFinderHeader from '../components/BuddyFinderHeader';
 import BuddyFinderPostsSection from '../components/BuddyFinderPostsSection';
