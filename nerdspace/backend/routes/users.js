@@ -13,10 +13,7 @@ router.route('/').get((req, res) => {
         name: data.name,
         imageUrl: data.imageUrl,
         googleID: data.googleID,
-        email: data.email,
-        postIDs: data.postIDs ? data.postIDs : [],
-        friendIDs: data.friendIDs ? data.friendIDs : [],
-        roomIDs: data.roomIDs ? data.roomIDs : []
+        email: data.email
       });
     });
 
@@ -53,17 +50,11 @@ router.route('/').post((req, res) => {
   const email = req.body.email;
   const name = req.body.name;
   const imageUrl = req.body.imageUrl;
-  const roomIDs = [];
-  const friendIDs = [];
-  const postIDs = [];
   db.ref('users').push().set({
     'name': name,
     'imageUrl': imageUrl,
     'googleID': googleID,
-    'email': email,
-    'postIDs': postIDs,
-    'friendIDs': friendIDs,
-    'roomIDs': roomIDs
+    'email': email
   }, function (error) {
     if (error) {
       res.send(error);
@@ -81,17 +72,11 @@ router.route('/update').post((req, res) => {
   const email = req.body.email;
   const name = req.body.name;
   const imageUrl = req.body.imageUrl;
-  const roomIDs = req.body.roomIDs;
-  const friendIDs = req.body.friendIDs;
-  const postIDs = req.body.postIDs;
   db.ref('users').child(key).update({
     'name': name,
     'imageUrl': imageUrl,
     'googleID': googleID,
-    'email': email,
-    'postIDs': postIDs,
-    'friendIDs': friendIDs,
-    'roomIDs': roomIDs
+    'email': email
   }, function (error) {
     if (error) {
       res.send(error);

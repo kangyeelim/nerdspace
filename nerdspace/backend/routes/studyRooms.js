@@ -14,7 +14,6 @@ router.route('/').get((req, res) => {
         imageUrl: data.imageUrl,
         isThereImage: data.isThereImage,
         memberIDs: data.memberIDs,
-        postIDs: data.postIDs
       });
     });
 
@@ -31,14 +30,19 @@ router.route('/').post((req, res) => {
   const name = req.body.name;
   const imageUrl = req.body.imageUrl;
   const isThereImage = req.body.isThereImage;
-  const memberIDs = data.memberIDs;
-  const postIDs = [];
-  db.ref('studyRooms').push().set({
+  const memberID = req.body.googleID;
+  var roomRef = db.ref('studyRooms').push();
+  roomRef.set({
     'name': name,
     'imageUrl': imageUrl,
-    'memberIDs': memberIDs,
     'isThereImage': isThereImage,
-    'postIDs': postIDs
+  }, function (error) {
+    if (error) {
+      res.send(error);
+    }
+  });
+  roomRef.child('members').push().set({
+    'memberID': memberID
   }, function (error) {
     if (error) {
       res.send(error);
@@ -50,19 +54,31 @@ router.route('/').post((req, res) => {
   });
 });
 
-router.route('/update').post((req, res) => {
+router.route('/updateInfo').post((req, res) => {
   const key = req.body.key;
   const name = req.body.name;
-  const memberIDs = req.body.memberIDs;
   const imageUrl = req.body.imageUrl;
   const isThereImage = req.body.isThereImage;
-  const postIDs = req.body.postIDs;
   db.ref('studyRooms').child(key).update({
     'name': name,
     'imageUrl': imageUrl,
-    'memberIDs': memberIDs,
     'isThereImage': isThereImage,
-    'postIDs': postIDs
+  }, function (error) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.send({
+        message: 'UPDATE success'
+      })
+    }
+  });
+});
+
+router.route('/addMembers').post((req, res) => {
+  const key = req.body.key;
+  const memberID = req.body.googleID;
+  db.ref('studyRooms').child(key).child('members').push().set({
+    'googleID': memberID
   }, function (error) {
     if (error) {
       res.send(error);

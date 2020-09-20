@@ -2,7 +2,7 @@ const router = require('express').Router();
 const db = require('../firebase').db;
 
 router.route('/').get((req, res) => {
-  db.ref('studyRoomPosts').once('value',
+  db.ref('studyRoomRequests').once('value',
   function (snapshot) {
     var resArr = [];
     snapshot.forEach(function (child) {
@@ -10,10 +10,6 @@ router.route('/').get((req, res) => {
       var data = child.val();
       resArr.push({
         key: key,
-        title: data.title,
-        content: data.content,
-        imageUrl: data.imageUrl,
-        isThereImage: data.isThereImage,
         roomID: data.roomID,
         googleID: data.googleID
       });
@@ -28,23 +24,18 @@ router.route('/').get((req, res) => {
   });
 });
 
-router.route('/getByRoom').get((req, res) => {
-  const roomID = req.body.roomID;
-  db.ref('studyRoomPosts')
+router.route('/byRoomID/:id').get((req, res) => {
+  const roomID = req.params.id;
+  db.ref('studyRoomRequests')
   .orderByChild('roomID')
   .equalTo(roomID)
-  .once('value',
-  function (snapshot) {
+  .once("value", function (snapshot) {
     var resArr = [];
     snapshot.forEach(function (child) {
       var key = child.key;
       var data = child.val();
       resArr.push({
         key: key,
-        title: data.title,
-        content: data.content,
-        imageUrl: data.imageUrl,
-        isThereImage: data.isThereImage,
         roomID: data.roomID,
         googleID: data.googleID
       });
@@ -60,17 +51,9 @@ router.route('/getByRoom').get((req, res) => {
 });
 
 router.route('/').post((req, res) => {
-  const title = req.body.title;
-  const content = req.body.content;
-  const imageUrl = req.body.imageUrl;
-  const isThereImage = req.body.isThereImage;
-  const roomID = req.body.roomID;
-  const poster = req.body.googleID;
-  db.ref('studyRoomPosts').push().set({
-    'title': title,
-    'content': content,
-    'imageUrl': imageUrl,
-    'isThereImage': isThereImage,
+  const googleID = req.body.googleID;
+  const roomID = req.body.roomID
+  db.ref('studyRoomRequests').push().set({
     'roomID': roomID,
     'googleID': googleID
   }, function (error) {
@@ -86,17 +69,9 @@ router.route('/').post((req, res) => {
 
 router.route('/update').post((req, res) => {
   const key = req.body.key;
-  const title = req.body.title;
-  const content = req.body.content;
-  const imageUrl = req.body.imageUrl;
-  const isThereImage = req.body.isThereImage;
+  const googleID = req.body.googleID;
   const roomID = req.body.roomID;
-  const poster = req.body.googleID;
-  db.ref('studyRoomPosts').child(key).update({
-    'title': title,
-    'content': content,
-    'imageUrl': imageUrl,
-    'isThereImage': isThereImage,
+  db.ref('studyRoomRequests').child(key).update({
     'roomID': roomID,
     'googleID': googleID
   }, function (error) {
@@ -109,20 +84,5 @@ router.route('/update').post((req, res) => {
     }
   });
 });
-
-router.route('/').delete((req, res) => {
-  const key = req.body.key;
-  db.ref('studyRoomPosts').child(key).remove(
-    function (error) {
-      if (error) {
-        res.send(error);
-      } else {
-        res.send({
-          message: 'DELETE success'
-        });
-      }
-    });
-});
-
 
 module.exports = router;
