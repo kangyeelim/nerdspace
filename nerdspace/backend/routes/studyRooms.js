@@ -13,7 +13,7 @@ router.route('/').get((req, res) => {
         name: data.name,
         imageUrl: data.imageUrl,
         isThereImage: data.isThereImage,
-        memberIDs: data.memberIDs,
+        members: data.members,
       });
     });
 
@@ -41,17 +41,10 @@ router.route('/').post((req, res) => {
       res.send(error);
     }
   });
-  roomRef.child('members').push().set({
-    'memberID': memberID
-  }, function (error) {
-    if (error) {
-      res.send(error);
-    } else {
-      res.send({
-        message: 'POST success'
-      })
-    }
-  });
+  roomRef.child('members').push().set(memberID);
+  res.send({
+    message: 'POST success'
+  })
 });
 
 router.route('/updateInfo').post((req, res) => {
@@ -77,16 +70,10 @@ router.route('/updateInfo').post((req, res) => {
 router.route('/addMembers').post((req, res) => {
   const key = req.body.key;
   const memberID = req.body.googleID;
-  db.ref('studyRooms').child(key).child('members').push().set({
-    'googleID': memberID
-  }, function (error) {
-    if (error) {
-      res.send(error);
-    } else {
-      res.send({
-        message: 'UPDATE success'
-      })
-    }
+  db.ref('studyRooms').child(key).child('members').push().set(memberID);
+
+  res.send({
+    message: 'UPDATE success'
   });
 });
 

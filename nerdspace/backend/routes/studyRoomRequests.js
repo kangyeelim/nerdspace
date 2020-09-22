@@ -50,10 +50,39 @@ router.route('/byRoomID/:id').get((req, res) => {
   });
 });
 
+router.route('/byGoogleID/:id').get((req, res) => {
+  const googleID = req.params.id;
+  db.ref('studyRoomRequests')
+  .orderByChild('googleID')
+  .equalTo(googleID)
+  .once("value", function (snapshot) {
+    var resArr = [];
+    snapshot.forEach(function (child) {
+      var key = child.key;
+      var data = child.val();
+      resArr.push({
+        key: key,
+        roomID: data.roomID,
+        googleID: data.googleID
+      });
+    });
+    res.send({
+      data: resArr,
+      message: 'GET success'
+    });
+  }, function (error) {
+      res.send({
+        message: 'No requests found',
+        error: error
+      });
+  });
+});
+
 router.route('/').post((req, res) => {
   const googleID = req.body.googleID;
   const roomID = req.body.roomID
-  db.ref('studyRoomRequests').push().set({
+  var requestRef = db.ref('studyRoomRequests').push();
+  requestRef.set({
     'roomID': roomID,
     'googleID': googleID
   }, function (error) {
@@ -61,7 +90,8 @@ router.route('/').post((req, res) => {
       res.send(error);
     } else {
       res.send({
-        message: 'POST success'
+        message: 'POST success',
+        data: requestRef.key
       })
     }
   });

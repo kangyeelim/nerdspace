@@ -8,10 +8,10 @@ import {
 import Login from './pages/Login';
 import BuddyFinder from './pages/BuddyFinder';
 import UserHome from './pages/UserHome';
-import Community from './pages/Community';
-import StudyRoom from './pages/StudyRoom';
+import Community from './pages/StudyRoomPages/Community';
+import StudyRoom from './pages/StudyRoomPages/StudyRoom';
 import Profile from './pages/Profile';
-import CreatePostForm from './pages/CreatePostForm';
+import CreatePostForm from './pages/StudyRoomPages/CreatePostForm';
 
 function App() {
   return (

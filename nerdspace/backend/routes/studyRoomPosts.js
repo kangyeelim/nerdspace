@@ -28,8 +28,8 @@ router.route('/').get((req, res) => {
   });
 });
 
-router.route('/getByRoom').get((req, res) => {
-  const roomID = req.body.roomID;
+router.route('/getByRoom/:id').get((req, res) => {
+  const roomID = req.params.id;
   db.ref('studyRoomPosts')
   .orderByChild('roomID')
   .equalTo(roomID)
@@ -39,7 +39,7 @@ router.route('/getByRoom').get((req, res) => {
     snapshot.forEach(function (child) {
       var key = child.key;
       var data = child.val();
-      resArr.push({
+      resArr.unshift({
         key: key,
         title: data.title,
         content: data.content,
@@ -65,7 +65,7 @@ router.route('/').post((req, res) => {
   const imageUrl = req.body.imageUrl;
   const isThereImage = req.body.isThereImage;
   const roomID = req.body.roomID;
-  const poster = req.body.googleID;
+  const googleID = req.body.googleID;
   db.ref('studyRoomPosts').push().set({
     'title': title,
     'content': content,

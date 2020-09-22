@@ -22,7 +22,7 @@ class RoomPostsSection extends React.Component {
     }
 
     componentDidMount() {
-      axios.get(`http://localhost:5000/studyroomposts`)
+      axios.get(`http://localhost:5000/studyroomposts/getByRoom/${this.props.id}`)
         .then(res => {
           this.setState({posts: res.data.data});
         });
@@ -33,7 +33,14 @@ class RoomPostsSection extends React.Component {
     }
 
     createPost() {
-      this.props.history.push('/createPost');
+      this.props.history.push({
+        pathname: '/createPost',
+        state: {
+          id: this.props.id,
+          roomName: this.props.roomName,
+          imageUrl: this.props.imageUrl
+        }
+      });
     }
 
     search() {
