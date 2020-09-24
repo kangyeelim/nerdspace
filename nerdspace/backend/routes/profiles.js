@@ -27,6 +27,59 @@ router.route('/').get((req, res) => {
   });
 });
 
+router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, res) => {
+  const googleID = req.params.id;
+  const gender = req.params.gender;
+  const educationLevel = req.params.educationlevel;
+  const year = req.params.year;
+  const interest = req.params.interest;
+  const name = "";
+  const email = "";
+
+  db.ref('profiles')
+  .orderByChild('interest')
+  .equalTo(interest)
+  .once('value', function (snapshot) {
+    var resArr = [];
+    snapshot.forEach(function (child) {
+      var key = child.key;
+      var data = child.val();
+      if ((data.educationLevel == educationLevel && data.googleID != googleID) && (data.year == year && data.gender == gender)) {
+
+        db.ref('users').orderByChild('googleID')
+          .equalTo(googleID)
+          .once('value', function (snapshot) {
+            snapshot.forEach(function (child) {
+              var userKey = child.key;
+              var userData = child.val();
+              name = userData.name;
+              email = userData.email;
+            });
+          })
+
+        resArr.unshift({
+          key: key,
+          googleID: data.googleID,
+          educationLevel: data.educationLevel,
+          year: data.year,
+          gender: data.gender,
+          interest: data.interest,
+          name: name,
+          email: email
+        });
+      }
+    });
+
+    res.send({
+      data: resArr,
+      message: 'GET success'
+    });
+  }, function (error) {
+      res.send(error);
+  });
+});
+
+
 router.route('/').post((req, res) => {
   const googleID = req.body.googleID;
   const educationLevel = req.body.educationLevel;
