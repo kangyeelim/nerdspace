@@ -14,9 +14,16 @@ class BuddyFinderPostsSection extends React.Component {
         }
 
         this.submitPost = this.submitPost.bind(this);
+        this.deletePost = this.deletePost.bind(this);
 
-        
     }
+
+    componentDidMount() {
+        axios.get(`http://localhost:5000/buddyfinder-posts`)
+          .then(res => {
+            this.setState({posts: res.data.data});
+          });
+      }
 
     submitPost(id) {
 
