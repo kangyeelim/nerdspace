@@ -4,6 +4,8 @@ import NavBar from '../components/NavBar';
 import './General.css';
 import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
 import CardDeck from 'react-bootstrap/CardDeck';
+import axios from 'axios';
+import BuddyResult from '../components/BuddyResult';
 
 class BuddyFinderResult extends React.Component {
 
@@ -38,48 +40,20 @@ class BuddyFinderResult extends React.Component {
                 <div style={styles.container}>
                     <div style={styles.header}>
                         <h1 style={styles.headerText}><strong>Results</strong></h1> 
-                        <Button variant="primary" onClick={this.props.createBuddyForm}>Create a new form</Button>
+                        <Button variant="primary" onClick={this.props.goToBuddyFinder}>Return to Buddy Finder main page</Button>
                     </div>
                     <CardDeck>
                         <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                            <Card.Title>Card title</Card.Title>
-                            <Card.Text>
-                                This is a wider card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.
-                            </Card.Text>
-                            </Card.Body>
-                            <Card.Footer>
-                            <small className="text-muted">Last updated 3 mins ago</small>
-                            </Card.Footer>
-                        </Card>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                            <Card.Title>Card title</Card.Title>
-                            <Card.Text>
-                                This card has supporting text below as a natural lead-in to additional
-                                content.{' '}
-                            </Card.Text>
-                            </Card.Body>
-                            <Card.Footer>
-                            <small className="text-muted">Last updated 3 mins ago</small>
-                            </Card.Footer>
-                        </Card>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                            <Card.Title>Card title</Card.Title>
-                            <Card.Text>
-                                This is a wider card with supporting text below as a natural lead-in to
-                                additional content. This card has even longer content than the first to
-                                show that equal height action.
-                            </Card.Text>
-                            </Card.Body>
-                            <Card.Footer>
-                            <small className="text-muted">Last updated 3 mins ago</small>
-                            </Card.Footer>
+                        {this.state.results.map((result) => {
+                            return <BuddyResult
+                            key={result.key}
+                            id={result.key}
+                            name={result.name}
+                            gender={result.gender}
+                            email={result.email}
+                            educationLevel={result.educationLevel}
+                            sendMessage={this.sendMessage}/>;
+                        })}
                         </Card>
                     </CardDeck>
                 </div>
