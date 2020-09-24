@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const db = require('../firebase').db;
 
-router.route('./').get((req, res) => {
+router.route('/').get((req, res) => {
     db.ref('buddyFinderPosts').once('value', function(snapshot) {   // change to buddyFinderPosts
         var resultArr = [];
         snapshot.forEach(function(child) {
@@ -31,21 +31,27 @@ router.route('/').post((req, res) => {
     const yearOfStudy = req.body.yearOfStudy;
     const interest = req.body.interest;
     const googleID = req.body.googleID;
+    const gender = req.body.gender;
 
-    db.ref('buddyFinderPosts').push.set({
-        'educationLevel': educationLevel,
-        'yearOfStudy': yearOfStudy,
-        'interest': interest,
-        'googleID': googleID
-    }, function(error) {
+    var buddyFinderRef = db.ref('buddyFinderPosts').push();
+    buddyFinderRef.set({
+    'googleID': googleID,
+    'educationLevel': educationLevel,
+    'yearOfStudy': yearOfStudy,
+    'gender': gender,
+    'interest': interest
+    }, function (error) {
         if (error) {
-            res.send(error);
-          } else {
-            res.send({
-              message: 'POST success'
-            })
-          }
-    })
+        res.send(error);
+        }
+    });
+
+    // interests.forEach((item, i) => {
+    //     buddyFinderRef.child('interests').push().set(item);
+    // });
+    // res.send({
+    //     message: 'POST success'
+    // });
 })
 
 router.route('/').delete((req, res) => {

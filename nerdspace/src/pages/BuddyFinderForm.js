@@ -36,16 +36,22 @@ class BuddyFinderForm extends React.Component {
             console.error(err);
         });
 
+        goResults();
+
+    }
+
+    goResults() {
         this.props.history.push({
-            pathname:'/room',
+            pathname:'/buddy-finder-result',
             state: {
-                roomName: "room",
-                imageUrl: "",
-                id: 5
+                educationLevel: this.state.educationLevel,
+                yearOfStudy: this.state.yearOfStudy,
+                interest: this.state.interest,
+                gender: this.state.gender,
+                googleID: this.props.profile[0].googleId
             }
         });
     }
-
 
     handleInputChange(event) {
         const target = event.target;

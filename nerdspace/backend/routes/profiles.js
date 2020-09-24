@@ -27,6 +27,42 @@ router.route('/').get((req, res) => {
   });
 });
 
+router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, res) => {
+  const googleID = req.params.id;
+  const gender = req.params.gender;
+  const educationLevel = req.params.educationlevel;
+  const year = req.params.year;
+  const interest = req.params.interest;
+
+  db.ref('studyRoomPosts')
+  .orderByChild('interest')
+  .equalTo(interest)
+  .once('value', function (snapshot) {
+    var resArr = [];
+    snapshot.forEach(function (child) {
+      var key = child.key;
+      var data = child.val();
+      if (data.educationLevel == educationLevel && (data.year == year && data.gender == gender)) {
+        resArr.unshift({
+          key: key,
+          googleID: data.googleID,
+          educationLevel: data.educationLevel,
+          year: data.year,
+          gender: data.gender,
+          interests: data.interests,
+        });
+      }
+    });
+
+    res.send({
+      data: resArr,
+      message: 'GET success'
+    });
+  }, function (error) {
+      res.send(error);
+  });
+});
+
 router.route('/').post((req, res) => {
   const googleID = req.body.googleID;
   const educationLevel = req.body.educationLevel;
