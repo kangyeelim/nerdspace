@@ -14,25 +14,48 @@ class BuddyFinderForm extends React.Component {
             gender: null,
             educationLevel: null,
             yearOfStudy: null,
-            math: false,
-            generalPaper: false,
-            chemistry: false,
-            physics: false,
-            computing: false,
-            economics: false,
-            otherInterest: null
+            interest: null
+            // math: false,
+            // generalPaper: false,
+            // chemistry: false,
+            // physics: false,
+            // computing: false,
+            // economics: false,
+            // otherInterest: null
         }
         // this.handleGenderInput = this.handleGenderInput.bind(this);
         // this.handleEducationLevelInput = this.handleEducationLevelInput.bind(this);
         // this.handleYearStudyInput = this.handleYearStudyInput.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        // this.handleInterestInput = this.handleInterestInput.bind(this);
         this.submitForm = this.submitForm.bind(this);
-        // console.log(`Input name chemistry. Input value ${this.state.chemistry.value}.`);
     }
+
+    submitForm() {
+        axios.post('http://localhost:5000/buddyfinder-posts', {
+            title: this.state.title,
+            content: this.state.content,
+            isThereImage: false,
+            imageUrl: ""
+        })
+        .catch(err => {
+            console.error(err);
+        });
+
+        this.props.history.push({
+            pathname:'/room',
+            state: {
+                roomName: "room",
+                imageUrl: "",
+                id: 5
+            }
+        });
+    }
+
 
     handleInputChange(event) {
         const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const value = target.type === 'checkbox' ? target.checked : target.value.trim();
         const name = target.name;
 
         this.setState({
@@ -41,27 +64,12 @@ class BuddyFinderForm extends React.Component {
         console.log(`Input name ${name}. Input value ${value}.`);
     }
 
-    // handleGenderInput(event) {
-    //     this.setState({gender:event.currentTarget.value});
-    //     console.log(event.currentTarget.value);
+    // handleInterestInput(event) {
+    //     this.setState({interest: event.target.value.trim()});
+    //     console.log(`Input name interest. Input value ${event.target.value.trim()}.`);
     // }
 
-    // handleEducationLevelInput(event) {
-    //     this.setState({educationLevel: event.currentTarget.value});
-    //     console.log(event.currentTarget.value);
-    // }
 
-    // handleYearStudyInput(event) {
-    //     this.setState({educationLevel: event.currentTarget.value});
-    //     console.log(event.currentTarget.value);
-    // }
-
-    submitForm(event) {
-        event.preventDefault();
-        console.log("Finding buddy");
-
-        // TODO 
-    }
 
     render() {
         return (
@@ -118,42 +126,48 @@ class BuddyFinderForm extends React.Component {
                                     <Form.Label as="legend" column sm={2}>Interests</Form.Label>
                                     <Col sm={10}>
                                         <Form.Check 
-                                        type="checkbox"
-                                        id="math"
-                                        name="math"
+                                        type="radio"
+                                        id="interest"
+                                        name="interest"
+                                        value="Math"
                                         label="Math"
                                         />
                                         <Form.Check 
-                                        type="checkbox"
-                                        id="generalPaper"
-                                        name="generalPaper"
+                                        type="radio"
+                                        id="interest"
+                                        name="interest"
+                                        value="General Paper"
                                         label="General Paper"
                                         />
                                         <Form.Check 
-                                        type="checkbox"
-                                        id="chemistry"
-                                        name="chemistry"
+                                        type="radio"
+                                        id="interest"
+                                        name="interest"
+                                        value="Chemistry"
                                         label="Chemistry"
                                         />
                                         <Form.Check 
-                                        type="checkbox"
-                                        id="physics"
-                                        name="physics"
+                                        type="radio"
+                                        id="interest"
+                                        name="interest"
+                                        value="Physics"
                                         label="Physics"
                                         />
                                         <Form.Check 
-                                        type="checkbox"
-                                        id="computing"
-                                        name="computing"
+                                        type="radio"
+                                        id="interest"
+                                        name="interest"
+                                        value="Computing"
                                         label="Computing"
                                         />
                                         <Form.Check 
-                                        type="checkbox"
-                                        id="economics"
-                                        name="economics"
+                                        type="radio"
+                                        id="interest"
+                                        name="interest"
+                                        value="Economics"
                                         label="Economics"
                                         />
-                                        <Form.Control type="input" name="otherInterest" placeholder="Others" />
+                                        <Form.Control type="input" id="interest" value={this.state.name} name="interest" placeholder="Others" />
                                     </Col>
                                 </Form.Group>
                             </fieldset>
