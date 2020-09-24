@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import NavBar from '../../components/NavBar';
 import '../General.css';
+import { Redirect } from 'react-router-dom';
 import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
 import RoomBox from '../../components/StudyRoomComponents/RoomBox';
 import TitleCard from '../../components/StudyRoomComponents/TitleCard';
@@ -11,6 +12,9 @@ import RoomPostsSection from '../../components/StudyRoomComponents/RoomPostsSect
 class StudyRoom extends React.Component {
 
   render() {
+    if (!this.props.location.state.roomName) {
+      return <Redirect to="/community"/>;
+    }
     return (
       <div>
         <NavBar history={this.props.history}/>

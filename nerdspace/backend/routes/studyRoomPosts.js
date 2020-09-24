@@ -110,8 +110,8 @@ router.route('/update').post((req, res) => {
   });
 });
 
-router.route('/').delete((req, res) => {
-  const key = req.body.key;
+router.route('/:id').delete((req, res) => {
+  const key = req.params.id;
   db.ref('studyRoomPosts').child(key).remove(
     function (error) {
       if (error) {

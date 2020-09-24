@@ -92,8 +92,8 @@ router.route('/updateInterests').post((req, res) => {
   });
 });
 
-router.route('/').delete((req, res) => {
-  const key = req.body.key;
+router.route('/:id').delete((req, res) => {
+  const key = req.params.id;
   db.ref('profiles').child(key).remove(
     function (error) {
       if (error) {
