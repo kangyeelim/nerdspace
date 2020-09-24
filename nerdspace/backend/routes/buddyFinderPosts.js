@@ -32,20 +32,24 @@ router.route('/').post((req, res) => {
     const interest = req.body.interest;
     const googleID = req.body.googleID;
 
-    db.ref('buddyFinderPosts').push.set({
+    var profileRef = db.ref('profiles').push();
+    profileRef.set({
+        'googleID': googleID,
         'educationLevel': educationLevel,
-        'yearOfStudy': yearOfStudy,
-        'interest': interest,
-        'googleID': googleID
-    }, function(error) {
+        'year': year,
+        'gender': gender
+    }, function (error) {
         if (error) {
             res.send(error);
-          } else {
-            res.send({
-              message: 'POST success'
-            })
-          }
-    })
+    }
+  });
+
+  interests.forEach((item, i) => {
+    profileRef.child('interests').push().set(item);
+  });
+  res.send({
+    message: 'POST success'
+  });
 })
 
 router.route('/').delete((req, res) => {
