@@ -47,7 +47,7 @@ router.route('/').post((req, res) => {
 
   interests.forEach((item, i) => {
     profileRef.child('interests').push().set(item);
-  }
+  });
   res.send({
     message: 'POST success'
   });
@@ -77,8 +77,8 @@ router.route('/updateInfo').post((req, res) => {
 router.route('/updateInterests').post((req, res) => {
   const key = req.body.key;
   const interests = req.body.interests;
-  var profileRef = db.ref('profiles');
-  profileRef.child(key).child('interests').remove(
+  var profileRef = db.ref('profiles').child(key);
+  profileRef.child('interests').remove(
     function (error) {
     if (error) {
       res.send(error);
@@ -86,7 +86,7 @@ router.route('/updateInterests').post((req, res) => {
   });
   interests.forEach((item, i) => {
     profileRef.child('interests').push().set(item);
-  }
+  });
   res.send({
     message: 'POST success'
   });
