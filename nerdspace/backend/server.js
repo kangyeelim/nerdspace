@@ -15,20 +15,14 @@ const usersRouter = require('./routes/users');
 const studyRoomPostsRouter = require('./routes/studyRoomPosts');
 const studyRoomsRouter = require('./routes/studyRooms');
 const studyRoomRequestsRouter = require('./routes/studyRoomRequests');
-<<<<<<< HEAD
-=======
 const profilesRouter = require('./routes/profiles');
->>>>>>> temp
 const buddyFinderRouter = require('./routes/buddyFinderPosts');
 
 app.use('/users', usersRouter);
 app.use('/studyroomposts', studyRoomPostsRouter);
 app.use('/studyrooms', studyRoomsRouter);
 app.use('/studyroomrequests', studyRoomRequestsRouter);
-<<<<<<< HEAD
-=======
 app.use('/profiles', profilesRouter);
->>>>>>> temp
 app.use('/buddyfinderposts', buddyFinderRouter);
 
 //starts server
