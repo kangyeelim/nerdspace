@@ -19,12 +19,12 @@ class BuddyFinderForm extends React.Component {
         }
         // this.handleYearStudyInput = this.handleYearStudyInput.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        // this.handleInterestInput = this.handleInterestInput.bind(this);
+        // this.goResults = this.goResults.bind(this);
         this.submitForm = this.submitForm.bind(this);
     }
 
-    submitForm() {
-        // event.preventDefault();
+    submitForm(event) {
+        event.preventDefault();
         axios.post('http://localhost:5000/buddyfinderposts', {
             educationLevel: this.state.educationLevel,
             yearOfStudy: this.state.yearOfStudy,
@@ -37,15 +37,30 @@ class BuddyFinderForm extends React.Component {
         });
 
         this.props.history.push({
-            pathname:'/room',
+            pathname:'/buddy-finder-result',
             state: {
-                roomName: "room",
-                imageUrl: "",
-                id: 5
+                educationLevel: this.state.educationLevel,
+                yearOfStudy: this.state.yearOfStudy,
+                interest: this.state.interest,
+                gender: this.state.gender,
+                googleID: this.props.profile[0].googleId
             }
         });
+
     }
 
+    // goResults() {
+    //     this.props.history.push({
+    //         pathname:'/buddy-finder-result',
+    //         state: {
+    //             educationLevel: this.state.educationLevel,
+    //             yearOfStudy: this.state.yearOfStudy,
+    //             interest: this.state.interest,
+    //             gender: this.state.gender,
+    //             googleID: this.props.profile[0].googleId
+    //         }
+    //     });
+    // }
 
     handleInputChange(event) {
         const target = event.target;
