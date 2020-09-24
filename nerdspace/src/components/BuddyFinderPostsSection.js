@@ -2,6 +2,7 @@ import React from "react";
 import { Card } from 'react-bootstrap';
 import { MDBContainer } from "mdbreact";
 import { connect } from 'react-redux';
+import axios from 'axios';
 import { Col, Row, Button, Image, FormControl } from 'react-bootstrap';
 import BuddyPost from "./BuddyPost";
 
@@ -19,7 +20,7 @@ class BuddyFinderPostsSection extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:5000/buddyfinder-posts`)
+        axios.get(`http://localhost:5000/buddyfinderposts`)
           .then(res => {
             this.setState({posts: res.data.data});
           });
@@ -29,6 +30,9 @@ class BuddyFinderPostsSection extends React.Component {
 
     }
 
+    deletePost(id) {
+
+    }
 
     render() {
         return (

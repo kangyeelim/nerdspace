@@ -24,6 +24,7 @@ app.use('/studyrooms', studyRoomsRouter);
 app.use('/studyroomrequests', studyRoomRequestsRouter);
 app.use('/profiles', profilesRouter);
 app.use('./buddyfinder-posts', buddyFinderRouter);
+app.use('/buddyfinderposts', buddyFinderRouter);
 
 //starts server
 app.listen(port, () => {
