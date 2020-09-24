@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import NavBar from '../components/NavBar';
 import './General.css';
+import axios from 'axios';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
@@ -15,16 +16,7 @@ class BuddyFinderForm extends React.Component {
             educationLevel: null,
             yearOfStudy: null,
             interest: null
-            // math: false,
-            // generalPaper: false,
-            // chemistry: false,
-            // physics: false,
-            // computing: false,
-            // economics: false,
-            // otherInterest: null
         }
-        // this.handleGenderInput = this.handleGenderInput.bind(this);
-        // this.handleEducationLevelInput = this.handleEducationLevelInput.bind(this);
         // this.handleYearStudyInput = this.handleYearStudyInput.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         // this.handleInterestInput = this.handleInterestInput.bind(this);
@@ -32,11 +24,13 @@ class BuddyFinderForm extends React.Component {
     }
 
     submitForm() {
-        axios.post('http://localhost:5000/buddyfinder-posts', {
-            title: this.state.title,
-            content: this.state.content,
-            isThereImage: false,
-            imageUrl: ""
+        // event.preventDefault();
+        axios.post('http://localhost:5000/buddyfinderposts', {
+            educationLevel: this.state.educationLevel,
+            yearOfStudy: this.state.yearOfStudy,
+            interest: this.state.interest,
+            gender: this.state.gender,
+            googleID: this.props.profile[0].googleId
         })
         .catch(err => {
             console.error(err);
@@ -193,7 +187,7 @@ class BuddyFinderForm extends React.Component {
 
                             <Form.Group as={Row}>
                                 <Col sm={{ span: 10, offset: 2 }}>
-                                <Button type="submit">Submit</Button>
+                                <Button onClick={this.submitForm} type="submit">Submit</Button>
                                 </Col>
                             </Form.Group>
                         </Form>

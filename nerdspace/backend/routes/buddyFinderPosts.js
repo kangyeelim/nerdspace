@@ -1,5 +1,5 @@
 const router = require('express').Router();
-import { db } from '../firebase';
+const db = require('../firebase').db;
 
 router.route('./').get((req, res) => {
     db.ref('buddyFinderPosts').once('value', function(snapshot) {   // change to buddyFinderPosts
@@ -37,7 +37,7 @@ router.route('/').post((req, res) => {
         'yearOfStudy': yearOfStudy,
         'interest': interest,
         'googleID': googleID
-    }, (error) => {
+    }, function(error) {
         if (error) {
             res.send(error);
           } else {
