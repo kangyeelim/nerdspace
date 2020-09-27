@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Image, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import './Post.css';
 
 export default function Post(props) {
   return (
@@ -15,12 +16,12 @@ export default function Post(props) {
           </Col>
           <Col md="auto">
             <a onClick={() => props.editPost(props.id)}>
-              <FontAwesomeIcon icon={faEdit} style={{alignSelf:'right'}}/>
+              <FontAwesomeIcon className="icon" icon={faEdit} style={{alignSelf:'right'}}/>
             </a>
           </Col>
           <Col md="auto">
             <a onClick={() => props.deletePost(props.id)}>
-              <FontAwesomeIcon icon={faTrashAlt} style={{alignSelf:'right'}}/>
+              <FontAwesomeIcon className="icon" icon={faTrashAlt} style={{alignSelf:'right'}}/>
             </a>
           </Col>
         </Row>

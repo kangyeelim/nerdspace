@@ -115,4 +115,18 @@ router.route('/update').post((req, res) => {
   });
 });
 
+router.route('/:id').delete((req, res) => {
+  const key = req.params.id;
+  db.ref('studyRoomRequests').child(key).remove(
+    function (error) {
+      if (error) {
+        res.send(error);
+      } else {
+        res.send({
+          message: 'DELETE success'
+        });
+      }
+    });
+});
+
 module.exports = router;

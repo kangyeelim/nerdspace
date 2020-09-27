@@ -14,27 +14,79 @@ class RoomSideBar extends React.Component {
       userRequestInfo: [],
     }
     this.retrieveUserInfo = this.retrieveUserInfo.bind(this);
+    this.acceptRequest = this.acceptRequest.bind(this);
+    this.addMemberInRoom = this.addMemberInRoom.bind(this);
+    this.getAllRoomRequests = this.getAllRoomRequests.bind(this);
+    this.rejectRequest = this.rejectRequest.bind(this);
   }
 
   componentDidMount() {
+    this.getAllRoomRequests();
+  }
+
+  getAllRoomRequests() {
     axios.get(`http://localhost:5000/studyroomrequests/byRoomID/${this.props.id}`)
       .then((response) => {
         var requests = response.data.data;
-        var userInfo = requests.map((req) => {
-          return this.retrieveUserInfo(req.googleID);
-        })
+        if (requests.length > 0) {
+          var userInfo = requests.map((req) => {
+            return this.retrieveUserInfo(req.googleID, req.key);
+          })
+        } else {
+          this.setState({userRequestInfo: []});
+        }
       })
       .catch(err => {
         console.error(err);
       })
   }
 
-  retrieveUserInfo(googleID) {
+  retrieveUserInfo(googleID, reqID) {
     var userObj = {};
     axios.get(`http://localhost:5000/users/byGoogleID/${googleID}`)
       .then((response) => {
         userObj = response.data.data[0];
-        this.setState({userInfoArr: this.state.userRequestInfo.push(userObj)})
+        userObj.reqID = reqID;
+        var currArr = this.state.userRequestInfo;
+        currArr.push(userObj);
+        this.setState({userRequestInfo: currArr});
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
+
+  acceptRequest(id, googleID) {
+    axios.delete(`http://localhost:5000/studyroomrequests`, {
+      key: id
+    })
+    .then((response) => {
+      this.addMemberInRoom(googleID);
+    })
+    .catch(err => {
+      console.error(err);
+    })
+  }
+
+  addMemberInRoom(googleID) {
+    axios.post(`http://localhost:5000/studyrooms/addMembers`, {
+      key: this.props.id,
+      googleID: googleID
+    })
+    .then((response) => {
+      this.getAllRoomRequests();
+    })
+    .catch(err => {
+      console.error(err);
+    })
+  }
+
+  rejectRequest(id) {
+    axios.delete(`http://localhost:5000/studyroomrequests/${id}`)
+      .then((response) => {
+        if (response.data.message == 'DELETE success') {
+          this.getAllRoomRequests();
+        }
       })
       .catch(err => {
         console.error(err);
@@ -54,9 +106,11 @@ class RoomSideBar extends React.Component {
             <Card.Title>Requests</Card.Title>
               {this.state.userRequestInfo.map(req => {
                 return <RequestNotification
-                  key={req.key}
+                  key={req.reqID}
                   name={req.name}
                   imageUrl={req.imageUrl}
+                  acceptRequest={() => this.acceptRequest(req.reqID, req.googleID)}
+                  rejectRequest={()=> this.rejectRequest(req.reqID)}
                   />
               })}
           </Card.Body>
