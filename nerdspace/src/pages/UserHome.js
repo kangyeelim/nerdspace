@@ -6,6 +6,7 @@ import GroupBox from '../components/GroupBox';
 import Postbar from '../components/Postbar';
 import NavBar from '../components/NavBar';
 import TodoBox from '../components/TodoBox';
+import QuoteBox from '../components/QuoteBox';
 import './General.css';
 
 class UserHome extends React.Component {
@@ -20,6 +21,7 @@ class UserHome extends React.Component {
               <GroupBox />
             </Col>
             <Col>
+              <QuoteBox />
               <Postbar />
               <TodoBox />
             </Col>

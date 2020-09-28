@@ -14,7 +14,6 @@ router.route('/').get((req, res) => {
         imageUrl: data.imageUrl,
         isThereImage: data.isThereImage,
         members: data.members,
-        posts: data.posts
       });
     });
 
@@ -31,38 +30,32 @@ router.route('/').post((req, res) => {
   const name = req.body.name;
   const imageUrl = req.body.imageUrl;
   const isThereImage = req.body.isThereImage;
-  const members = data.members;
-  const posts = [];
-  db.ref('studyRooms').push().set({
+  const memberID = req.body.googleID;
+  var roomRef = db.ref('studyRooms').push();
+  roomRef.set({
     'name': name,
     'imageUrl': imageUrl,
-    'members': members,
-    'isThereimage': isThereimage,
-    'posts': posts
+    'isThereImage': isThereImage,
   }, function (error) {
     if (error) {
       res.send(error);
-    } else {
-      res.send({
-        message: 'POST success'
-      })
     }
   });
+  roomRef.child('members').push().set(memberID);
+  res.send({
+    message: 'POST success'
+  })
 });
 
-router.route('/update').post((req, res) => {
+router.route('/updateInfo').post((req, res) => {
   const key = req.body.key;
   const name = req.body.name;
-  const members = req.body.members;
   const imageUrl = req.body.imageUrl;
   const isThereImage = req.body.isThereImage;
-  const posts = req.body.posts;
   db.ref('studyRooms').child(key).update({
     'name': name,
     'imageUrl': imageUrl,
-    'members': members,
-    'isThereimage': isThereimage,
-    'posts': posts
+    'isThereImage': isThereImage,
   }, function (error) {
     if (error) {
       res.send(error);
@@ -71,6 +64,16 @@ router.route('/update').post((req, res) => {
         message: 'UPDATE success'
       })
     }
+  });
+});
+
+router.route('/addMembers').post((req, res) => {
+  const key = req.body.key;
+  const memberID = req.body.googleID;
+  db.ref('studyRooms').child(key).child('members').push().set(memberID);
+
+  res.send({
+    message: 'UPDATE success'
   });
 });
 

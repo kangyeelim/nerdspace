@@ -8,14 +8,14 @@ import "./Chat.css";
 const db = require('../firebase').db;
 const chatRoom = db.ref('messages/room1');
 
-class ChatMessagesSection extends React.Component {
-    constructor(props) {
-        super(props);
+class ContactsSection extends React.Component {
+    constructor() {
+        super();
         this.state = {
             messages: [],
             room: "room1",
-            user: props.profile[0].googleId,
         }
+        //this.getMessages = this.getMessages.bind(this);
     }
 
     async componentDidMount() {
@@ -39,12 +39,10 @@ class ChatMessagesSection extends React.Component {
                     {this.state.messages.map((message) => {
                         let msg = message.val();
                         return <ChatMessage
-                                key={message.key}
-                                user={this.state.user}
-                                username={msg.username}
-                                senderId={msg.senderId}
-                                message={msg.message}
-                                timestamp={msg.timestamp}/>;
+                            key={message.key}
+                            username={msg.username}
+                            message={msg.message}
+                            timestamp={msg.timestamp} />;
                     })}
                 </ul>
             </div>

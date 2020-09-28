@@ -4,14 +4,15 @@ import NavBar from '../components/NavBar';
 import axios from 'axios';
 import './General.css';
 import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
-import RoomSideBar from '../components/RoomSideBar';
 import ChatMessageSection from '../components/ChatMessagesSection';
 
 class ChatRoom extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             msg: "",
+            user: props.profile[0].googleId,
+            name: props.profile[0].name,
         }
         this.handleMsgChange = this.handleMsgChange.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -31,11 +32,15 @@ class ChatRoom extends React.Component {
             this.setState({
                 msg: ""
             });
+            var frm = document.getElementsByName('chatInput')[0];
+            frm.value = '';
         }
     }
 
     postChatMessage() {
         axios.post('http://localhost:5000/message', {
+            senderId: this.state.user,
+            username: this.state.name,
             message: this.state.msg
         }).catch(err => {
             console.error(err);
@@ -51,11 +56,10 @@ class ChatRoom extends React.Component {
                         <Row>
                             <Col md={11}>
                                 <ChatMessageSection />
-                                <input placeholder="send a message" onChange={this.handleMsgChange} onKeyDown={this.handleKeyDown}
+                                <input name="chatInput" placeholder="send a message" onChange={this.handleMsgChange} onKeyDown={this.handleKeyDown}
                                     value={this.msg} style={{ borderRadius: "12px", width: "50vw" }} /><br />
                             </Col>
                             <Col xs={1}>
-                                <RoomSideBar />
                             </Col>
                         </Row>
                     </Col>
