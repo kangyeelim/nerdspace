@@ -25,6 +25,9 @@ class RoomPostsSection extends React.Component {
       axios.get(`http://localhost:5000/studyroomposts/getByRoom/${this.props.id}`)
         .then(res => {
           this.setState({posts: res.data.data});
+        })
+        .catch(err => {
+          this.setState({posts:[]});
         });
     }
 

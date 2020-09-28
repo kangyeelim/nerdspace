@@ -78,7 +78,7 @@ class Community extends React.Component {
   }
 
   makeNewRoom() {
-
+    this.props.history.push('/createStudyRoom');
   }
 
   keywordInput(e) {
@@ -87,6 +87,13 @@ class Community extends React.Component {
 
   searchRooms() {
     console.log("search room");
+    axios.get(`http://localhost:5000/studyrooms/byKeyword/${this.state.keyword}`)
+      .then((response) => {
+        this.setState({rooms: response.data.data});
+      })
+      .catch(err => {
+        console.error(err);
+      })
   }
 
   enterRoom(id, room, url) {
@@ -135,7 +142,8 @@ class Community extends React.Component {
                 placeholder="Search"
                 className="mr-sm-2"
                 onChange={this.keywordInput}/>
-              <Button onClick={this.searchRooms}>Submit</Button>
+              <Button onClick={this.searchRooms}>Search</Button>
+              <Button style={styles.button} onClick={this.getAllRooms}>Show All</Button>
               <Button style={styles.button} onClick={this.makeNewRoom}>New Room</Button>
             </div>
           </Form>

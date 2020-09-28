@@ -8,6 +8,7 @@ export default function TitleCard(props) {
       <Image variant="top" src={props.imageUrl} style={styles.image} />
       <Card.Body>
         <Card.Title>{props.roomName}</Card.Title>
+        <p>ID: {props.id}</p>
       </Card.Body>
     </Card>
   );

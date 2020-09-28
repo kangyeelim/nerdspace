@@ -3,6 +3,7 @@ import { Card, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import RequestNotification from './RequestNotification';
+import UserCard from './UserCard';
 
 const stub = [{googleID: "117862184407700751548", imageUrl: "https://lh4.googleusercontent.com/-AODvuNqc2IE/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclec8GWOLIYp3xwtDkm298zfoQrbQ/s96-c/photo.jpg"}]
 
@@ -12,18 +13,24 @@ class RoomSideBar extends React.Component {
     this.state ={
       requests: [],
       userRequestInfo: [],
+      members:[]
     }
     this.retrieveUserInfo = this.retrieveUserInfo.bind(this);
+    this.retrieveUserInfoForMembers = this.retrieveUserInfoForMembers.bind(this);
     this.acceptRequest = this.acceptRequest.bind(this);
     this.addMemberInRoom = this.addMemberInRoom.bind(this);
     this.getAllRoomRequests = this.getAllRoomRequests.bind(this);
     this.rejectRequest = this.rejectRequest.bind(this);
+    this.addRoomIdToUser = this.addRoomIdToUser.bind(this);
+    this.getAllMembers = this.getAllMembers.bind(this);
   }
 
   componentDidMount() {
     this.getAllRoomRequests();
+    this.getAllMembers();
   }
 
+  //must switch this to become realtime viewing of requests
   getAllRoomRequests() {
     axios.get(`http://localhost:5000/studyroomrequests/byRoomID/${this.props.id}`)
       .then((response) => {
@@ -35,6 +42,36 @@ class RoomSideBar extends React.Component {
         } else {
           this.setState({userRequestInfo: []});
         }
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
+
+  getAllMembers() {
+    axios.get(`http://localhost:5000/studyrooms/byRoomID/${this.props.id}`)
+      .then((response) => {
+        var members = response.data.data.members;
+        console.log(members);
+        Object.values(members).map((member) => {
+          console.log(member);
+          this.retrieveUserInfoForMembers(member);
+        })
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
+
+  retrieveUserInfoForMembers(googleID) {
+    var userObj = {};
+    axios.get(`http://localhost:5000/users/byGoogleID/${googleID}`)
+      .then((response) => {
+        console.log(response.data.data[0])
+        userObj = response.data.data[0];
+        var currArr = this.state.members;
+        currArr.push(userObj);
+        this.setState({members: currArr});
       })
       .catch(err => {
         console.error(err);
@@ -63,6 +100,9 @@ class RoomSideBar extends React.Component {
     .then((response) => {
       this.addMemberInRoom(googleID);
     })
+    .then(() => {
+      this.addRoomIdToUser(id, googleID);
+    })
     .catch(err => {
       console.error(err);
     })
@@ -73,10 +113,20 @@ class RoomSideBar extends React.Component {
       key: this.props.id,
       googleID: googleID
     })
+    .catch(err => {
+      console.error(err);
+    })
+  }
+
+  addRoomIdToUser(roomID, googleID) {
+    axios.post('http://localhost:5000/users/addRoomID', {
+      roomID: this.props.id,
+      googleID: googleID
+    })
     .then((response) => {
       this.getAllRoomRequests();
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
     })
   }
@@ -98,6 +148,14 @@ class RoomSideBar extends React.Component {
         <Card style={styles.card}>
           <Card.Body>
             <Card.Title>Members</Card.Title>
+              {this.state.members.map(member => {
+                return (
+                    <UserCard
+                    key={member.googleID}
+                    name={member.name}
+                    imageUrl={member.imageUrl}/>
+                );
+              })}
           </Card.Body>
           <Card.Body>
             <Card.Title>Files</Card.Title>

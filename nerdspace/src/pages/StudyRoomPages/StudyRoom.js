@@ -12,7 +12,9 @@ import RoomPostsSection from '../../components/StudyRoomComponents/RoomPostsSect
 class StudyRoom extends React.Component {
 
   render() {
-    if (!this.props.location.state.roomName) {
+    if (!this.props.location.state.roomName ||
+        !this.props.location.state.id ||
+        !this.props.location.state.imageUrl) {
       return <Redirect to="/community"/>;
     }
     return (
@@ -23,6 +25,7 @@ class StudyRoom extends React.Component {
             <TitleCard
               imageUrl={this.props.location.state.imageUrl}
               roomName={this.props.location.state.roomName}
+              id={this.props.location.state.id}
             />
             <Row>
               <Col md={11}>

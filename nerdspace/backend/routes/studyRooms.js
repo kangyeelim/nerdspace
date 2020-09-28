@@ -26,6 +26,54 @@ router.route('/').get((req, res) => {
   });
 });
 
+router.route('/byKeyword/:keyword').get((req, res) => {
+  const keyword = req.params.keyword;
+
+  db.ref('studyRooms').orderByChild('name')
+  .startAt(keyword)
+  .endAt(keyword + "\uf8ff")
+  .once('value',
+  function (snapshot) {
+    var resArr = [];
+    snapshot.forEach(function (child) {
+      var key = child.key;
+      var data = child.val();
+      resArr.unshift({
+        key: key,
+        name: data.name,
+        imageUrl: data.imageUrl,
+        isThereImage: data.isThereImage,
+        members: data.members
+      });
+    });
+
+    res.send({
+      data: resArr,
+      message: 'GET success'
+    });
+  }, function (error) {
+      res.send(error);
+  });
+});
+
+router.route('/byRoomID/:roomID').get((req, res) => {
+  const key = req.params.roomID;
+
+  db.ref('studyRooms')
+  .child(key)
+  .once('value',
+  function (snapshot) {
+    console.log(snapshot.val())
+    res.send({
+      data: snapshot.val(),
+      message: 'GET success'
+    })
+  }, function (error) {
+      res.send(error);
+  });
+});
+
+
 router.route('/').post((req, res) => {
   const name = req.body.name;
   const imageUrl = req.body.imageUrl;
@@ -43,9 +91,11 @@ router.route('/').post((req, res) => {
   });
   roomRef.child('members').push().set(memberID);
   res.send({
-    message: 'POST success'
+    message: 'POST success',
+    data: roomRef.key
   })
 });
+
 
 router.route('/updateInfo').post((req, res) => {
   const key = req.body.key;
