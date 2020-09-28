@@ -18,6 +18,7 @@ class Login extends React.Component {
 
   componentDidMount() {
     //check if user is authenticated already and redirect if yes
+    //totally insecure lol
     if (this.props.profile.length > 0) {
       this.setState({isAuthenticated: true});
     }

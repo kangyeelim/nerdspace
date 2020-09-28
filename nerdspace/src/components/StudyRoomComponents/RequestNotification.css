@@ -1,0 +1,9 @@
+#acceptIcon:hover {
+  color: darkgreen !important;
+  cursor: pointer;
+}
+
+#deleteIcon:hover {
+  color: darkred !important;
+  cursor: pointer;
+}
