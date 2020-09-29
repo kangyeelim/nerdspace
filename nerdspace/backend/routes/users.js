@@ -28,9 +28,11 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/byGoogleID/:id').get((req, res) => {
+  console.log("triggered?");
   const googleID = req.params.id;
+  console.log(googleID);
   db.ref('users')
-  .orderByChild('googleID')
+  .orderByChild("googleID")
   .equalTo(googleID)
   .once("value", function(snapshot, error) {
     if (snapshot.exists()) {
@@ -38,6 +40,7 @@ router.route('/byGoogleID/:id').get((req, res) => {
       snapshot.forEach(function (child) {
         var key = child.key;
         var data = child.val();
+
         resArr.push({
           key: key,
           name: data.name,
@@ -53,12 +56,14 @@ router.route('/byGoogleID/:id').get((req, res) => {
         message: 'GET success'
       });
     } else {
+      console.log("here");
+
       res.send({
         message: 'User does not exist.'
       })
     }
   })
-})
+});
 
 router.route('/').post((req, res) => {
   const googleID = req.body.googleID;

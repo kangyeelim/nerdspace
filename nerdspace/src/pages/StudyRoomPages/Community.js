@@ -114,7 +114,8 @@ class Community extends React.Component {
     })
     .then((response) => {
       var roomID = response.data.data.roomID;
-      this.setState({requestedRooms:this.state.requestedRooms.push(roomID)});
+      this.state.requestedRooms.push(roomID)
+      this.setState({requestedRooms:this.state.requestedRooms});
       alert("Request to join room sent! You will have access once the request is accepted by the members.");
     })
     .catch(err => {
