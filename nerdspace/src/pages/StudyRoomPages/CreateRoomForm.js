@@ -5,8 +5,9 @@ import axios from 'axios';
 import NavBar from '../../components/NavBar';
 import { Redirect } from 'react-router-dom';
 import './CreateRoomForm.css';
+import Upload from '../../components/StudyRoomComponents/Upload';
 
-const dummy_url = "https://source.unsplash.com/aJnHSrgSWkk/1600x900";
+const DEFAULT_URL = "https://source.unsplash.com/aJnHSrgSWkk/1600x900";
 const dummy_contacts = [ {name: "michaela"}, {name: "evon"}, {name: "yenpeng"}];
 
 class CreateRoomForm extends React.Component {
@@ -15,13 +16,17 @@ class CreateRoomForm extends React.Component {
     this.state = {
       name: "",
       isSubmitted: false,
+      isSubmitting: false,
       friends: [],
-      imageUrl: dummy_url,
+      imageUrl: DEFAULT_URL,
+      images: [],
       roomID: ""
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.titleInput = this.titleInput.bind(this);
     this.enterRoom = this.enterRoom.bind(this);
+    this.handleImages = this.handleImages.bind(this);
+    this.deleteUnpostImages = this.deleteUnpostImages.bind(this);
   }
 
   componentDidMount() {
@@ -32,22 +37,52 @@ class CreateRoomForm extends React.Component {
     this.setState({name: e.currentTarget.value});
   }
 
+  handleImages(images) {
+    this.setState({images:images});
+    this.setState({imageUrl:images[0].secure_url});
+  }
+
   onSubmit() {
     //create study room
-    axios.post('http://localhost:5000/studyrooms/', {
-      name: this.state.name,
-      isThereImage: false,
-      imageUrl: dummy_url,
-      googleID: this.props.profile[0].googleId
-    })
-    .then((response) => {
-      this.setState({roomID: response.data.data});
-      this.addRoomIdToUser(response.data.data);
-    })
-    .catch(err => {
-      console.error(err);
+    this.setState({isSubmitted: true}, () => {
+      if (this.state.images.length <= 1) {
+        console.log(this.state.imageUrl);
+        axios.post('http://localhost:5000/studyrooms/', {
+          name: this.state.name,
+          isThereImage: (this.state.images.length == 1),
+          imageUrl: this.state.imageUrl,
+          googleID: this.props.profile[0].googleId
+        })
+        .then((response) => {
+          this.addRoomIdToUser(response.data.data);
+          this.setState({roomID: response.data.data});
+        })
+        .then(() => {
+          this.enterRoom(this.state.roomID, this.state.imageUrl, this.state.name);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+      } else {
+        alert("Please choose only one image as the study room profile picture");
+      }
     });
-    this.enterRoom(this.state.roomID, this.state.imageUrl, this.state.name);
+  }
+
+  componentWillUnmount() {
+    if (!this.state.isSubmitted && this.state.images.length > 0) {
+      this.deleteUnpostImages();
+    }
+  }
+
+  deleteUnpostImages() {
+    axios.post('http://localhost:5000/images/delete', {
+      images: this.state.images
+    })
+      .catch(error => {
+        console.error(error);
+      });
+
   }
 
   addRoomIdToUser(roomID) {
@@ -80,7 +115,6 @@ class CreateRoomForm extends React.Component {
         <Container>
         <Col>
         <h3>Create a New Study Room</h3>
-          <form className="form">
               <div className="input-group" style={styles.bar}>
                   <label style={styles.title} htmlFor="name">Study Room Name: </label>
                   <input
@@ -106,9 +140,12 @@ class CreateRoomForm extends React.Component {
                 })}
                 </Form>
               </div>
+              <Upload
+                handleImages={this.handleImages}
+                images={this.state.images}
+                />
               </div>
             <button onClick={this.onSubmit} className="btn btn-primary">Create</button>
-          </form>
           </Col>
         </Container>
       </div>
