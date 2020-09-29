@@ -3,6 +3,7 @@ import { Container, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class Upload extends React.Component {
   constructor() {
@@ -67,7 +68,7 @@ class Upload extends React.Component {
             <input type="file" name="file" onChange={this.uploadImage} accept=".jpg, .jpeg, .png" />
           </div>
           <div>
-          { this.state.isUploading && <h2>Uploading...</h2>}
+          { this.state.isUploading && <CircularProgress />}
           </div>
           <div>
             { this.state.images.map(imageData => {
