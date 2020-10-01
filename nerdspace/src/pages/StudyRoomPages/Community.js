@@ -29,9 +29,14 @@ class Community extends React.Component {
     this.hasAccess = this.hasAccess.bind(this);
     this.getAllRooms = this.getAllRooms.bind(this);
     this.getAllRequestedRooms = this.getAllRequestedRooms.bind(this);
+    this.loadAndApplyStatusToRooms = this.loadAndApplyStatusToRooms.bind(this);
   }
 
   componentDidMount() {
+    this.loadAndApplyStatusToRooms();
+  }
+
+  loadAndApplyStatusToRooms() {
     axios.get(`http://localhost:5000/users/byGoogleID/${this.props.profile[0].googleId}`)
       .then((response) => {
         if (response.data.data[0].rooms != null) {
@@ -117,6 +122,7 @@ class Community extends React.Component {
       this.state.requestedRooms.push(roomID)
       this.setState({requestedRooms:this.state.requestedRooms});
       alert("Request to join room sent! You will have access once the request is accepted by the members.");
+      this.loadAndApplyStatusToRooms();
     })
     .catch(err => {
       console.error(err);

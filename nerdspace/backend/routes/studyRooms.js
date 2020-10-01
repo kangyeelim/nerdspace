@@ -127,6 +127,43 @@ router.route('/addMembers').post((req, res) => {
   });
 });
 
+router.route('/removeMember/:key/:googleID').delete((req, res) => {
+  const key = req.params.key;
+  const memberID = req.params.googleID;
+  var ref = db.ref('studyRooms').child(key).child('members');
+  var query = ref.orderByKey();
+  query.once('value', function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      var pkey = childSnapshot.key;
+      var chval = childSnapshot.val();
+      if (chval == memberID) {
+        if (snapshot.length == 1) {
+          db.ref('studyRooms').child(key).remove(
+            function (error) {
+              if (error) {
+                res.send(error);
+              } else {
+                res.send({
+                  message: 'DELETED ROOM success'
+                });
+              }
+            });
+        } else {
+          ref.child(pkey).remove(function (error) {
+            if (error) {
+              res.send(error);
+            } else {
+              res.send({
+                message: 'DELETE MEMBER success'
+              });
+            }
+          });
+        }   
+      }
+    });
+  });
+});
+
 router.route('/:id').delete((req, res) => {
   const key = req.params.id;
   db.ref('studyRooms').child(key).remove(

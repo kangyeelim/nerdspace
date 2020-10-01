@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Image } from 'react-bootstrap';
+import { Card, Image, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 export default function TitleCard(props) {
@@ -10,6 +10,7 @@ export default function TitleCard(props) {
         <Card.Title>{props.roomName}</Card.Title>
         <p>ID: {props.id}</p>
       </Card.Body>
+      <Button style={styles.button} variant="danger" onClick={() => props.leaveRoom(props.id)}>Leave Room</Button>
     </Card>
   );
 }
@@ -28,5 +29,8 @@ const styles = {
     height: "100px",
     borderRadius: "50%",
     marginLeft: "20px"
+  },
+  button: {
+    marginRight: "20px"
   }
 }

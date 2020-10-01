@@ -18,7 +18,6 @@ class CreateRoomForm extends React.Component {
       isSubmitted: false,
       isSubmitting: false,
       friends: [],
-      imageUrl: DEFAULT_URL,
       images: [],
       roomID: ""
     }
@@ -39,18 +38,20 @@ class CreateRoomForm extends React.Component {
 
   handleImages(images) {
     this.setState({images:images});
-    this.setState({imageUrl:images[0].secure_url});
   }
 
   onSubmit() {
     //create study room
+    var imageUrl = DEFAULT_URL;
+    if (this.state.images.length == 1) {
+      imageUrl = this.state.images[0].secure_url;
+    }
     this.setState({isSubmitted: true}, () => {
       if (this.state.images.length <= 1) {
-        console.log(this.state.imageUrl);
         axios.post('http://localhost:5000/studyrooms/', {
           name: this.state.name,
           isThereImage: (this.state.images.length == 1),
-          imageUrl: this.state.imageUrl,
+          imageUrl: imageUrl,
           googleID: this.props.profile[0].googleId
         })
         .then((response) => {
@@ -58,7 +59,7 @@ class CreateRoomForm extends React.Component {
           this.setState({roomID: response.data.data});
         })
         .then(() => {
-          this.enterRoom(this.state.roomID, this.state.imageUrl, this.state.name);
+          this.enterRoom(this.state.roomID, imageUrl, this.state.name);
         })
         .catch(err => {
           console.error(err);

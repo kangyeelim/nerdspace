@@ -52,9 +52,7 @@ class RoomSideBar extends React.Component {
     axios.get(`http://localhost:5000/studyrooms/byRoomID/${this.props.id}`)
       .then((response) => {
         var members = response.data.data.members;
-        console.log(members);
         Object.values(members).map((member) => {
-          console.log(member);
           this.retrieveUserInfoForMembers(member);
         })
       })
@@ -67,7 +65,6 @@ class RoomSideBar extends React.Component {
     var userObj = {};
     axios.get(`http://localhost:5000/users/byGoogleID/${googleID}`)
       .then((response) => {
-        console.log(response.data.data[0])
         userObj = response.data.data[0];
         var currArr = this.state.members;
         currArr.push(userObj);
@@ -156,9 +153,6 @@ class RoomSideBar extends React.Component {
                     imageUrl={member.imageUrl}/>
                 );
               })}
-          </Card.Body>
-          <Card.Body>
-            <Card.Title>Files</Card.Title>
           </Card.Body>
           <Card.Body>
             <Card.Title>Requests</Card.Title>

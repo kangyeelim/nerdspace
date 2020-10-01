@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Col, Row } from 'react-bootstrap';
+import { Container, Col, Row, Image } from 'react-bootstrap';
 import axios from 'axios';
 import NavBar from '../../components/NavBar';
 import { Redirect } from 'react-router-dom';
+import Upload from '../../components/StudyRoomComponents/Upload';
 
 class CreatePostForm extends React.Component {
   constructor() {
@@ -12,11 +13,29 @@ class CreatePostForm extends React.Component {
       title: "",
       content: "",
       isSubmitted: false,
+      images: [],
+      isEditing: false,
+      key: null
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.titleInput = this.titleInput.bind(this);
     this.contentInput = this.contentInput.bind(this);
     this.returnToRoom = this.returnToRoom.bind(this);
+    this.handleImages = this.handleImages.bind(this);
+    this.deleteUnpostImages = this.deleteUnpostImages.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.location.state.title &&
+        this.props.location.state.content &&
+        this.props.location.state.postImages &&
+        this.props.location.state.key) {
+          this.setState({title:this.props.location.state.title,
+          content:this.props.location.state.content,
+          images:this.props.location.state.postImages,
+          key:this.props.location.state.key,
+          isEditing:true});
+    }
   }
 
   titleInput(e) {
@@ -28,18 +47,57 @@ class CreatePostForm extends React.Component {
   }
 
   onSubmit() {
-    axios.post('http://localhost:5000/studyroomposts', {
-      title: this.state.title,
-      content: this.state.content,
-      isThereImage: false,
-      imageUrl: "",
-      roomID: this.props.location.state.id,
-      googleID: this.props.profile[0].googleId
+    if (!this.state.isEditing) {
+      this.setState({isSubmitted: true}, () => {
+        var images = this.state.images.map((imageData) => {
+          return imageData.secure_url;
+        })
+        axios.post('http://localhost:5000/studyroomposts', {
+          title: this.state.title,
+          content: this.state.content,
+          isThereImage: this.state.images.length > 0,
+          imageUrl: this.state.images.length == 0? []: images,
+          roomID: this.props.location.state.id,
+          googleID: this.props.profile[0].googleId
+        })
+        .catch(err => {
+          console.error(err);
+        });
+        this.returnToRoom();
+      });
+    } else {
+      this.setState({isSubmitted: true}, () => {
+        axios.post(`http://localhost:5000/studyroomposts/update`, {
+          key:this.state.key,
+          title:this.state.title,
+          content:this.state.content
+        })
+        .catch(err => {
+          console.error(err);
+        })
+        this.returnToRoom();
+      });
+    }
+  }
+
+  handleImages(images) {
+    this.setState({images:images});
+  }
+
+  componentWillUnmount() {
+    if (!this.state.isSubmitted && this.state.images.length > 0) {
+      this.deleteUnpostImages();
+    }
+  }
+
+  deleteUnpostImages() {
+    axios.post('http://localhost:5000/images/delete', {
+      images: this.state.images
     })
-    .catch(err => {
-      console.error(err);
-    });
-    this.returnToRoom();
+      .catch(error => {
+        console.error(error);
+      });
+
   }
 
   returnToRoom() {
@@ -67,6 +125,7 @@ class CreatePostForm extends React.Component {
                     type="text"
                     className="form-control"
                     placeholder="Title"
+                    value={this.state.title}
                     onChange={this.titleInput}/>
               </div>
               <div className="input-group" style={styles.bar}>
@@ -76,7 +135,21 @@ class CreatePostForm extends React.Component {
                     type="text"
                     className="form-control"
                     placeholder="Elaborate more..."
+                    value={this.state.content}
                     onChange={this.contentInput}/>
+              </div>
+              <div>
+                {!this.state.isEditing && (
+                  <Upload
+                  handleImages={this.handleImages}
+                  images={this.state.images}
+                  />
+                )}
+                {this.state.isEditing && (
+                    this.state.images.map(url => {
+                      return <Image src={url} style={styles.image}/>
+                    })
+                )}
               </div>
             <button onClick={this.onSubmit} className="btn btn-primary">Post</button>
           </form>
@@ -106,6 +179,10 @@ const styles = {
         marginRight: '10px',
         fontWeight: 'bold',
     },
+    image: {
+      width: "85vw",
+      height: "auto"
+    }
 }
 
 const mapStateToProps = (state) => {

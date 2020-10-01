@@ -50,12 +50,26 @@ class RoomPostsSection extends React.Component {
 
     }
 
-    editPost(id) {
-
+    editPost(id, title, content, imageUrl) {
+      this.props.history.push({
+        pathname:'/createPost',
+        state: {
+          key: id,
+          postImages: imageUrl,
+          title: title,
+          content: content,
+          id: this.props.id,
+          roomName: this.props.roomName,
+          imageUrl: this.props.imageUrl
+        }
+      });
     }
 
     deletePost(id) {
-
+      axios.delete(`http://localhost:5000/${id}`)
+        .catch(err => {
+          console.error(err);
+        })
     }
 
     render() {
@@ -75,11 +89,13 @@ class RoomPostsSection extends React.Component {
                 return <Post
                 key={post.key}
                 id={post.key}
-                isThereimage={post.isThereImage}
+                images={post.isThereImage? Object.values(post.imageUrl): []}
                 content={post.content}
                 title={post.title}
                 deletePost={this.deletePost}
-                editPost={this.editPost}/>;
+                editPost={this.editPost}
+                canEditAndDelete={post.googleID == this.props.profile[0].googleId}
+                />
               })}
               </Col>
               </Row>

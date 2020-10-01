@@ -12,7 +12,7 @@ router.route('/').get((req, res) => {
         key: key,
         title: data.title,
         content: data.content,
-        imageUrl: data.imageUrl,
+        imageUrl: data.images,
         isThereImage: data.isThereImage,
         roomID: data.roomID,
         googleID: data.googleID
@@ -43,7 +43,7 @@ router.route('/getByRoom/:id').get((req, res) => {
         key: key,
         title: data.title,
         content: data.content,
-        imageUrl: data.imageUrl,
+        imageUrl: data.images,
         isThereImage: data.isThereImage,
         roomID: data.roomID,
         googleID: data.googleID
@@ -66,39 +66,34 @@ router.route('/').post((req, res) => {
   const isThereImage = req.body.isThereImage;
   const roomID = req.body.roomID;
   const googleID = req.body.googleID;
-  db.ref('studyRoomPosts').push().set({
+  var postRef = db.ref('studyRoomPosts').push();
+  postRef.set({
     'title': title,
     'content': content,
-    'imageUrl': imageUrl,
     'isThereImage': isThereImage,
     'roomID': roomID,
     'googleID': googleID
   }, function (error) {
     if (error) {
       res.send(error);
-    } else {
-      res.send({
-        message: 'POST success'
-      })
     }
   });
+  imageUrl.forEach((url) => {
+    postRef.child('images').push().set(url);
+  })
+  res.send({
+    message: 'POST success',
+    data: postRef.key
+  })
 });
 
 router.route('/update').post((req, res) => {
   const key = req.body.key;
   const title = req.body.title;
   const content = req.body.content;
-  const imageUrl = req.body.imageUrl;
-  const isThereImage = req.body.isThereImage;
-  const roomID = req.body.roomID;
-  const poster = req.body.googleID;
   db.ref('studyRoomPosts').child(key).update({
     'title': title,
     'content': content,
-    'imageUrl': imageUrl,
-    'isThereImage': isThereImage,
-    'roomID': roomID,
-    'googleID': googleID
   }, function (error) {
     if (error) {
       res.send(error);

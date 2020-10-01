@@ -8,8 +8,25 @@ import RoomBox from '../../components/StudyRoomComponents/RoomBox';
 import TitleCard from '../../components/StudyRoomComponents/TitleCard';
 import RoomSideBar from '../../components/StudyRoomComponents/RoomSideBar';
 import RoomPostsSection from '../../components/StudyRoomComponents/RoomPostsSection';
+import axios from 'axios';
 
 class StudyRoom extends React.Component {
+  constructor() {
+    super();
+    this.leaveRoom = this.leaveRoom.bind(this);
+  }
+
+  leaveRoom(id) {
+    axios.delete(`http://localhost:5000/studyrooms/removeMember/${id}/${this.props.profile[0].googleId}`)
+      .catch(err => {
+        console.error(err);
+      })
+    axios.delete(`http://localhost:5000/users/removeRoom/${id}/${this.props.profile[0].googleId}`)
+      .catch(err => {
+        console.error(err);
+      })
+      this.props.history.push('/community');
+    }
 
   render() {
     if (!this.props.location.state.roomName ||
@@ -26,6 +43,7 @@ class StudyRoom extends React.Component {
               imageUrl={this.props.location.state.imageUrl}
               roomName={this.props.location.state.roomName}
               id={this.props.location.state.id}
+              leaveRoom={this.leaveRoom}
             />
             <Row>
               <Col md={11}>
