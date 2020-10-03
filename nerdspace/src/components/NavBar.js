@@ -42,7 +42,7 @@ class NavBar extends React.Component {
   }
 
   goMessaging() {
-    //this.props.history.push("/messaging");
+    this.props.history.push("/chat/");
   }
 
   goProfile() {
