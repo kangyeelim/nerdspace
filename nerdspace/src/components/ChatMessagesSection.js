@@ -4,25 +4,26 @@ import { connect } from 'react-redux';
 import ChatMessage from './ChatMessage';
 import "./Chat.css";
 
-
 const db = require('../firebase').db;
-const chatRoom = db.ref('messages/room1');
 
 class ChatMessagesSection extends React.Component {
     constructor(props) {
         super(props);
+        const ID = props.id;
+
         this.state = {
             messages: [],
-            room: "room1",
+            room: ID,
             user: props.profile[0].googleId,
         }
     }
 
     async componentDidMount() {
         try {
-            chatRoom.on("value", snapshot => {
+            db.ref('messages').child(this.state.room).on("value", snapshot => {
                 let messages = [];
                 snapshot.forEach(message => {
+                    console.log(message);
                     messages.push(message);
                 });
                 this.setState({ messages });

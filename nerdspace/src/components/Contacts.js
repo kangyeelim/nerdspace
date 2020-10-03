@@ -1,23 +1,39 @@
-import React from 'react';
-import { Card, Image, Row, Col } from 'react-bootstrap';
+import React from "react";
+import { withRouter } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import { Card, Button, Row, Col, FormControl } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import "./Chat.css";
 
-export default function Contacts(props) {
-    return (
-        <Card text="white" border="light" style={styles.card}>
-            text="white" border="light" style={styles.card}
-            <i class="fas fa-paper-plane"></i>
-            <Card.Body>
-                {props.isThereimage && <Image variant="top" src={props.imageUrl} style={styles.image} />}
-                <Card.Title>{props.title}</Card.Title>
-                {props.content}
-                <Row style={{ marginLeft: 10, marginRight: 10, alignSelf: 'right' }}>
-                    <Col>
-                    </Col>
-                </Row>
-            </Card.Body>
-        </Card>
-    );
-}
+const db = require('../firebase').db;
+
+export const history = createBrowserHistory({ forceRefresh: true });
+
+class Contacts extends React.Component {
+    constructor(props) {
+        super(props);
+        let ID = props.id;
+        let title = props.title;
+
+        this.state = {
+            id: ID,
+            title: title,
+        }
+        this.routeChange = this.routeChange.bind(this);
+    }
+
+    routeChange() {
+        history.push('/chat/' + this.state.id);
+    }
+
+    render() {
+        return (
+            <Button className="button" onClick={this.routeChange}>
+                {this.state.title}
+            </Button>
+        );
+    }
+} 
 
 const styles = {
     card: {
@@ -28,3 +44,11 @@ const styles = {
         marginLeft: 0
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        profile: state.profile,
+    }
+}
+
+export default connect(mapStateToProps, {})(Contacts);

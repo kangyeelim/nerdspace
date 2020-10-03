@@ -11,8 +11,9 @@ router.route('/').post((req, res) => {
     const name = req.body.username;
     const message = req.body.message;
     const id = req.body.senderId;
+    const room = req.body.room;
     const timestamp = Date.now();
-    db.ref('messages/room1').push().set({
+    db.ref('messages').child(room).push().set({
         'username': name,
         'senderId': id,
         'message': message,

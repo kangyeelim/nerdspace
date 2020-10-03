@@ -29,7 +29,7 @@ function App() {
           <Route exact path="/community" component={Community}/>
           <Route exact path="/room" component={StudyRoom}/>
           <Route exact path="/account" component={Profile}/>
-          <Route exact path="/chat" component={ChatRoom} />
+          <Route exact path="/chat/:id?" component={ChatRoom} />
         </Switch>
       </Router>
     </div>

@@ -20,7 +20,7 @@
 .name {
     position: absolute;
     left: 5px;
-    top: -10px;
+    top: -5px;
     font-size: 10px;
 }
 
@@ -33,10 +33,26 @@
     margin-bottom: 10px;
     height: 50vh;
     overflow: scroll;
+    overflow: hidden;
 }
 
+.contacts {
+    border-style: solid;
+    border-width: medium;
+    list-style: none;
+    background: none;
+    margin: 0;
+    padding: 0 0 50px 0;
+    margin-top: 60px;
+    margin-bottom: 10px;
+    height: 50vh;
+    overflow: scroll;
+    overflow: hidden;
+}
+
+
 .chat li {
-    padding: 0.5rem;
+    padding: 0.25rem;
     overflow: hidden;
     display: flex;
     flex-wrap: nowrap;
@@ -51,4 +67,10 @@
 
 .self {
     align-self:flex-end;
+}
+
+.button {
+    background-color: #bbb;
+    display: block;
+    width: 100%;
 }

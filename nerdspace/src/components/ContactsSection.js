@@ -1,31 +1,28 @@
 import React from "react";
 import { Card, Button, Row, Col, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import ChatMessage from './ChatMessage';
+import Contacts from './Contacts';
 import "./Chat.css";
 
 
 const db = require('../firebase').db;
-const chatRoom = db.ref('messages/room1');
 
 class ContactsSection extends React.Component {
     constructor() {
         super();
         this.state = {
-            messages: [],
-            room: "room1",
+            contacts: [],
         }
-        //this.getMessages = this.getMessages.bind(this);
     }
 
     async componentDidMount() {
         try {
-            chatRoom.on("value", snapshot => {
-                let messages = [];
-                snapshot.forEach(message => {
-                    messages.push(message);
+            db.ref('contacts').on("value", snapshot => {
+                let contacts = [];
+                snapshot.forEach(contact => {
+                    contacts.push(contact);
                 });
-                this.setState({ messages });
+                this.setState({ contacts });
             });
         } catch (error) {
             console.log("Read error");
@@ -35,14 +32,14 @@ class ContactsSection extends React.Component {
     render() {
         return (
             <div>
-                <ul className="chat">
-                    {this.state.messages.map((message) => {
-                        let msg = message.val();
-                        return <ChatMessage
-                            key={message.key}
-                            username={msg.username}
-                            message={msg.message}
-                            timestamp={msg.timestamp} />;
+                <ul className="contacts">
+                    {this.state.contacts.map((contact) => {
+                        let ctct = contact.val();
+                        return <Contacts
+                            key={contact.key}
+                            id={contact.key}
+                            title={ctct.name}
+                            type={ctct.type}/>;
                     })}
                 </ul>
             </div>
@@ -56,4 +53,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {})(ChatMessagesSection);
+export default connect(mapStateToProps, {})(ContactsSection);
