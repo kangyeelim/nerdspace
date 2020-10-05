@@ -102,7 +102,7 @@ class CreatePostForm extends React.Component {
 
   returnToRoom() {
     this.props.history.push({
-      pathname:'/room',
+      pathname:`/room/${this.props.location.state.id}`,
       state: {
         roomName: this.props.location.state.roomName,
         imageUrl: this.props.location.state.imageUrl,

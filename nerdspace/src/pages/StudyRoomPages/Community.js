@@ -103,7 +103,7 @@ class Community extends React.Component {
 
   enterRoom(id, room, url) {
     this.props.history.push({
-      pathname:'/room',
+      pathname:`/room/${id}`,
       state: {
         roomName: room,
         imageUrl: url,

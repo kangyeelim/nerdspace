@@ -5,7 +5,7 @@ import { Card, Button, Row, Col, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import "./Chat.css";
 
-const db = require('../firebase').db;
+const db = require('../services/firebase').db;
 
 export const history = createBrowserHistory({ forceRefresh: true });
 
@@ -33,7 +33,7 @@ class Contacts extends React.Component {
             </Button>
         );
     }
-} 
+}
 
 const styles = {
     card: {

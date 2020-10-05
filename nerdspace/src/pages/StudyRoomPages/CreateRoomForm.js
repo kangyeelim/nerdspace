@@ -99,7 +99,7 @@ class CreateRoomForm extends React.Component {
 
   enterRoom(id, url, name) {
     this.props.history.push({
-      pathname:'/room',
+      pathname:`/room/${id}`,
       state: {
         roomName: name,
         imageUrl: url,

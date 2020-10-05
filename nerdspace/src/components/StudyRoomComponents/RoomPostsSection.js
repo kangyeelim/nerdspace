@@ -37,7 +37,7 @@ class RoomPostsSection extends React.Component {
 
     createPost() {
       this.props.history.push({
-        pathname: '/createPost',
+        pathname: `/createPost/${this.props.id}`,
         state: {
           id: this.props.id,
           roomName: this.props.roomName,
@@ -52,7 +52,7 @@ class RoomPostsSection extends React.Component {
 
     editPost(id, title, content, imageUrl) {
       this.props.history.push({
-        pathname:'/createPost',
+        pathname:`/createPost/${this.props.id}`,
         state: {
           key: id,
           postImages: imageUrl,
