@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Col, Row } from 'react-bootstrap';
 import axios from 'axios';
-import NavBar from '../components/NavBar';
+import NavBar from '../../components/NavBar';
 import { Redirect } from 'react-router-dom';
 
 class CreatePostForm extends React.Component {
@@ -32,7 +32,9 @@ class CreatePostForm extends React.Component {
       title: this.state.title,
       content: this.state.content,
       isThereImage: false,
-      imageUrl: ""
+      imageUrl: "",
+      roomID: this.props.location.state.id,
+      googleID: this.props.profile[0].googleId
     })
     .catch(err => {
       console.error(err);
@@ -41,13 +43,12 @@ class CreatePostForm extends React.Component {
   }
 
   returnToRoom() {
-    //dummy values for now
     this.props.history.push({
       pathname:'/room',
       state: {
-        roomName: "room",
-        imageUrl: "",
-        id: 5
+        roomName: this.props.location.state.roomName,
+        imageUrl: this.props.location.state.imageUrl,
+        id: this.props.location.state.id
       }
     });
   }
@@ -107,4 +108,10 @@ const styles = {
     },
 }
 
-export default CreatePostForm;
+const mapStateToProps = (state) => {
+    return {
+      profile: state.profile,
+    }
+}
+
+export default connect(mapStateToProps, {}) (CreatePostForm);

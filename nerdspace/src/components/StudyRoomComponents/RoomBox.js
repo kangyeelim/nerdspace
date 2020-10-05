@@ -11,7 +11,10 @@ class RoomBox extends React.Component {
               <Card.Title>{this.props.roomName}</Card.Title>
               <Card.Text>Room ID: {this.props.id}</Card.Text>
               {this.props.hasAccess && <Button variant="primary" onClick={this.props.enter}>Enter</Button>}
-              {!this.props.hasAccess && <Button variant="info" onClick={this.props.requestJoin}>Request to Join</Button>}
+              {!this.props.hasAccess && !this.props.hasRequested &&
+                <Button variant="info" onClick={this.props.requestJoin}>Request to Join</Button>}
+              {!this.props.hasAccess && this.props.hasRequested &&
+                <Button variant="info">Requested</Button>}
             </Card.Body>
           </Card>
         );
