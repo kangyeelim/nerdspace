@@ -15,17 +15,23 @@ class BuddyFinderResult extends React.Component {
             results: []
           }
         this.goToBuddyFinder = this.goToBuddyFinder.bind(this);
+        this.sendMessage = this.sendMessage.bind(this);
     }
 
     componentDidMount() {
         axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.gender}/${this.props.educationLevel}/${this.props.yearOfStudy}/${this.props.interest}`)
         .then(res => {
+            console.log(res);
             this.setState({posts: res.data.data});
           });
     }
 
     goToBuddyFinder() {
         this.props.history.push('/buddy-finder');
+    }
+
+    sendMessage() {
+
     }
 
     // handleGenderInput(event) {

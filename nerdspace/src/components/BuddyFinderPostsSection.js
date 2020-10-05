@@ -20,7 +20,7 @@ class BuddyFinderPostsSection extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:5000/buddyfinderposts`)
+        axios.get(`http://localhost:5000/buddyfinderposts/byGoogleID/${this.props.profile[0].googleId}`)
           .then(res => {
             this.setState({ forms: res.data.data });
           });
@@ -40,7 +40,7 @@ class BuddyFinderPostsSection extends React.Component {
                 <Card.Body>
                     <Row>
                         <Col>
-                            <Card.Title>Saved Forms</Card.Title>
+                            <Card.Title style={{fontSize: 50, fontWeight: 600}}>Saved Forms</Card.Title>
                             {this.state.forms.map((form) => {
                                 return <BuddyPost
                                 key={form.key}
@@ -48,7 +48,9 @@ class BuddyFinderPostsSection extends React.Component {
                                 gender={form.gender}
                                 educationLevel={form.educationLevel}
                                 yearOfStudy={form.yearOfStudy}
-                                submitPost={this.submitPost}/>;
+                                interest={form.interest}
+                                submitPost={this.submitPost}
+                                deletePost={this.deletePost}/>;
                             })}
                         </Col>
                     </Row>

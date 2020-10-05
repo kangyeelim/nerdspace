@@ -26,6 +26,38 @@ router.route('/').get((req, res) => {
     })
 })
 
+router.route('/byGoogleID/:id').get((req, res) => {
+    const googleID = req.params.id;
+    db.ref('buddyFinderPosts')
+    .orderByChild('googleID')
+    .equalTo(googleID)
+    .once("value", function (snapshot) {
+      var resArr = [];
+      snapshot.forEach(function (child) {
+        var key = child.key;
+        var data = child.val();
+        resArr.push({
+            key: key,
+            googleID: data.googleID,
+            educationLevel: data.educationLevel,
+            yearOfStudy: data.yearOfStudy,
+            gender: data.gender,
+            interest: data.interest
+        });
+      });
+      res.send({
+        data: resArr,
+        message: 'GET success'
+      });
+    }, function (error) {
+        res.send({
+          message: 'No requests found',
+          error: error
+        });
+    });
+  });
+  
+
 router.route('/').post((req, res) => {
     const educationLevel = req.body.educationLevel;
     const yearOfStudy = req.body.yearOfStudy;
@@ -35,15 +67,15 @@ router.route('/').post((req, res) => {
 
     var buddyFinderRef = db.ref('buddyFinderPosts').push();
     buddyFinderRef.set({
-    'googleID': googleID,
-    'educationLevel': educationLevel,
-    'yearOfStudy': yearOfStudy,
-    'gender': gender,
-    'interest': interest
+        'googleID': googleID,
+        'educationLevel': educationLevel,
+        'yearOfStudy': yearOfStudy,
+        'gender': gender,
+        'interest': interest
     }, function (error) {
         if (error) {
         res.send(error);
-        }
+    }
     });
 
     // interests.forEach((item, i) => {
