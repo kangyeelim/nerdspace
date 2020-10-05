@@ -6,19 +6,19 @@ router.route('/').get((req, res) => {
         var resultArr = [];
         snapshot.forEach(function(child) {
             var key = child.key;
-            var value = child.val();
+            var data = child.val();
             resultArr.push({
                 key: key,
-                googleID: value.googleID,
-                educationLevel: value.educationLevel,
-                yearOfStudy: value.yearOfStudy,
-                gender: value.gender,
-                interest: value.interest
+                googleID: data.googleID,
+                educationLevel: data.educationLevel,
+                yearOfStudy: data.yearOfStudy,
+                gender: data.gender,
+                interest: data.interest
             })
         })
 
         res.send({
-            value: resultArr,
+            data: resultArr,
             message: "GET success"
         })
     }, function(error) {
