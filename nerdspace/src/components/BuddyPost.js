@@ -1,30 +1,40 @@
 import React from 'react';
 import { Card, Image, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardFooter, MDBCardGroup, MDBContainer } from "mdbreact";
 
 export default function BuddyPost(props) {
   return (
-    // <Card className="shadow-sm p-3 mb-5 bg-white rounded" style={styles.card}>
-    <Card text="white" border="light" style={styles.card}>
-    text="white" border="light" style={styles.card}
-        <i class="fas fa-paper-plane"></i>
-      <Card.Body>
-        <Card.Title>{props.title}</Card.Title>
-        {props.gender}
-        {props.educationLevel}
-        {props.yearOfStudy}
-        <Row style={{marginLeft: 10, marginRight:10, alignSelf:'right'}}>
-          <Col>
-          </Col>
-          <Col md="auto">
-            <a onClick={() => props.submitPost(props.id)}>
-              <FontAwesomeIcon icon={faPaperPlane} style={{alignSelf:'right'}}/>
-            </a>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>
+    <MDBContainer>
+      <MDBCardGroup deck style={{flex: 1, flexDirection: "row", flexWrap: "wrap", alignSelf:'right'}}>
+        <MDBCard style={{ width: "22rem", marginTop: "1rem" }}>
+          <MDBCardBody>
+            <MDBCardTitle tag="h2" style={{fontSize: 40, fontWeight: 600}}>Form {props.id}</MDBCardTitle>
+
+              <p style={{fontSize: 20, fontWeight: 600}}>Gender: {props.gender}</p>
+              <p style={{fontSize: 20, fontWeight: 600}}>Education Level: {props.educationLevel}</p>
+              <p style={{fontSize: 20, fontWeight: 600}}>Year Of study: {props.yearOfStudy}</p>
+              <p style={{fontSize: 20, fontWeight: 600}}>Interest: {props.interest}</p>
+
+          </MDBCardBody>
+          <MDBCardFooter small muted>
+            <Row style={{marginLeft: 10, marginRight:10, alignSelf:'right'}}>
+              <Col md="auto">
+                <a onClick={() => props.deletePost(props.id)}>
+                  <FontAwesomeIcon className="icon" icon={faTrashAlt} style={{alignSelf:'right'}}/>
+                </a>
+              </Col>
+              <Col md="auto">
+                <a onClick={() => props.submitPost(props.id)}>
+                  <FontAwesomeIcon icon={faPaperPlane} style={{alignSelf:'right'}}/>
+                </a>
+              </Col>
+            </Row>
+          </MDBCardFooter>
+        </MDBCard>
+      </MDBCardGroup>
+    </MDBContainer>
   );
 }
 
