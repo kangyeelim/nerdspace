@@ -18,6 +18,7 @@ const studyRoomRequestsRouter = require('./routes/studyRoomRequests');
 const profilesRouter = require('./routes/profiles');
 const buddyFinderRouter = require('./routes/buddyFinderPosts');
 const imagesRouter = require('./routes/images');
+const messageRouter = require('./routes/message');
 
 app.use('/users', usersRouter);
 app.use('/studyroomposts', studyRoomPostsRouter);
@@ -26,6 +27,8 @@ app.use('/studyroomrequests', studyRoomRequestsRouter);
 app.use('/profiles', profilesRouter);
 app.use('/buddyfinderposts', buddyFinderRouter);
 app.use('/images', imagesRouter);
+app.use('/message', messageRouter);
+
 //starts server
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

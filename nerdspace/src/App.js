@@ -15,6 +15,7 @@ import StudyRoom from './pages/StudyRoomPages/StudyRoom';
 import Profile from './pages/Profile';
 import CreatePostForm from './pages/StudyRoomPages/CreatePostForm';
 import CreateRoomForm from './pages/StudyRoomPages/CreateRoomForm';
+import ChatRoom from './pages/ChatRoom';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route exact path="/account" component={Profile}/>
           <Route exact path="/createPost" component={CreatePostForm}/>
           <Route exact path="/createStudyRoom" component={CreateRoomForm}/>
+          <Route exact path="/chat/:id?" component={ChatRoom} />
         </Switch>
       </Router>
     </div>
