@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 import './CreateRoomForm.css';
 import Upload from '../../components/StudyRoomComponents/Upload';
 import { getImage } from '../../services/ImageService';
+import { enterRoom } from '../../navigators/StudyRoomNavigator';
 
 const DEFAULT_URL = "https://source.unsplash.com/aJnHSrgSWkk/1600x900";
 const dummy_contacts = [ {name: "michaela"}, {name: "evon"}, {name: "yenpeng"}];
@@ -122,14 +123,15 @@ class CreateRoomForm extends React.Component {
   }
 
   enterRoom(id, url, name) {
-    this.props.history.push({
+    /*this.props.history.push({
       pathname:`/room/${id}`,
       state: {
         roomName: name,
         imageUrl: url,
         id: id
       }
-    });
+    });*/
+    enterRoom(this.props.history, id, url, name);
   }
 
 

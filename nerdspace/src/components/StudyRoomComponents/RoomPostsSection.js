@@ -5,6 +5,7 @@ import Post from './Post';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { deleteStudyRoomPost, findPostsByString, getAllRoomPosts } from '../../services/StudyRoomPostService';
+import { goToCreatePostForm, goToEditPostForm } from '../../navigators/StudyRoomNavigator';
 
 class RoomPostsSection extends React.Component {
 
@@ -38,14 +39,16 @@ class RoomPostsSection extends React.Component {
   }
 
   createPost() {
-    this.props.history.push({
+    /*this.props.history.push({
       pathname: `/createPost/${this.props.id}`,
       state: {
         id: this.props.id,
         roomName: this.props.roomName,
         imageUrl: this.props.imageUrl
       }
-    });
+    });*/
+    goToCreatePostForm(this.props.history, this.props.id,
+      this.props.imageUrl, this.props.roomName);
   }
 
   async search() {
@@ -60,8 +63,8 @@ class RoomPostsSection extends React.Component {
     }
   }
 
-  editPost(id, title, content, imageUrl) {
-    this.props.history.push({
+  editPost(id, title, content, imageUrls) {
+    /*this.props.history.push({
       pathname:`/createPost/${this.props.id}`,
       state: {
         key: id,
@@ -72,7 +75,9 @@ class RoomPostsSection extends React.Component {
         roomName: this.props.roomName,
         imageUrl: this.props.imageUrl
       }
-    });
+    });*/
+    goToEditPostForm(this.props.history, id, imageUrls, title, content,
+    this.props.id, this.props.roomName, this.props.imageUrl);
   }
 
   async deletePost(id, images) {

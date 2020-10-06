@@ -10,6 +10,7 @@ import RoomSideBar from '../../components/StudyRoomComponents/RoomSideBar';
 import RoomPostsSection from '../../components/StudyRoomComponents/RoomPostsSection';
 import axios from 'axios';
 import { deleteImages } from '../../services/ImageService';
+import { goToCreateRoomForm } from '../../navigators/StudyRoomNavigator';
 
 class StudyRoom extends React.Component {
   constructor() {
@@ -76,14 +77,15 @@ class StudyRoom extends React.Component {
   }
 
   editRoom(id, name, image) {
-    this.props.history.push({
+    /*this.props.history.push({
       pathname:'/createStudyRoom',
       state: {
         id:id,
         roomName: name,
         imageUrl: image
       }
-    })
+    })*/
+    goToCreateRoomForm(this.props.history, id, name, image);
   }
 
   render() {

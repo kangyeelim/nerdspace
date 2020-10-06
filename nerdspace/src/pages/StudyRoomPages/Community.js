@@ -5,6 +5,7 @@ import '../General.css';
 import { Col, Row, Form, Button, FormControl } from 'react-bootstrap';
 import RoomBox from '../../components/StudyRoomComponents/RoomBox';
 import axios from 'axios';
+import { enterRoom } from '../../navigators/StudyRoomNavigator';
 
 const stub = [ {id:1, name:"GP resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
 {id:2, name:"A Maths resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
@@ -102,14 +103,15 @@ class Community extends React.Component {
   }
 
   enterRoom(id, room, url) {
-    this.props.history.push({
+    /*this.props.history.push({
       pathname:`/room/${id}`,
       state: {
         roomName: room,
         imageUrl: url,
         id: id
       }
-    });
+    });*/
+    enterRoom(this.props.history, id, url, room);
   }
 
   requestJoinRoom(id) {

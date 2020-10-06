@@ -52,9 +52,9 @@ export async function updateExistingPost(key, title, content,
   callback = (err)=> {console.error(err)}) {
   try {
     var res = await axios.post(`http://localhost:5000/studyroomposts/update`, {
-      key:this.state.key,
-      title:this.state.title,
-      content:this.state.content
+      key:key,
+      title:title,
+      content:content
     });
     return await res.data;
   } catch(error) {

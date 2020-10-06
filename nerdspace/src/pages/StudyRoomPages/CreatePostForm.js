@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 import Upload from '../../components/StudyRoomComponents/Upload';
 import { deleteImages } from '../../services/ImageService';
 import { createNewPost, updateExistingPost } from '../../services/StudyRoomPostService';
+import { enterRoom } from '../../navigators/StudyRoomNavigator';
 
 class CreatePostForm extends React.Component {
   constructor() {
@@ -64,15 +65,11 @@ class CreatePostForm extends React.Component {
         .catch(err => {
           console.error(err);
         });
-        /*var res = await createNewPost(this.state.title, this.state.content, images,
-        this.props.location.state.id, this.props.profile[0].googleId);
-        if (await res.message == 'POST success' ) {
-          this.returnToRoom();
-        }*/
+        /*await createNewPost(this.state.title, this.state.content, images,
+        this.props.location.state.id, this.props.profile[0].googleId);*/
+        this.returnToRoom();
       });
-
     } else {
-
       this.setState({isSubmitted: true}, async () => {
         axios.post(`http://localhost:5000/studyroomposts/update`, {
           key:this.state.key,
@@ -82,14 +79,12 @@ class CreatePostForm extends React.Component {
         .catch(err => {
           console.error(err);
         })
-        /*var res = await updateExistingPost(this.state.key,
+        /*await updateExistingPost(this.state.key,
         this.state.title,
-        this.state.content);
-        if (await res.message == 'UPDATE success' ) {
-          this.returnToRoom();
-        }*/
-      });
+        this.state.content);*/
 
+        this.returnToRoom();
+      });
     }
   }
 
@@ -114,14 +109,18 @@ class CreatePostForm extends React.Component {
   }
 
   returnToRoom() {
-    this.props.history.push({
+    /*this.props.history.push({
       pathname:`/room/${this.props.location.state.id}`,
       state: {
         roomName: this.props.location.state.roomName,
         imageUrl: this.props.location.state.imageUrl,
         id: this.props.location.state.id
       }
-    });
+    });*/
+    enterRoom(this.props.history,
+      this.props.location.state.id,
+      this.props.location.state.imageUrl,
+      this.props.location.state.roomName)
   }
 
   render() {
