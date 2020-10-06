@@ -30,3 +30,35 @@ export async function getAllRoomPosts(roomId, callback = (err)=>{console.error(e
     callback(error);
   }
 }
+
+export async function createNewPost(title, content, images, roomId, googleId,
+  callback = (err)=>{console.error(err)}) {
+  try {
+    var res = await axios.post('http://localhost:5000/studyroomposts', {
+      title: title,
+      content: content,
+      isThereImage: images.length > 0,
+      imageUrl: images,
+      roomID: roomId,
+      googleID: googleId
+    })
+    return await res.data;
+  } catch (error) {
+    callback(error);
+  }
+}
+
+export async function updateExistingPost(key, title, content,
+  callback = (err)=> {console.error(err)}) {
+  try {
+    var res = await axios.post(`http://localhost:5000/studyroomposts/update`, {
+      key:this.state.key,
+      title:this.state.title,
+      content:this.state.content
+    });
+    return await res.data;
+  } catch(error) {
+    callback(error)
+  }
+
+}

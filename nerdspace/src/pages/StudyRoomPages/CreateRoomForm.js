@@ -34,7 +34,7 @@ class CreateRoomForm extends React.Component {
   async componentDidMount() {
     console.log("should load all friends in contact list for adding into room");
     if (typeof this.props.location.state != 'undefined' &&
-    this.props.location.state.name != 'undefined') {
+    typeof this.props.location.state.name != 'undefined') {
       var images = (await getImage(this.props.location.state.imageUrl)).data;
       this.setState({
         roomID:this.props.location.state.id,

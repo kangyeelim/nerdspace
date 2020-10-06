@@ -6,6 +6,7 @@ import NavBar from '../../components/NavBar';
 import { Redirect } from 'react-router-dom';
 import Upload from '../../components/StudyRoomComponents/Upload';
 import { deleteImages } from '../../services/ImageService';
+import { createNewPost, updateExistingPost } from '../../services/StudyRoomPostService';
 
 class CreatePostForm extends React.Component {
   constructor() {
@@ -27,7 +28,7 @@ class CreatePostForm extends React.Component {
   }
 
   componentDidMount() {
-    if (typeof this.props.location.state.title != 'undefined') {
+    if (typeof this.props.location.state != 'undefined' && typeof this.props.location.state.title != 'undefined') {
       this.setState({title:this.props.location.state.title,
         content:this.props.location.state.content,
         images:this.props.location.state.postImages,
@@ -44,9 +45,11 @@ class CreatePostForm extends React.Component {
     this.setState({content: e.currentTarget.value});
   }
 
-  onSubmit() {
+  async onSubmit() {
+    this.setState({isSubmitted:true});
+
     if (!this.state.isEditing) {
-      this.setState({isSubmitted: true}, () => {
+      this.setState({isSubmitted: true}, async () => {
         var images = this.state.images.map((imageData) => {
           return imageData.secure_url;
         })
@@ -61,10 +64,16 @@ class CreatePostForm extends React.Component {
         .catch(err => {
           console.error(err);
         });
-        this.returnToRoom();
+        /*var res = await createNewPost(this.state.title, this.state.content, images,
+        this.props.location.state.id, this.props.profile[0].googleId);
+        if (await res.message == 'POST success' ) {
+          this.returnToRoom();
+        }*/
       });
+
     } else {
-      this.setState({isSubmitted: true}, () => {
+
+      this.setState({isSubmitted: true}, async () => {
         axios.post(`http://localhost:5000/studyroomposts/update`, {
           key:this.state.key,
           title:this.state.title,
@@ -73,8 +82,14 @@ class CreatePostForm extends React.Component {
         .catch(err => {
           console.error(err);
         })
-        this.returnToRoom();
+        /*var res = await updateExistingPost(this.state.key,
+        this.state.title,
+        this.state.content);
+        if (await res.message == 'UPDATE success' ) {
+          this.returnToRoom();
+        }*/
       });
+
     }
   }
 
@@ -88,7 +103,7 @@ class CreatePostForm extends React.Component {
     }
   }
 
-  deleteUnpostImages() {
+  async deleteUnpostImages() {
     /*axios.post('http://localhost:5000/images/delete', {
       images: this.state.images
     })
