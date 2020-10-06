@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import Post from './Post';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-
-const dummy = [{id:1, isThereimage: false, content: "This is dummy post with no content.", title:"Dummy title"}];
+import { deleteStudyRoomPost } from '../../services/StudyRoomPostService';
 
 class RoomPostsSection extends React.Component {
 
@@ -13,15 +12,21 @@ class RoomPostsSection extends React.Component {
       super();
       this.state ={
         posts: [],
+        searchKeyWord: ""
       }
       this.editPost = this.editPost.bind(this);
       this.deletePost = this.deletePost.bind(this);
       this.handleSearchInput = this.handleSearchInput.bind(this);
       this.search = this.search.bind(this);
       this.createPost = this.createPost.bind(this);
+      this.getAllRoomPosts = this.getAllRoomPosts.bind(this);
     }
 
     componentDidMount() {
+      this.getAllRoomPosts();
+    }
+
+    getAllRoomPosts() {
       axios.get(`http://localhost:5000/studyroomposts/getByRoom/${this.props.id}`)
         .then(res => {
           this.setState({posts: res.data.data});
@@ -47,7 +52,18 @@ class RoomPostsSection extends React.Component {
     }
 
     search() {
-
+      if (this.state.searchKeyWord !== "") {
+        axios.get(`http://localhost:5000/studyroomposts/byKeyword/${this.props.id}/${this.state.searchKeyWord}`)
+          .then((res) => {
+            console.log(res.data.data);
+            this.setState({posts: res.data.data});
+          })
+          .catch(err => {
+            this.setState({posts:[]});
+          })
+      } else {
+        this.getAllRoomPosts();
+      }
     }
 
     editPost(id, title, content, imageUrl) {
@@ -65,11 +81,9 @@ class RoomPostsSection extends React.Component {
       });
     }
 
-    deletePost(id) {
-      axios.delete(`http://localhost:5000/${id}`)
-        .catch(err => {
-          console.error(err);
-        })
+    deletePost(id, images) {
+      deleteStudyRoomPost(id, images,
+        (res) => {this.getAllRoomPosts()});
     }
 
     render() {
@@ -86,8 +100,8 @@ class RoomPostsSection extends React.Component {
               <Col>
               <Card.Title>Posts</Card.Title>
               {this.state.posts.map((post) => {
-                return <Post
-                key={post.key}
+                return <div key={post.key}>
+                <Post key={post.key}
                 id={post.key}
                 images={post.isThereImage? Object.values(post.imageUrl): []}
                 content={post.content}
@@ -96,6 +110,7 @@ class RoomPostsSection extends React.Component {
                 editPost={this.editPost}
                 canEditAndDelete={post.googleID == this.props.profile[0].googleId}
                 />
+                </div>
               })}
               </Col>
               </Row>

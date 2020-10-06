@@ -26,15 +26,13 @@ class CreatePostForm extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.location.state.title &&
-        this.props.location.state.content &&
-        this.props.location.state.postImages &&
-        this.props.location.state.key) {
-          this.setState({title:this.props.location.state.title,
-          content:this.props.location.state.content,
-          images:this.props.location.state.postImages,
-          key:this.props.location.state.key,
-          isEditing:true});
+    if (typeof this.props.location.state.title != 'undefined') {
+      console.log("should nt");
+      this.setState({title:this.props.location.state.title,
+        content:this.props.location.state.content,
+        images:this.props.location.state.postImages,
+        key:this.props.location.state.key,
+        isEditing:true});
     }
   }
 
@@ -117,7 +115,7 @@ class CreatePostForm extends React.Component {
         <NavBar history={this.props.history}/>
         <Container>
         <Col>
-        <h3>Create a New Post</h3>
+        <h3>Post Details</h3>
           <form className="form">
               <div className="input-group" style={styles.bar}>
                   <label style={styles.title} htmlFor="name">Title: </label>

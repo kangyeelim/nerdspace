@@ -26,7 +26,7 @@ export default function Post(props) {
               </a>
             </Col>
             <Col md="auto">
-              <a onClick={() => props.deletePost(props.id)}>
+              <a onClick={() => props.deletePost(props.id, props.images)}>
                 <FontAwesomeIcon className="icon" icon={faTrashAlt} style={{alignSelf:'right'}}/>
               </a>
             </Col>

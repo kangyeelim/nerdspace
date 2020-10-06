@@ -3,6 +3,7 @@ const cloudinary = require('cloudinary');
 const multer = require('multer');
 const fs = require('fs');
 const { promisify } = require('util');
+const db = require('../firebase').db;
 
 const unlinkAsync = promisify(fs.unlink)
 
@@ -41,9 +42,14 @@ router.post('/upload', upload.single('file'), async (req, res) => {
   const image = req.file;
   try {
     const response = await cloudinary.uploader.upload(image.path)
-    res.json(response);
+    db.ref('images').push().set(response, function(error) {
+      if (error) {
+        res.send(error);
+      } else {
+        res.json(response);
+      }
+    });
   } catch (error) {
-    console.log(error);
     res.status(400).json('Error: ' + error);
   }
   await unlinkAsync(image.path)
@@ -53,11 +59,49 @@ router.post('/delete', (req, res) => {
   const values = req.body.images
   const promises = values.map(image => {
     cloudinary.uploader.destroy(image.public_id)
-    })
+  })
 
   Promise
     .all(promises)
     .then(results => res.json(results));
 })
+
+router.route('/byUrl/:id').get((req, res) => {
+  const id = req.params.id;
+  db.ref('images').orderByChild('public_id')
+  .equalTo(id)
+  .once('value', function(snapshot) {
+    var resArr = [];
+    snapshot.forEach(function(child) {
+      resArr.unshift(child.val());
+    });
+    res.send({
+      data: resArr,
+      message: 'GET success'
+    })
+  }, function(error) {
+    res.send(error);
+  });
+});
+
+router.route('/byUrl/:id').delete((req, res) => {
+  const id = req.params.id;
+  var ref = db.ref('images');
+  var resArr = [];
+  ref.orderByChild('public_id')
+  .equalTo(id)
+  .once('value', function(snapshot) {
+    snapshot.forEach(function(child) {
+      resArr.unshift(child.val());
+      ref.child(child.key).remove();
+    });
+    res.send({
+      data: resArr,
+      message: 'GET success'
+    })
+  }, function(error) {
+    res.send(error);
+  });
+});
 
 module.exports = router;

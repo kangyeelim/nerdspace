@@ -19,7 +19,8 @@ class CreateRoomForm extends React.Component {
       isSubmitting: false,
       friends: [],
       images: [],
-      roomID: ""
+      roomID: "",
+      isEditing: false
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.titleInput = this.titleInput.bind(this);
@@ -30,6 +31,13 @@ class CreateRoomForm extends React.Component {
 
   componentDidMount() {
     console.log("should load all friends in contact list for adding into room");
+    if (typeof this.props.location.state != 'undefined' && this.props.location.state.name != 'undefined') {
+      this.state.images.push(this.props.location.state.imageUrl);
+      this.setState({roomID:this.props.location.state.id,
+      images:this.state.images,
+      name:this.props.location.state.roomName,
+      isEditing: true});
+    }
   }
 
   titleInput(e) {
@@ -47,7 +55,7 @@ class CreateRoomForm extends React.Component {
       imageUrl = this.state.images[0].secure_url;
     }
     this.setState({isSubmitted: true}, () => {
-      if (this.state.images.length <= 1) {
+      if (this.state.images.length <= 1 && !this.state.isEditing) {
         axios.post('http://localhost:5000/studyrooms/', {
           name: this.state.name,
           isThereImage: (this.state.images.length == 1),
@@ -64,6 +72,13 @@ class CreateRoomForm extends React.Component {
         .catch(err => {
           console.error(err);
         });
+      } else if (this.state.images.length <= 1 && this.state.isEditing) {
+        axios.post(`http://localhost:5000/studyrooms/updateInfo`, {
+          key: this.state.roomID,
+          name: this.state.name,
+          imageUrl: imageUrl,
+          isThereImage: (this.state.images.length == 1)
+        })
       } else {
         alert("Please choose only one image as the study room profile picture");
       }
@@ -71,7 +86,8 @@ class CreateRoomForm extends React.Component {
   }
 
   componentWillUnmount() {
-    if (!this.state.isSubmitted && this.state.images.length > 0) {
+    if (!this.state.isSubmitted && this.state.images.length > 0 &&
+      !this.state.isEditing) {
       this.deleteUnpostImages();
     }
   }
@@ -83,7 +99,6 @@ class CreateRoomForm extends React.Component {
       .catch(error => {
         console.error(error);
       });
-
   }
 
   addRoomIdToUser(roomID) {
@@ -115,18 +130,19 @@ class CreateRoomForm extends React.Component {
         <NavBar history={this.props.history}/>
         <Container>
         <Col>
-        <h3>Create a New Study Room</h3>
+        <h3>Study Room Details</h3>
               <div className="input-group" style={styles.bar}>
                   <label style={styles.title} htmlFor="name">Study Room Name: </label>
                   <input
                     type="text"
                     className="form-control"
                     placeholder="Name"
+                    value={this.state.name}
                     onChange={this.titleInput}/>
               </div>
               <div className="input-group" style={styles.bar}>
               <label style={styles.content} htmlFor="bio">Add Members: </label>
-              <div className="container" id="scrollableArea">
+              {!this.state.isEditing && <div className="container" id="scrollableArea">
                 <Form>
                 { dummy_contacts.map((contact) => {
                   return (
@@ -140,7 +156,7 @@ class CreateRoomForm extends React.Component {
                   );
                 })}
                 </Form>
-              </div>
+              </div>}
               <Upload
                 handleImages={this.handleImages}
                 images={this.state.images}

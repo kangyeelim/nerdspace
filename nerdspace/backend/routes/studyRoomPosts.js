@@ -105,6 +105,41 @@ router.route('/update').post((req, res) => {
   });
 });
 
+router.route('/byKeyword/:id/:keyword').get((req, res) => {
+  const keyword = req.params.keyword;
+  const roomID = req.params.id;
+  var resArr = [];
+  db.ref('studyRoomPosts')
+  .orderByChild('roomID')
+  .equalTo(roomID)
+  .once('value',
+  function (snapshot) {
+    snapshot.forEach(function (child) {
+      var key = child.key;
+      var data = child.val();
+      resArr.unshift({
+        key: key,
+        title: data.title,
+        content: data.content,
+        imageUrl: data.images,
+        isThereImage: data.isThereImage,
+        roomID: data.roomID,
+        googleID: data.googleID
+      });
+    });
+    var results = resArr.filter((obj) => {
+      return obj.title.includes(keyword) || obj.content.includes(keyword);
+    })
+    res.send({
+      data: results,
+      message: 'GET success'
+    });
+  }, function (error) {
+      res.send(error);
+  });
+
+});
+
 router.route('/:id').delete((req, res) => {
   const key = req.params.id;
   db.ref('studyRoomPosts').child(key).remove(
@@ -117,6 +152,30 @@ router.route('/:id').delete((req, res) => {
         });
       }
     });
+});
+
+router.route('/byRoomID/:id').delete((req, res) => {
+  const id = req.params.id;
+  var ref = db.ref('studyRoomPosts');
+  var resArr = [];
+  ref.orderByChild('roomID')
+  .equalTo(id)
+  .once('value', function(snapshot) {
+        snapshot.forEach(function(child) {
+        //remove each child
+        resArr.unshift(child.val());
+        ref.child(child.key).remove();
+    });
+  }, function(error) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.send({
+        data: resArr,
+        message: 'DELETE success'
+      });
+    }
+  });
 });
 
 

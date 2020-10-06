@@ -19,6 +19,7 @@ class Upload extends React.Component {
   componentDidMount() {
     if (this.props.images) {
       this.setState({images:this.props.images});
+      console.log(this.props.images);
     }
   }
 

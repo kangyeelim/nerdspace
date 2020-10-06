@@ -137,28 +137,19 @@ router.route('/removeMember/:key/:googleID').delete((req, res) => {
       var pkey = childSnapshot.key;
       var chval = childSnapshot.val();
       if (chval == memberID) {
-        if (snapshot.length == 1) {
-          db.ref('studyRooms').child(key).remove(
-            function (error) {
-              if (error) {
-                res.send(error);
-              } else {
-                res.send({
-                  message: 'DELETED ROOM success'
-                });
-              }
+        console.log(Object.values(snapshot.val()).length);
+        const numOfMembers = Object.values(snapshot.val()).length;
+
+        ref.child(pkey).remove(function (error) {
+          if (error) {
+            res.send(error);
+          } else {
+            res.send({
+              message: 'DELETE MEMBER success',
+              data: numOfMembers
             });
-        } else {
-          ref.child(pkey).remove(function (error) {
-            if (error) {
-              res.send(error);
-            } else {
-              res.send({
-                message: 'DELETE MEMBER success'
-              });
-            }
-          });
-        }   
+          }
+        });
       }
     });
   });

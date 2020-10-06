@@ -5,8 +5,6 @@ import axios from 'axios';
 import RequestNotification from './RequestNotification';
 import UserCard from './UserCard';
 
-const stub = [{googleID: "117862184407700751548", imageUrl: "https://lh4.googleusercontent.com/-AODvuNqc2IE/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclec8GWOLIYp3xwtDkm298zfoQrbQ/s96-c/photo.jpg"}]
-
 class RoomSideBar extends React.Component {
   constructor() {
     super();
