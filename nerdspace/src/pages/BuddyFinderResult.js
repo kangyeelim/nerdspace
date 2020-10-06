@@ -22,7 +22,8 @@ class BuddyFinderResult extends React.Component {
         axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
         .then(res => {
             console.log(res);
-            this.setState({posts: res.data.data});
+            this.setState({results: res.data.data});
+            // this.setState({results: res.docs.data});
           });
     }
 
@@ -54,9 +55,9 @@ class BuddyFinderResult extends React.Component {
                             return <BuddyResult
                             key={result.key}
                             id={result.key}
-                            name={result.name}
+                            // name={result.name}
                             gender={result.gender}
-                            email={result.email}
+                            // email={result.email}
                             educationLevel={result.educationLevel}
                             sendMessage={this.sendMessage}/>;
                         })}

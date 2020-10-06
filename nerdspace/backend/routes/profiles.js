@@ -36,6 +36,39 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
   var name = "";
   var email = "";
 
+  // db.ref('profiles')
+  // .where("googleID", "!=", googleID)
+  // .where("interest", "==", interest)
+  // .where("educationLevel", "==", educationLevel) 
+  // .where("yearOfStudy", "==", yearOfStudy)
+  // .once('value', function (snapshot) {
+  //   var resArr = [];
+  //   snapshot.forEach(function (child) {
+  //     var key = child.key;
+  //     var data = child.val();
+  //     resArr.push({
+  //       key: key,
+  //       googleID: data.googleID,
+  //       educationLevel: data.educationLevel,
+  //       year: data.year,
+  //       gender: data.gender,
+  //       interests: data.interests,
+  //     });
+  //   })
+
+
+  // const routeRef = db.collection("profiles");
+  // const googleIDFilter = googleID ? routeRef.where("googleID", "!=", googleID) : routeRef;
+  // const interestFilter = interest ? routeRef.where("interest", "==", interest) : googleIDFilter;
+  // const educationLevelFilter = educationLevel ? interestFilter.where("educationLevel", "==", educationLevel) : interestFilter;
+  // const yearOfStudyFilter = yearOfStudy ? educationLevel.where("yearOfStudy", "==", yearOfStudy) : educationLevelFilter;
+  // yearOfStudyFilter.get().then(snapshot => {
+  //   // The snapshot returned by `where().get()` does not have a `data()` reference since it returns multiple documents, it has `docs` property which is an array of all the documents matched
+  //   snapshot.docs.forEach(doc => {
+  //     const docData = { ...doc.data(), id: doc.id };
+  //     console.log(docData);
+  // })
+
   db.ref('profiles')
   .orderByChild('interest')
   .equalTo(interest)
@@ -70,9 +103,10 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
         });
       }
     });
+    console.log(resArr);
 
     res.send({
-      data: resArr,
+      data: resArr,    //docData, //
       message: 'GET success'
     });
   }, function (error) {
