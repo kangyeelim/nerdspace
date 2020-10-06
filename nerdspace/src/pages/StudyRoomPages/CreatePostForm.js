@@ -5,6 +5,7 @@ import axios from 'axios';
 import NavBar from '../../components/NavBar';
 import { Redirect } from 'react-router-dom';
 import Upload from '../../components/StudyRoomComponents/Upload';
+import { deleteImages } from '../../services/ImageService';
 
 class CreatePostForm extends React.Component {
   constructor() {
@@ -27,7 +28,6 @@ class CreatePostForm extends React.Component {
 
   componentDidMount() {
     if (typeof this.props.location.state.title != 'undefined') {
-      console.log("should nt");
       this.setState({title:this.props.location.state.title,
         content:this.props.location.state.content,
         images:this.props.location.state.postImages,
@@ -89,13 +89,13 @@ class CreatePostForm extends React.Component {
   }
 
   deleteUnpostImages() {
-    axios.post('http://localhost:5000/images/delete', {
+    /*axios.post('http://localhost:5000/images/delete', {
       images: this.state.images
     })
       .catch(error => {
         console.error(error);
-      });
-
+      });*/
+    deleteImages(this.state.images);
   }
 
   returnToRoom() {

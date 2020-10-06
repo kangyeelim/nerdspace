@@ -6,6 +6,7 @@ import NavBar from '../../components/NavBar';
 import { Redirect } from 'react-router-dom';
 import './CreateRoomForm.css';
 import Upload from '../../components/StudyRoomComponents/Upload';
+import { getImage } from '../../services/ImageService';
 
 const DEFAULT_URL = "https://source.unsplash.com/aJnHSrgSWkk/1600x900";
 const dummy_contacts = [ {name: "michaela"}, {name: "evon"}, {name: "yenpeng"}];
@@ -20,7 +21,8 @@ class CreateRoomForm extends React.Component {
       friends: [],
       images: [],
       roomID: "",
-      isEditing: false
+      isEditing: false,
+      isLoaded: false
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.titleInput = this.titleInput.bind(this);
@@ -29,14 +31,21 @@ class CreateRoomForm extends React.Component {
     this.deleteUnpostImages = this.deleteUnpostImages.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log("should load all friends in contact list for adding into room");
-    if (typeof this.props.location.state != 'undefined' && this.props.location.state.name != 'undefined') {
-      this.state.images.push(this.props.location.state.imageUrl);
-      this.setState({roomID:this.props.location.state.id,
-      images:this.state.images,
-      name:this.props.location.state.roomName,
-      isEditing: true});
+    if (typeof this.props.location.state != 'undefined' &&
+    this.props.location.state.name != 'undefined') {
+      var images = (await getImage(this.props.location.state.imageUrl)).data;
+      this.setState({
+        roomID:this.props.location.state.id,
+        name:this.props.location.state.roomName,
+        isEditing: true,
+        images: images
+      }, () => {
+        this.setState({isLoaded:true});
+      })
+    } else {
+      this.setState({isLoaded:true});
     }
   }
 
@@ -142,7 +151,7 @@ class CreateRoomForm extends React.Component {
               </div>
               <div className="input-group" style={styles.bar}>
               <label style={styles.content} htmlFor="bio">Add Members: </label>
-              {!this.state.isEditing && <div className="container" id="scrollableArea">
+              {!this.state.isEditing && this.state.isLoaded && <div className="container" id="scrollableArea">
                 <Form>
                 { dummy_contacts.map((contact) => {
                   return (
@@ -157,10 +166,12 @@ class CreateRoomForm extends React.Component {
                 })}
                 </Form>
               </div>}
-              <Upload
-                handleImages={this.handleImages}
-                images={this.state.images}
+              {this.state.isLoaded &&
+                <Upload
+                  handleImages={this.handleImages}
+                  images={this.state.images}
                 />
+              }
               </div>
             <button onClick={this.onSubmit} className="btn btn-primary">Create</button>
           </Col>

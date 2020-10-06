@@ -29,7 +29,6 @@ class StudyRoom extends React.Component {
               //have to remove images from the posts
               //delete study room
               var postArr = res.data.data;
-              console.log(postArr);
               for (var i in postArr) {
                 deleteImages(Object.values(postArr[i].images));
               }

@@ -1,28 +1,32 @@
 import axios from 'axios';
 import { deleteImages } from './ImageService';
 
-export function deleteStudyRoomPost(postId, images, callback1 = (res)=> {},
-callback2 = (err)=>{console.error(err)},
-callback3 = (res)=>{},
-callback4 = (res) => {},
-callback5 = (err) => {console.error(err)},
-callback6 = (err) => {console.error(err)}) {
-  axios.delete(`http://localhost:5000/studyroomposts/${postId}`)
-    .then(res => {
-      callback1(res);
-    })
-    .catch(err => {
-      callback2(err);
-    })
-    deleteImages(images, callback3, callback4, callback5, callback6);
+export async function deleteStudyRoomPost(postId, images,
+  callback1 = (err)=> {console.error(err)},
+  callback2= (err) =>{console.error(err)}) {
+  try {
+    await deleteImages(images, callback2);
+    var res = await axios.delete(`http://localhost:5000/studyroomposts/${postId}`)
+    return await res.data;
+  } catch(error) {
+    callback1(error);
+  }
 }
 
-export function findPostsByString(word, callback1 = (res)=>{}, callback2 = (err)=>{}) {
-  axios.get(`http://localhost:5000/studyroomposts/byKeyword/${this.props.id}/${this.state.searchKeyWord}`)
-    .then((res) => {
-      callback1(res);
-    })
-    .catch(err => {
-      callback2();
-    })
+export async function findPostsByString(roomId, word, callback1 = (err)=>{console.error(err)}) {
+  try {
+    var res = await axios.get(`http://localhost:5000/studyroomposts/byKeyword/${roomId}/${word}`)
+    return await res.data;
+  } catch(error) {
+    callback1(error);
+  }
+}
+
+export async function getAllRoomPosts(roomId, callback = (err)=>{console.error(err)}) {
+  try {
+    var res = await axios.get(`http://localhost:5000/studyroomposts/getByRoom/${roomId}`);
+    return res.data;
+  } catch (error) {
+    callback(error);
+  }
 }

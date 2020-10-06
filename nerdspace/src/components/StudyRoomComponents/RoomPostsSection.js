@@ -4,96 +4,90 @@ import { connect } from 'react-redux';
 import Post from './Post';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import { deleteStudyRoomPost } from '../../services/StudyRoomPostService';
+import { deleteStudyRoomPost, findPostsByString, getAllRoomPosts } from '../../services/StudyRoomPostService';
 
 class RoomPostsSection extends React.Component {
 
-    constructor() {
-      super();
-      this.state ={
-        posts: [],
-        searchKeyWord: ""
-      }
-      this.editPost = this.editPost.bind(this);
-      this.deletePost = this.deletePost.bind(this);
-      this.handleSearchInput = this.handleSearchInput.bind(this);
-      this.search = this.search.bind(this);
-      this.createPost = this.createPost.bind(this);
-      this.getAllRoomPosts = this.getAllRoomPosts.bind(this);
+  constructor() {
+    super();
+    this.state ={
+      posts: [],
+      searchKeyWord: ""
     }
+    this.editPost = this.editPost.bind(this);
+    this.deletePost = this.deletePost.bind(this);
+    this.handleSearchInput = this.handleSearchInput.bind(this);
+    this.search = this.search.bind(this);
+    this.createPost = this.createPost.bind(this);
+    this.getAllRoomPosts = this.getAllRoomPosts.bind(this);
+  }
 
-    componentDidMount() {
+  componentDidMount() {
+    this.getAllRoomPosts();
+  }
+
+  async getAllRoomPosts() {
+    var res = await getAllRoomPosts(this.props.id,
+      (err) => this.setState({posts:[]}));
+    var posts = await res.data;
+    this.setState({posts: await posts});
+  }
+
+  handleSearchInput(e) {
+    this.setState({searchKeyWord:e.currentTarget.value});
+  }
+
+  createPost() {
+    this.props.history.push({
+      pathname: `/createPost/${this.props.id}`,
+      state: {
+        id: this.props.id,
+        roomName: this.props.roomName,
+        imageUrl: this.props.imageUrl
+      }
+    });
+  }
+
+  async search() {
+    if (this.state.searchKeyWord !== "") {
+      var res = await findPostsByString(this.props.id,
+        this.state.searchKeyWord,
+      (err) => this.setState({posts:[]}));
+      var posts = await res.data;
+      this.setState({posts: await posts})
+    } else {
       this.getAllRoomPosts();
     }
+  }
 
-    getAllRoomPosts() {
-      axios.get(`http://localhost:5000/studyroomposts/getByRoom/${this.props.id}`)
-        .then(res => {
-          this.setState({posts: res.data.data});
-        })
-        .catch(err => {
-          this.setState({posts:[]});
-        });
-    }
-
-    handleSearchInput(e) {
-      this.setState({searchKeyWord:e.currentTarget.value});
-    }
-
-    createPost() {
-      this.props.history.push({
-        pathname: `/createPost/${this.props.id}`,
-        state: {
-          id: this.props.id,
-          roomName: this.props.roomName,
-          imageUrl: this.props.imageUrl
-        }
-      });
-    }
-
-    search() {
-      if (this.state.searchKeyWord !== "") {
-        axios.get(`http://localhost:5000/studyroomposts/byKeyword/${this.props.id}/${this.state.searchKeyWord}`)
-          .then((res) => {
-            console.log(res.data.data);
-            this.setState({posts: res.data.data});
-          })
-          .catch(err => {
-            this.setState({posts:[]});
-          })
-      } else {
-        this.getAllRoomPosts();
+  editPost(id, title, content, imageUrl) {
+    this.props.history.push({
+      pathname:`/createPost/${this.props.id}`,
+      state: {
+        key: id,
+        postImages: imageUrl,
+        title: title,
+        content: content,
+        id: this.props.id,
+        roomName: this.props.roomName,
+        imageUrl: this.props.imageUrl
       }
-    }
+    });
+  }
 
-    editPost(id, title, content, imageUrl) {
-      this.props.history.push({
-        pathname:`/createPost/${this.props.id}`,
-        state: {
-          key: id,
-          postImages: imageUrl,
-          title: title,
-          content: content,
-          id: this.props.id,
-          roomName: this.props.roomName,
-          imageUrl: this.props.imageUrl
-        }
-      });
-    }
+  async deletePost(id, images) {
+    await deleteStudyRoomPost(id, images);
+    this.getAllRoomPosts();
+  }
 
-    deletePost(id, images) {
-      deleteStudyRoomPost(id, images,
-        (res) => {this.getAllRoomPosts()});
-    }
-
-    render() {
-        return (
-        <div>
-          <div style={{display: "flex", marginTop: "30px"}}>
-            <FormControl onChange={this.handleSearchInput} type="text" placeholder="Search for posts" className="mr-sm-2" style={{maxWidth: "44vw"}}/>
-            <Button  variant="outline-primary"onClick={this.search} style={{marginRight: "20px"}}>Search</Button>
-            <Button variant="primary" onClick={this.createPost} style={{marginRight: "30px"}}>Create post</Button>
-          </div>
+  render() {
+      return (
+      <div>
+        <div style={{display: "flex", marginTop: "30px"}}>
+          <FormControl onChange={this.handleSearchInput} type="text" placeholder="Search for posts" className="mr-sm-2" style={{maxWidth: "44vw"}}/>
+          <Button  variant="outline-primary"onClick={this.search} style={{marginRight: "20px"}}>Search</Button>
+          <Button variant="primary" onClick={this.createPost} style={{marginRight: "30px"}}>Create post</Button>
+        </div>
           <Card style={styles.card}>
             <Card.Body>
               <Row>
