@@ -100,7 +100,7 @@ class RoomPostsSection extends React.Component {
               <Card.Title>Posts</Card.Title>
               {this.state.posts.map((post) => {
                 return <div key={post.key}>
-                <Post key={post.key}
+                <Post
                 id={post.key}
                 images={post.isThereImage? Object.values(post.imageUrl): []}
                 content={post.content}

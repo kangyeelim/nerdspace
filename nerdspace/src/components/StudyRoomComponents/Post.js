@@ -12,7 +12,7 @@ export default function Post(props) {
         <Card.Title>{props.title}</Card.Title>
         {props.content}
         {props.images.map(url => {
-            return <div>
+            return <div key={url}>
             <Image key={url} style={styles.image} src={url}/>
             </div>
           })}
