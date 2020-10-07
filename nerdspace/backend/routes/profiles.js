@@ -33,8 +33,8 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
   const educationLevel = req.params.educationlevel;
   const year = req.params.year;
   const interest = req.params.interest;
-  const name = "";
-  const email = "";
+  var name = "";
+  var email = "";
 
   db.ref('profiles')
   .orderByChild('interest')
@@ -44,6 +44,7 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
     snapshot.forEach(function (child) {
       var key = child.key;
       var data = child.val();
+      console.log(data.educationLevel + data.gender);
       if ((data.educationLevel == educationLevel && data.googleID != googleID) && (data.year == year && data.gender == gender)) {
 
         db.ref('users').orderByChild('googleID')

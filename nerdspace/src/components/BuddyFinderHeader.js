@@ -24,7 +24,9 @@ const styles = {
         padding: "2rem",
     },
     headerText: {
-        margin: "2rem"
+        margin: "2rem",
+        fontSize: 60, 
+        fontWeight: 600
     }
 }
 
