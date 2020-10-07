@@ -5,6 +5,8 @@ import axios from 'axios';
 import RequestNotification from './RequestNotification';
 import UserCard from './UserCard';
 
+const db = require('../../services/firebase').db;
+
 class RoomSideBar extends React.Component {
   constructor() {
     super();
@@ -23,14 +25,14 @@ class RoomSideBar extends React.Component {
     this.getAllMembers = this.getAllMembers.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getAllRoomRequests();
     this.getAllMembers();
   }
 
   //must switch this to become realtime viewing of requests
-  getAllRoomRequests() {
-    axios.get(`http://localhost:5000/studyroomrequests/byRoomID/${this.props.id}`)
+  async getAllRoomRequests() {
+    /*axios.get(`http://localhost:5000/studyroomrequests/byRoomID/${this.props.id}`)
       .then((response) => {
         var requests = response.data.data;
         if (requests.length > 0) {
@@ -43,7 +45,33 @@ class RoomSideBar extends React.Component {
       })
       .catch(err => {
         console.error(err);
-      })
+      })*/
+      var resArr = [];
+      try {
+        db.ref('studyRoomRequests')
+        .orderByChild('roomID')
+        .equalTo(this.props.id)
+        .on("value", function (snapshot) {
+          snapshot.forEach(function (child) {
+            var key = child.key;
+            var data = child.val();
+            resArr.push({
+              key: key,
+              roomID: data.roomID,
+              googleID: data.googleID
+            });
+          });
+        });
+        if (resArr.length > 0) {
+          var userInfo = resArr.map((req) => {
+            return this.retrieveUserInfo(req.googleID, req.key);
+          })
+        } else {
+          this.setState({userRequestInfo: []});
+        }
+      } catch(error) {
+        console.error(error);
+      }
   }
 
   getAllMembers() {
