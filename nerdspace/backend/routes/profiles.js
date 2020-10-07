@@ -35,11 +35,11 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
   const interest = req.params.interest;
   var resArr = [];
 
-  var userName;
-  var userEmail;
-  var userKey;
-  var userData;
-  var userArr;
+  var userName = "";
+  var userEmail = "";
+  // var userKey;
+  // var userData;
+  // var userArr;
 
   db.ref('profiles')
   .orderByChild('educationLevel')
@@ -53,33 +53,33 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
       var interestArr = Object.values(data.interests); 
       if ((interestArr.includes(interest) && data.googleID != googleID) && (data.year == year && data.gender == gender)) {
 
-        db.ref('users').orderByChild('googleID')
-          .equalTo(data.googleID)
-          .once('value', function (snapshot) {
+        // db.ref('users').orderByChild('googleID')
+        //   .equalTo(data.googleID)
+        //   .once('value', function (snapshot) {
             
-            snapshot.forEach(function (child, error) {
-              userKey = child.key;
-              userData = child.val();
+        //     snapshot.forEach(function (child, error) {
+        //       userKey = child.key;
+        //       userData = child.val();
 
-              userName = userData.name;
-              userEmail = userData.email;
-              userArr.unshift({
-                name: userData.name,
-                email: userData.name
-              })
-              // resArr.unshift({
-              //   key: key,
-              //   googleID: data.googleID,
-              //   educationLevel: data.educationLevel,
-              //   year: data.year,
-              //   gender: data.gender,
-              //   interest: data.interests,
-              //   name: userData.name,
-              //   email: userData.email
-              // });
-              console.log("THIS" +userData.name + userData.email);
-            });
-          })
+        //       userName = userData.name;
+        //       userEmail = userData.email;
+        //       userArr.unshift({
+        //         name: userData.name,
+        //         email: userData.name
+        //       })
+        //       // resArr.unshift({
+        //       //   key: key,
+        //       //   googleID: data.googleID,
+        //       //   educationLevel: data.educationLevel,
+        //       //   year: data.year,
+        //       //   gender: data.gender,
+        //       //   interest: data.interests,
+        //       //   name: userData.name,
+        //       //   email: userData.email
+        //       // });
+        //       console.log("THIS" +userData.name + userData.email);
+        //     });
+        //   })
           
 
           // userName = userArr.filter(el => el != null );
@@ -92,8 +92,8 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
           year: data.year,
           gender: data.gender,
           interest: data.interests,
-          name: userArr.name,
-          email: userArr.email
+          name: userName,
+          email: userEmail
         });
       }
     });
