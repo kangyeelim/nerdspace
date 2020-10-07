@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { IMAGE_API_URL } from './Urls';
 
 export async function deleteImages(images, callback =(err)=>{console.error(err)}) {
   if (images.length > 0) {
@@ -10,12 +11,12 @@ export async function deleteImages(images, callback =(err)=>{console.error(err)}
       var arr2 = last.split(".");
       var public_id = arr2[0];
       try {
-        var res = await axios.delete(`http://localhost:5000/images/byUrl/${public_id}`);
+        var res = await axios.delete(IMAGE_API_URL + `/byUrl/${public_id}`);
         var imageObjArr = await res.data.data;
-        await axios.post(`http://localhost:5000/images/delete`, {
+        await axios.post(IMAGE_API_URL + `/delete`, {
           images: imageObjArr
         });
-        return res.data;
+        return (await res).data;
       } catch (error) {
         callback(error);
       }
@@ -30,8 +31,8 @@ export async function getImage(url, callback=(err)=>{console.error(err)}) {
   var arr2 = last.split(".");
   var public_id = arr2[0];
   try {
-    var res = await axios.get(`http://localhost:5000/images/byUrl/${public_id}`);
-    return await res.data;
+    var res = await axios.get(IMAGE_API_URL + `/byUrl/${public_id}`);
+    return (await res).data;
   } catch (error) {
     callback(error);
   }
@@ -39,12 +40,12 @@ export async function getImage(url, callback=(err)=>{console.error(err)}) {
 
 export async function uploadImage(formData, callback = (err)=>{console.error(err)}) {
   try {
-    const res = await axios.post("http://localhost:5000/images/upload", formData, {
+    const res = await axios.post(IMAGE_API_URL + "/upload", formData, {
       headers: {
       'Content-Type': 'multipart/form-data'
       }
     })
-    return await res.data;
+    return (await res).data;
   } catch(error) {
     callback(error)
   }

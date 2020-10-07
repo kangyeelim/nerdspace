@@ -99,24 +99,10 @@ class CreatePostForm extends React.Component {
   }
 
   async deleteUnpostImages() {
-    /*axios.post('http://localhost:5000/images/delete', {
-      images: this.state.images
-    })
-      .catch(error => {
-        console.error(error);
-      });*/
-    deleteImages(this.state.images);
+    await deleteImages(this.state.images);
   }
 
   returnToRoom() {
-    /*this.props.history.push({
-      pathname:`/room/${this.props.location.state.id}`,
-      state: {
-        roomName: this.props.location.state.roomName,
-        imageUrl: this.props.location.state.imageUrl,
-        id: this.props.location.state.id
-      }
-    });*/
     enterRoom(this.props.history,
       this.props.location.state.id,
       this.props.location.state.imageUrl,

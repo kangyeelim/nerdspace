@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import NavBar from '../../components/NavBar';
 import '../General.css';
 import { Redirect } from 'react-router-dom';
-import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
+import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
 import RoomBox from '../../components/StudyRoomComponents/RoomBox';
 import TitleCard from '../../components/StudyRoomComponents/TitleCard';
 import RoomSideBar from '../../components/StudyRoomComponents/RoomSideBar';
@@ -11,12 +11,32 @@ import RoomPostsSection from '../../components/StudyRoomComponents/RoomPostsSect
 import axios from 'axios';
 import { deleteImages } from '../../services/ImageService';
 import { goToCreateRoomForm } from '../../navigators/StudyRoomNavigator';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { isRoomAccessibleToUser } from '../../services/Auth';
+import { getRoomDetails } from '../../services/StudyRoomService';
 
 class StudyRoom extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const roomID = props.match.params.id;
+    this.state = {
+      isAuthenticating: true,
+      isAuthenticated: false,
+      roomID: roomID,
+      roomName: null,
+      imageUrl: null
+    }
     this.leaveRoom = this.leaveRoom.bind(this);
     this.editRoom = this.editRoom.bind(this);
+  }
+
+  async componentDidMount() {
+    var isAuthenticated = await isRoomAccessibleToUser(this.props.profile[0].googleId,
+      this.state.roomID);
+    this.setState({isAuthenticated:await isAuthenticated});
+    var res = await getRoomDetails(this.state.roomID);
+    this.setState({roomName: (await res).data.name, imageUrl: (await res).data.imageUrl});
+    this.setState({isAuthenticating:false});
   }
 
   leaveRoom(id) {
@@ -77,19 +97,16 @@ class StudyRoom extends React.Component {
   }
 
   editRoom(id, name, image) {
-    /*this.props.history.push({
-      pathname:'/createStudyRoom',
-      state: {
-        id:id,
-        roomName: name,
-        imageUrl: image
-      }
-    })*/
     goToCreateRoomForm(this.props.history, id, name, image);
   }
 
   render() {
-    if (typeof this.props.location.state == 'undefined') {
+    if (this.state.isAuthenticating) {
+      return <Container>
+        <CircularProgress/>
+      </Container>
+    }
+    if (!this.state.isAuthenticated) {
       return <Redirect to="/community"/>;
     }
     return (
@@ -98,26 +115,26 @@ class StudyRoom extends React.Component {
         <div className='container'>
           <Col>
             <TitleCard
-              imageUrl={this.props.location.state.imageUrl}
-              roomName={this.props.location.state.roomName}
-              id={this.props.location.state.id}
+              imageUrl={this.state.imageUrl}
+              roomName={this.state.roomName}
+              id={this.state.roomID}
               leaveRoom={this.leaveRoom}
               editRoom={this.editRoom}
             />
             <Row>
               <Col md={11}>
                 <RoomPostsSection
-                  imageUrl={this.props.location.state.imageUrl}
-                  roomName={this.props.location.state.roomName}
-                  id={this.props.location.state.id}
+                  imageUrl={this.state.imageUrl}
+                  roomName={this.state.roomName}
+                  id={this.state.roomID}
                   history={this.props.history}
                 />
               </Col>
               <Col xs={1}>
                 <RoomSideBar
-                  imageUrl={this.props.location.state.imageUrl}
-                  roomName={this.props.location.state.roomName}
-                  id={this.props.location.state.id}
+                  imageUrl={this.state.imageUrl}
+                  roomName={this.state.roomName}
+                  id={this.state.roomID}
                 />
               </Col>
             </Row>
@@ -129,7 +146,6 @@ class StudyRoom extends React.Component {
 }
 
 const styles = {
-
 }
 
 const mapStateToProps = (state) => {

@@ -9,6 +9,7 @@ import TodoBox from '../components/TodoBox';
 import QuoteBox from '../components/QuoteBox';
 import './General.css';
 import axios from 'axios';
+import { enterRoom } from '../navigators/StudyRoomNavigator';
 
 class UserHome extends React.Component {
   constructor() {
@@ -47,19 +48,8 @@ class UserHome extends React.Component {
       })
   }
 
-  enterRoom(id, room, url) {
-    console.log(room);
-    console.log(id);
-    console.log(url);
-
-    this.props.history.push({
-      pathname:'/room',
-      state: {
-        roomName: room,
-        imageUrl: url,
-        id: id
-      }
-    });
+  enterRoom(id) {
+    enterRoom(this.props.history, id);
   }
 
   render() {

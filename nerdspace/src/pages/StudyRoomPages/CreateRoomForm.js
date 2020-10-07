@@ -6,8 +6,10 @@ import NavBar from '../../components/NavBar';
 import { Redirect } from 'react-router-dom';
 import './CreateRoomForm.css';
 import Upload from '../../components/StudyRoomComponents/Upload';
-import { getImage } from '../../services/ImageService';
+import { getImage, deleteImages } from '../../services/ImageService';
 import { enterRoom } from '../../navigators/StudyRoomNavigator';
+import { updateRoomDetails } from '../../services/StudyRoomService';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const DEFAULT_URL = "https://source.unsplash.com/aJnHSrgSWkk/1600x900";
 const dummy_contacts = [ {name: "michaela"}, {name: "evon"}, {name: "yenpeng"}];
@@ -36,7 +38,7 @@ class CreateRoomForm extends React.Component {
     console.log("should load all friends in contact list for adding into room");
 
     if (typeof this.props.location.state != 'undefined' &&
-    typeof this.props.location.state.name != 'undefined') {
+    typeof this.props.location.state.roomName != 'undefined') {
       var images = (await getImage(this.props.location.state.imageUrl)).data;
       this.setState({
         roomID:this.props.location.state.id,
@@ -59,13 +61,13 @@ class CreateRoomForm extends React.Component {
     this.setState({images:images});
   }
 
-  onSubmit() {
+  async onSubmit() {
     //create study room
     var imageUrl = DEFAULT_URL;
     if (this.state.images.length == 1) {
       imageUrl = this.state.images[0].secure_url;
     }
-    this.setState({isSubmitted: true}, () => {
+    this.setState({isSubmitted: true}, async () => {
       if (this.state.images.length <= 1 && !this.state.isEditing) {
         axios.post('http://localhost:5000/studyrooms/', {
           name: this.state.name,
@@ -78,18 +80,21 @@ class CreateRoomForm extends React.Component {
           this.setState({roomID: response.data.data});
         })
         .then(() => {
-          this.enterRoom(this.state.roomID, imageUrl, this.state.name);
+          this.enterRoom(this.state.roomID);
         })
         .catch(err => {
           console.error(err);
         });
       } else if (this.state.images.length <= 1 && this.state.isEditing) {
-        axios.post(`http://localhost:5000/studyrooms/updateInfo`, {
+        /*axios.post(`http://localhost:5000/studyrooms/updateInfo`, {
           key: this.state.roomID,
           name: this.state.name,
           imageUrl: imageUrl,
           isThereImage: (this.state.images.length == 1)
-        })
+        })*/
+        await updateRoomDetails(this.state.roomID, this.state.name,
+        imageUrl, this.state.images.length == 1);
+        this.enterRoom(this.state.roomID);
       } else {
         alert("Please choose only one image as the study room profile picture");
       }
@@ -103,13 +108,8 @@ class CreateRoomForm extends React.Component {
     }
   }
 
-  deleteUnpostImages() {
-    axios.post('http://localhost:5000/images/delete', {
-      images: this.state.images
-    })
-      .catch(error => {
-        console.error(error);
-      });
+  async deleteUnpostImages() {
+    await deleteImages(this.state.images);
   }
 
   addRoomIdToUser(roomID) {
@@ -123,12 +123,17 @@ class CreateRoomForm extends React.Component {
     })
   }
 
-  enterRoom(id, url, name) {
-    enterRoom(this.props.history, id, url, name);
+  enterRoom(id) {
+    enterRoom(this.props.history, id);
   }
 
 
   render() {
+    if (!this.state.isLoaded) {
+      return <Container>
+        <CircularProgress/>
+      </Container>
+    }
     return (
       <div>
         <NavBar history={this.props.history}/>
@@ -146,7 +151,7 @@ class CreateRoomForm extends React.Component {
               </div>
               <div className="input-group" style={styles.bar}>
               <label style={styles.content} htmlFor="bio">Add Members: </label>
-              {!this.state.isEditing && this.state.isLoaded && <div className="container" id="scrollableArea">
+              {!this.state.isEditing && <div className="container" id="scrollableArea">
                 <Form>
                 { dummy_contacts.map((contact) => {
                   return (
@@ -161,12 +166,10 @@ class CreateRoomForm extends React.Component {
                 })}
                 </Form>
               </div>}
-              {this.state.isLoaded &&
                 <Upload
                   handleImages={this.handleImages}
                   images={this.state.images}
                 />
-              }
               </div>
             <button onClick={this.onSubmit} className="btn btn-primary">Create</button>
           </Col>

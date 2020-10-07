@@ -1,12 +1,5 @@
-export function enterRoom(history, id, url, name) {
-  history.push({
-    pathname:`/room/${id}`,
-    state: {
-      roomName: name,
-      imageUrl: url,
-      id: id
-    }
-  });
+export function enterRoom(history, id) {
+  history.push(`/room/${id}`);
 }
 
 export function goToCreateRoomForm(history, id, name, image) {

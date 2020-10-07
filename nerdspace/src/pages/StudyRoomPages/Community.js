@@ -92,26 +92,14 @@ class Community extends React.Component {
   }
 
   searchRooms() {
-    console.log("search room");
-    axios.get(`http://localhost:5000/studyrooms/byKeyword/${this.state.keyword}`)
-      .then((response) => {
-        this.setState({rooms: response.data.data});
-      })
-      .catch(err => {
-        console.error(err);
-      })
+    var filteredRooms = this.state.rooms.filter(obj => {
+      return obj.name.toUpperCase().includes(this.state.keyword.toUpperCase());
+    });
+    this.setState({rooms:filteredRooms});
   }
 
-  enterRoom(id, room, url) {
-    /*this.props.history.push({
-      pathname:`/room/${id}`,
-      state: {
-        roomName: room,
-        imageUrl: url,
-        id: id
-      }
-    });*/
-    enterRoom(this.props.history, id, url, room);
+  enterRoom(id) {
+    enterRoom(this.props.history, id);
   }
 
   requestJoinRoom(id) {
@@ -164,7 +152,7 @@ class Community extends React.Component {
                 key={room.key}
                 id={room.key}
                 requestJoin={()=> this.requestJoinRoom(room.key)}
-                enter={() => this.enterRoom(room.key, room.name, room.imageUrl)}
+                enter={() => this.enterRoom(room.key)}
                 imageUrl={room.imageUrl}/>
             );
           })}
