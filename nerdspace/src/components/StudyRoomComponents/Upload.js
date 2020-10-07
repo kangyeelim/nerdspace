@@ -26,45 +26,24 @@ class Upload extends React.Component {
 
   async uploadImage(e) {
     this.setState({isUploading: true});
+
     const selectedFile = e.target.files[0];
     const data = new FormData();
     data.append('file', selectedFile);
-    /*try {
-      const response = await axios.post("http://localhost:5000/images/upload", data, {
-        headers: {
-        'Content-Type': 'multipart/form-data'
-        }
-      })
-      const imageData = await response.data;
-      this.setState({images: this.state.images.concat(imageData)});
-      this.props.handleImages(this.state.images);
-      this.setState({isUploading: false});
-    } catch(error) {
-      this.setState({isUploading: false});
-      console.error(error);
-    }*/
-    var imageData = await uploadImage(data, (err)=>{this.setState({isUploading: false})});
+    var imageData = await uploadImage(data,
+      (err)=>{this.setState({isUploading: false})});
+
     this.setState({images: this.state.images.concat(await imageData)});
     this.props.handleImages(this.state.images);
+
     this.setState({isUploading:false});
   }
 
   async handleRemove(imageData) {
     var arr = [];
     arr.push(imageData.secure_url);
-    /*axios.post('http://localhost:5000/images/delete', {
-      images: arr
-    })
-      .then(res => {
-        var updatedState = this.state.images.filter(image => image !== imageData);
-        this.setState({images:updatedState});
-        this.props.handleImages(this.state.images);
-        console.log("Removed image");
-      })
-      .catch(error => {
-        console.error(error);
-      });*/
     var res = await deleteImages(arr);
+    
     var updatedState = this.state.images.filter(image => image !== imageData);
     this.setState({images:updatedState});
     this.props.handleImages(this.state.images);
