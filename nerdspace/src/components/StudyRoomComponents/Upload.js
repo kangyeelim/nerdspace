@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { uploadImage, deleteImages } from '../../services/ImageService';
 
 class Upload extends React.Component {
   constructor() {
@@ -28,7 +29,7 @@ class Upload extends React.Component {
     const selectedFile = e.target.files[0];
     const data = new FormData();
     data.append('file', selectedFile);
-    try {
+    /*try {
       const response = await axios.post("http://localhost:5000/images/upload", data, {
         headers: {
         'Content-Type': 'multipart/form-data'
@@ -41,13 +42,17 @@ class Upload extends React.Component {
     } catch(error) {
       this.setState({isUploading: false});
       console.error(error);
-    }
+    }*/
+    var imageData = await uploadImage(data, (err)=>{this.setState({isUploading: false})});
+    this.setState({images: this.state.images.concat(await imageData)});
+    this.props.handleImages(this.state.images);
+    this.setState({isUploading:false});
   }
 
-  handleRemove(imageData) {
+  async handleRemove(imageData) {
     var arr = [];
-    arr.push(imageData);
-    axios.post('http://localhost:5000/images/delete', {
+    arr.push(imageData.secure_url);
+    /*axios.post('http://localhost:5000/images/delete', {
       images: arr
     })
       .then(res => {
@@ -58,7 +63,11 @@ class Upload extends React.Component {
       })
       .catch(error => {
         console.error(error);
-      });
+      });*/
+    var res = await deleteImages(arr);
+    var updatedState = this.state.images.filter(image => image !== imageData);
+    this.setState({images:updatedState});
+    this.props.handleImages(this.state.images);
   }
 
   render() {

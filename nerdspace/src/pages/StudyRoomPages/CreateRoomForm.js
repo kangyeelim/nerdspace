@@ -34,6 +34,7 @@ class CreateRoomForm extends React.Component {
 
   async componentDidMount() {
     console.log("should load all friends in contact list for adding into room");
+
     if (typeof this.props.location.state != 'undefined' &&
     typeof this.props.location.state.name != 'undefined') {
       var images = (await getImage(this.props.location.state.imageUrl)).data;
@@ -123,14 +124,6 @@ class CreateRoomForm extends React.Component {
   }
 
   enterRoom(id, url, name) {
-    /*this.props.history.push({
-      pathname:`/room/${id}`,
-      state: {
-        roomName: name,
-        imageUrl: url,
-        id: id
-      }
-    });*/
     enterRoom(this.props.history, id, url, name);
   }
 

@@ -36,3 +36,16 @@ export async function getImage(url, callback=(err)=>{console.error(err)}) {
     callback(error);
   }
 }
+
+export async function uploadImage(formData, callback = (err)=>{console.error(err)}) {
+  try {
+    const res = await axios.post("http://localhost:5000/images/upload", formData, {
+      headers: {
+      'Content-Type': 'multipart/form-data'
+      }
+    })
+    return await res.data;
+  } catch(error) {
+    callback(error)
+  }
+}
