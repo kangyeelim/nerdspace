@@ -5,6 +5,7 @@ import '../General.css';
 import { Col, Row, Form, Button, FormControl } from 'react-bootstrap';
 import RoomBox from '../../components/StudyRoomComponents/RoomBox';
 import axios from 'axios';
+import { enterRoom } from '../../navigators/StudyRoomNavigator';
 
 const stub = [ {id:1, name:"GP resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
 {id:2, name:"A Maths resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
@@ -29,9 +30,14 @@ class Community extends React.Component {
     this.hasAccess = this.hasAccess.bind(this);
     this.getAllRooms = this.getAllRooms.bind(this);
     this.getAllRequestedRooms = this.getAllRequestedRooms.bind(this);
+    this.loadAndApplyStatusToRooms = this.loadAndApplyStatusToRooms.bind(this);
   }
 
   componentDidMount() {
+    this.loadAndApplyStatusToRooms();
+  }
+
+  loadAndApplyStatusToRooms() {
     axios.get(`http://localhost:5000/users/byGoogleID/${this.props.profile[0].googleId}`)
       .then((response) => {
         if (response.data.data[0].rooms != null) {
@@ -78,7 +84,7 @@ class Community extends React.Component {
   }
 
   makeNewRoom() {
-
+    this.props.history.push('/createStudyRoom');
   }
 
   keywordInput(e) {
@@ -86,18 +92,14 @@ class Community extends React.Component {
   }
 
   searchRooms() {
-    console.log("search room");
+    var filteredRooms = this.state.rooms.filter(obj => {
+      return obj.name.toUpperCase().includes(this.state.keyword.toUpperCase());
+    });
+    this.setState({rooms:filteredRooms});
   }
 
-  enterRoom(id, room, url) {
-    this.props.history.push({
-      pathname:'/room',
-      state: {
-        roomName: room,
-        imageUrl: url,
-        id: id
-      }
-    });
+  enterRoom(id) {
+    enterRoom(this.props.history, id);
   }
 
   requestJoinRoom(id) {
@@ -107,8 +109,10 @@ class Community extends React.Component {
     })
     .then((response) => {
       var roomID = response.data.data.roomID;
-      this.setState({requestedRooms:this.state.requestedRooms.push(roomID)});
+      this.state.requestedRooms.push(roomID)
+      this.setState({requestedRooms:this.state.requestedRooms});
       alert("Request to join room sent! You will have access once the request is accepted by the members.");
+      this.loadAndApplyStatusToRooms();
     })
     .catch(err => {
       console.error(err);
@@ -128,14 +132,16 @@ class Community extends React.Component {
       <div>
         <NavBar history={this.props.history}/>
         <div className='container'>
-          <Col>
+          <Col style={{width:"100vw"}}>
+          <h2 style={styles.heading}>Community of Study Groups</h2>
           <Form className="ml-auto">
             <div style={styles.form}>
               <FormControl type="text"
                 placeholder="Search"
                 className="mr-sm-2"
                 onChange={this.keywordInput}/>
-              <Button onClick={this.searchRooms}>Submit</Button>
+              <Button onClick={this.searchRooms}>Search</Button>
+              <Button style={styles.button} onClick={this.getAllRooms}>Show All</Button>
               <Button style={styles.button} onClick={this.makeNewRoom}>New Room</Button>
             </div>
           </Form>
@@ -147,7 +153,7 @@ class Community extends React.Component {
                 key={room.key}
                 id={room.key}
                 requestJoin={()=> this.requestJoinRoom(room.key)}
-                enter={() => this.enterRoom(room.key, room.name, room.imageUrl)}
+                enter={() => this.enterRoom(room.key)}
                 imageUrl={room.imageUrl}/>
             );
           })}
@@ -169,6 +175,10 @@ const styles = {
     display: "flex",
     justifyContent:'center',
     minWidth: "120px"
+  },
+  heading: {
+    marginRight: "-30%",
+    marginBottom: "40px"
   }
 }
 

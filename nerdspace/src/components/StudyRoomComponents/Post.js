@@ -11,20 +11,27 @@ export default function Post(props) {
 
         <Card.Title>{props.title}</Card.Title>
         {props.content}
-        <Row style={{marginLeft: 10, marginRight:10, alignSelf:'right'}}>
-          <Col>
-          </Col>
-          <Col md="auto">
-            <a onClick={() => props.editPost(props.id)}>
-              <FontAwesomeIcon className="icon" icon={faEdit} style={{alignSelf:'right'}}/>
-            </a>
-          </Col>
-          <Col md="auto">
-            <a onClick={() => props.deletePost(props.id)}>
-              <FontAwesomeIcon className="icon" icon={faTrashAlt} style={{alignSelf:'right'}}/>
-            </a>
-          </Col>
-        </Row>
+        {props.images.map(url => {
+            return <div key={url}>
+            <Image key={url} style={styles.image} src={url}/>
+            </div>
+          })}
+        {props.canEditAndDelete && (
+          <Row style={{marginLeft: 10, marginRight:10, alignSelf:'right'}}>
+            <Col>
+            </Col>
+            <Col md="auto">
+              <a onClick={() => props.editPost(props.id, props.title, props.content, props.images)}>
+                <FontAwesomeIcon className="icon" icon={faEdit} style={{alignSelf:'right'}}/>
+              </a>
+            </Col>
+            <Col md="auto">
+              <a onClick={() => props.deletePost(props.id, props.images)}>
+                <FontAwesomeIcon className="icon" icon={faTrashAlt} style={{alignSelf:'right'}}/>
+              </a>
+            </Col>
+          </Row>
+        )}
       </Card.Body>
     </Card>
   );
@@ -41,9 +48,8 @@ const styles = {
     marginTop: "10px"
   },
   image: {
-    width: "100px",
-    height: "100px",
-    borderRadius: "50%",
-    marginLeft: "20px"
+    width: "55vw",
+    height: "auto",
+    marginTop: "30px"
   }
 }
