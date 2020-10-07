@@ -24,6 +24,48 @@ export default function BuddyResult(props) {
             </Row>
         </Card.Body>
     </Card>
+      //   <MDBContainer>
+      //   <MDBCardGroup deck style={{flex: 1, flexWrap:"wrap"}}>
+      //     <MDBCard>
+      //       <MDBCardBody>
+      //         <Card.Img variant="top" src="https://images.unsplash.com/photo-1472457897821-70d3819a0e24?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1949&q=80" />
+      //         <MDBCardTitle tag="h5">Panel title</MDBCardTitle>
+      //         <MDBCardText>
+      //           <h5>Gender: {props.gender}</h5>
+      //           <h5>{props.educationLevel}</h5>
+      //           <h5>Year Of study: {props.yearOfStudy}</h5>
+      //         </MDBCardText>
+      //       </MDBCardBody>
+      //       <MDBCardFooter medium muted>
+      //         <Row style={{marginLeft: 10, marginRight:10, alignSelf:'right'}}>
+      //           <Col md="auto">
+      //             <a onClick={() => props.deletePost(props.id)}>
+      //               <FontAwesomeIcon className="icon" icon={faTrashAlt} style={{alignSelf:'right'}}/>
+      //             </a>
+      //           </Col>
+      //           <Col md="auto">
+      //             <a onClick={() => props.submitPost(props.id)}>
+      //               <FontAwesomeIcon icon={faPaperPlane} style={{alignSelf:'right'}}/>
+      //             </a>
+      //           </Col>
+      //         </Row>
+      //       </MDBCardFooter>
+      //     </MDBCard>
+      //     <MDBCard>
+      //       <MDBCardBody>
+      //         <MDBCardTitle tag="h5">Panel title</MDBCardTitle>
+      //         <MDBCardText>
+      //           This is a wider panel with supporting text below as a natural
+      //           lead-in to additional content. This panel has even longer
+      //           content than the first to show that equal height action.
+      //         </MDBCardText>
+      //       </MDBCardBody>
+      //       <MDBCardFooter small muted>
+      //         Last updated 3 mins ago
+      //       </MDBCardFooter>
+      //     </MDBCard>
+      //   </MDBCardGroup>
+      // </MDBContainer>
   );
 }
 

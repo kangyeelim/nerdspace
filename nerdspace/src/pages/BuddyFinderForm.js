@@ -101,7 +101,7 @@ class BuddyFinderForm extends React.Component {
                                         label="Male"
                                         name="gender"
                                         id="gender"
-                                        value="male"
+                                        value="Male"
                                         onChange={this.handleInputChange}
                                         />
                                         <Form.Check
@@ -109,7 +109,7 @@ class BuddyFinderForm extends React.Component {
                                         label="Female"
                                         name="gender"
                                         id="gender"
-                                        value="female"
+                                        value="Female"
                                         onChange={this.handleInputChange}
                                         />
                                     </Col>
