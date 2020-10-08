@@ -1,4 +1,6 @@
 import React from "react";
+import axios from 'axios';
+
 import { Card, Button, Row, Col, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Contacts from './Contacts';
@@ -8,25 +10,24 @@ import "./Chat.css";
 const db = require('../firebase').db;
 
 class ContactsSection extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             contacts: [],
+            user: props.profile[0].googleId,
         }
     }
 
     async componentDidMount() {
-        try {
-            db.ref('contacts').on("value", snapshot => {
-                let contacts = [];
-                snapshot.forEach(contact => {
-                    contacts.push(contact);
-                });
-                this.setState({ contacts });
-            });
-        } catch (error) {
-            console.log("Read error");
-        }
+        axios.get('http://localhost:5000/contacts', {
+            params: {
+                id: this.state.user
+            }
+        }).catch(err => {
+            console.error(err);
+        }).then(response => {
+            this.setState({ contacts: response.data.contacts });
+        });
     }
 
     render() {
@@ -34,12 +35,10 @@ class ContactsSection extends React.Component {
             <div>
                 <ul className="contacts">
                     {this.state.contacts.map((contact) => {
-                        let ctct = contact.val();
                         return <Contacts
-                            key={contact.key}
-                            id={contact.key}
-                            title={ctct.name}
-                            type={ctct.type}/>;
+                            key={contact.id}
+                            id={contact.id}
+                            title={contact.name}/>;
                     })}
                 </ul>
             </div>

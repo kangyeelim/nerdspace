@@ -18,7 +18,7 @@ const studyRoomRequestsRouter = require('./routes/studyRoomRequests');
 const profilesRouter = require('./routes/profiles');
 const buddyFinderRouter = require('./routes/buddyFinderPosts');
 const messageRouter = require('./routes/message');
-
+const contactRouter = require('./routes/contacts');
 
 app.use('/users', usersRouter);
 app.use('/studyroomposts', studyRoomPostsRouter);
@@ -27,6 +27,7 @@ app.use('/studyroomrequests', studyRoomRequestsRouter);
 app.use('/profiles', profilesRouter);
 app.use('/buddyfinderposts', buddyFinderRouter);
 app.use('/message', messageRouter);
+app.use('/contacts', contactRouter);
 
 //starts server
 app.listen(port, () => {

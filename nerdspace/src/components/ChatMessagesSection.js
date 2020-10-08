@@ -23,7 +23,6 @@ class ChatMessagesSection extends React.Component {
             db.ref('messages').child(this.state.room).on("value", snapshot => {
                 let messages = [];
                 snapshot.forEach(message => {
-                    console.log(message);
                     messages.push(message);
                 });
                 this.setState({ messages });
