@@ -12,25 +12,74 @@ class BuddyFinderResult extends React.Component {
     constructor() {
         super();
         this.state = {
-            results: []
+            results: [],
+            isLoading: true
           }
         this.goToBuddyFinder = this.goToBuddyFinder.bind(this);
+        this.sendMessage = this.sendMessage.bind(this);
+        // this.getUserData = this.getUserData.bind(this);
     }
 
-    componentDidMount() {
-        axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.gender}/${this.props.educationLevel}/${this.props.yearOfStudy}/${this.props.interest}`)
+    async componentDidMount() {
+        var matchingRes = [];
+        // var results = [];
+        axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
         .then(res => {
-            this.setState({posts: res.data.data});
-          });
+            console.log(res);
+            matchingRes = res.data.data;
+            matchingRes.forEach(matchRes => {
+                var googleID = matchRes.googleID;
+                var name = "";
+                var email = "";
+                axios.get(`http://localhost:5000/users/byGoogleID/${googleID}`)
+                  .then(profileRes => {
+                    matchRes.name = profileRes.name;
+                    matchRes.email  = profileRes.email;
+                      })
+                    //   matchRes.name = name;
+                    //   matchRes.email = email;
+                  })
+                  
+                  
+                //axios to get the the user obj from db using googleID
+                //add the name and email to the res obj
+                //add res to the results array
+              })
+              
+            this.setState({results: matchingRes});
+            this.setState({isLoading: false});
+            //this.setState({results: res.data.data});
+            // this.setState({results: res.docs.data});
+        //   });
+        //   this.setState({isLoading: true});
+        // this.getUserData();
     }
 
     goToBuddyFinder() {
         this.props.history.push('/buddy-finder');
     }
 
-    // handleGenderInput(event) {
-    //     this.setState({gender:event.currentTarget.value});
-    //     console.log(event.currentTarget.value);
+    sendMessage() {
+
+    }
+
+    // async getUserData() {
+    //     this.state.results.forEach(matchRes => {
+    //         var googleID = matchRes.googleID;
+    //         axios.get(`http://localhost:5000/users/byGoogleID/${googleID}/`)
+    //           .then(profileRes => {
+    //               matchRes.push({
+    //                   name: profileRes.name,
+    //                   email: profileRes.email
+    //               })
+    //           })
+              
+    //         //axios to get the the user obj from db using googleID
+    //         //add the name and email to the res obj
+    //         //add res to the results array
+    //       })
+    //       this.setState({isLoading: false});
+    //       console.log("DONEE");
     // }
 
     render() {
@@ -39,12 +88,12 @@ class BuddyFinderResult extends React.Component {
                 <NavBar history={this.props.history}/>
                 <div style={styles.container}>
                     <div style={styles.header}>
-                        <h1 style={styles.headerText}><strong>Results</strong></h1> 
+                        <h1 style={styles.headerText}><strong>Results</strong></h1>
                         <Button variant="primary" onClick={this.props.goToBuddyFinder}>Return to Buddy Finder main page</Button>
                     </div>
                     <CardDeck>
                         <Card>
-                        {this.state.results.map((result) => {
+                        {!this.state.isLoading && this.state.results.map((result) => {
                             return <BuddyResult
                             key={result.key}
                             id={result.key}
@@ -60,7 +109,7 @@ class BuddyFinderResult extends React.Component {
             </div>
         )
     }
-    
+
 }
 
 const styles = {

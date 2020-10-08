@@ -11,7 +11,7 @@ class BuddyFinderPostsSection extends React.Component {
     constructor() {
         super();
         this.state = {
-            forms: []
+            forms: [],
         }
 
         this.submitPost = this.submitPost.bind(this);
@@ -20,12 +20,12 @@ class BuddyFinderPostsSection extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:5000/buddyfinderposts`)
+        axios.get(`http://localhost:5000/buddyfinderposts/byGoogleID/${this.props.profile[0].googleId}`)
           .then(res => {
-            this.setState({posts: res.data.data});
+            this.setState({ forms: res.data.data });
           });
-      }
-
+    }
+    
     submitPost(id) {
 
     }
@@ -40,14 +40,17 @@ class BuddyFinderPostsSection extends React.Component {
                 <Card.Body>
                     <Row>
                         <Col>
-                            <Card.Title>Saved Forms</Card.Title>
+                            <Card.Title style={{fontSize: 50, fontWeight: 600}}>Saved Forms</Card.Title>
                             {this.state.forms.map((form) => {
                                 return <BuddyPost
                                 key={form.key}
                                 id={form.key}
-                                content={form.content}
-                                title={form.title}
-                                submitPost={form.submitPost}/>;
+                                gender={form.gender}
+                                educationLevel={form.educationLevel}
+                                yearOfStudy={form.yearOfStudy}
+                                interest={form.interest}
+                                submitPost={this.submitPost}
+                                deletePost={this.deletePost}/>;
                             })}
                         </Col>
                     </Row>

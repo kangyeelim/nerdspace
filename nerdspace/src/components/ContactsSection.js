@@ -7,7 +7,7 @@ import Contacts from './Contacts';
 import "./Chat.css";
 
 
-const db = require('../firebase').db;
+const db = require('../services/firebase').db;
 
 class ContactsSection extends React.Component {
     constructor(props) {

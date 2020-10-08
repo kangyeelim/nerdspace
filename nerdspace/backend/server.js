@@ -17,6 +17,7 @@ const studyRoomsRouter = require('./routes/studyRooms');
 const studyRoomRequestsRouter = require('./routes/studyRoomRequests');
 const profilesRouter = require('./routes/profiles');
 const buddyFinderRouter = require('./routes/buddyFinderPosts');
+const imagesRouter = require('./routes/images');
 const messageRouter = require('./routes/message');
 const contactRouter = require('./routes/contacts');
 
@@ -26,6 +27,7 @@ app.use('/studyrooms', studyRoomsRouter);
 app.use('/studyroomrequests', studyRoomRequestsRouter);
 app.use('/profiles', profilesRouter);
 app.use('/buddyfinderposts', buddyFinderRouter);
+app.use('/images', imagesRouter);
 app.use('/message', messageRouter);
 app.use('/contacts', contactRouter);
 

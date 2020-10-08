@@ -30,7 +30,7 @@ router.route('/').get((req, res) => {
 router.route('/byGoogleID/:id').get((req, res) => {
   const googleID = req.params.id;
   db.ref('users')
-  .orderByChild('googleID')
+  .orderByChild("googleID")
   .equalTo(googleID)
   .once("value", function(snapshot, error) {
     if (snapshot.exists()) {
@@ -38,6 +38,7 @@ router.route('/byGoogleID/:id').get((req, res) => {
       snapshot.forEach(function (child) {
         var key = child.key;
         var data = child.val();
+
         resArr.push({
           key: key,
           name: data.name,
@@ -53,12 +54,14 @@ router.route('/byGoogleID/:id').get((req, res) => {
         message: 'GET success'
       });
     } else {
+      console.log("here");
+
       res.send({
         message: 'User does not exist.'
       })
     }
   })
-})
+});
 
 router.route('/').post((req, res) => {
   const googleID = req.body.googleID;
@@ -124,6 +127,40 @@ router.route('/addRoomID').post((req, res) => {
       })
     }
   });
+});
+
+router.route('/removeRoom/:roomID/:googleID').delete((req, res) => {
+  const roomID = req.params.roomID;
+  const googleID = req.params.googleID;
+  db.ref('users')
+  .orderByChild('googleID')
+  .equalTo(googleID)
+  .once('value', function(snapshot, error) {
+    if (snapshot.exists()) {
+      snapshot.forEach(function (child) {
+        var key = child.key;
+        var ref = db.ref('users').child(key).child('rooms');
+        var query = ref.orderByKey();
+        query.once('value', function(snapshot) {
+          snapshot.forEach(function(childSnapshot) {
+            var pkey = childSnapshot.key;
+            var chval = childSnapshot.val();
+            if (chval == roomID) {
+              ref.child(pkey).remove(function (error) {
+                if (error) {
+                  res.send(error);
+                } else {
+                  res.send({
+                    message: 'DELETE ROOMID success'
+                  });
+                }
+              });
+            }
+          });
+        });
+      })
+    }
+  })
 });
 
 

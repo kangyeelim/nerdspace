@@ -1,0 +1,7 @@
+#scrollableArea {
+  border:2px
+  solid #ccc;
+  width:300px;
+  height: 300px;
+  overflow-y: scroll;
+}

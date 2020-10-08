@@ -13,7 +13,8 @@ import UserHome from './pages/UserHome';
 import Community from './pages/StudyRoomPages/Community';
 import StudyRoom from './pages/StudyRoomPages/StudyRoom';
 import Profile from './pages/Profile';
-//import CreatePostForm from './pages/CreatePostForm';
+import CreatePostForm from './pages/StudyRoomPages/CreatePostForm';
+import CreateRoomForm from './pages/StudyRoomPages/CreateRoomForm';
 import ChatRoom from './pages/ChatRoom';
 
 function App() {
@@ -27,8 +28,10 @@ function App() {
           <Route exact path="/buddy-finder-result" component={BuddyFinderResult}/>
           <Route exact path="/home" component={UserHome}/>
           <Route exact path="/community" component={Community}/>
-          <Route exact path="/room" component={StudyRoom}/>
+          <Route exact path="/room/:id?" component={StudyRoom}/>
           <Route exact path="/account" component={Profile}/>
+          <Route exact path="/createPost/:id?" component={CreatePostForm}/>
+          <Route exact path="/createStudyRoom" component={CreateRoomForm}/>
           <Route exact path="/chat/:id?" component={ChatRoom} />
         </Switch>
       </Router>
