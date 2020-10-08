@@ -15,6 +15,32 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/').post((req, res) => {
+    let ref = db.ref("contacts").push();
+    let key = ref.getKey();
+
+    if (req.body.type == "dm") {
+        ref.set({
+            user1Id: req.body.user1Id,
+            user2Id: req.body.user2Id,
+            type: "dm"
+        });
+
+        db.ref("userChat").push().set({
+            chatID: key,
+            id: req.body.user1d
+        });
+
+        db.ref("userChat").push().set({
+            chatID: key,
+            id: req.body.user2d
+        });
+    } else {
+        ref.set({
+            type: "group",
+            name: req.body.name
+        });
+    }
+    
     res.send({
         message: "POST success"
     });
@@ -63,14 +89,16 @@ async function getContacts(id, userId) {
         } else {
             let u1 = snapshot.val().user1Id;
             if (u1 == userId) {
+                let name = await getName(snapshot.val().user2Id)
                 let obj = {
-                    name: snapshot.val().user2Name,
+                    name: name,
                     id: id
                 };
                 return obj;
             } else {
+                let name = await getName(snapshot.val().user1Id)
                 let obj = {
-                    name: snapshot.val().user1Name,
+                    name: name,
                     id: id
                 };
                 return obj;
@@ -79,6 +107,25 @@ async function getContacts(id, userId) {
     } else {
         return [];
     }
+}
+
+async function getName(id) {
+    let name = '';
+
+    var snapshot = await db.ref('users')
+        .orderByChild("googleID")
+        .equalTo(id)
+        .once('value');
+
+    if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+            name = childSnapshot.val().name;
+        });
+    } else {
+        return "Not found";
+    }
+
+    return name;
 }
 
 module.exports = router;
