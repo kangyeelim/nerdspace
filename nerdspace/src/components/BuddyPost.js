@@ -26,7 +26,7 @@ export default function BuddyPost(props) {
                 </a>
               </Col>
               <Col md="auto">
-                <a onClick={() => props.submitPost(props.id)}>
+                <a onClick={() => props.submitPost(props.id, props.gender, props.educationLevel, props.yearOfStudy, props.interest)}>
                   <FontAwesomeIcon icon={faPaperPlane} style={{alignSelf:'right'}}/>
                 </a>
               </Col>

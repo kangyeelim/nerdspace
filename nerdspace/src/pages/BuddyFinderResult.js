@@ -68,7 +68,7 @@ class BuddyFinderResult extends React.Component {
     }
 
     sendMessage() {
-
+        console.log("Sending message...")
     }
 
     // async getUserData() {

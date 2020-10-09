@@ -88,7 +88,6 @@ router.route('/').post((req, res) => {
 
 router.route('/:id').delete((req, res) => {
     const key = req.params.id;
-    console.log("Deelete:" + key);
     db.ref('buddyFinderPosts').child(key).remove(
         function (error) {
             if (error) {

@@ -27,7 +27,6 @@ class BuddyFinderPostsSection extends React.Component {
     }
     
     async submitPost(id, gender, educationLevel, yearOfStudy, interest) {
-        console.log(gender + educationLevel + interest + id + "THISS");
         this.props.history.push({
             pathname:'/buddy-finder-result',
             state: {
@@ -38,7 +37,6 @@ class BuddyFinderPostsSection extends React.Component {
                 googleID: this.props.profile[0].googleId
             }
         });
-        console.log(gender + educationLevel + interest + id + "THISS");
     }
 
     async deletePost(id) {
