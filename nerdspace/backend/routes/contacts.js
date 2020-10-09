@@ -27,14 +27,15 @@ router.route('/').post((req, res) => {
 
         db.ref("userChat").push().set({
             chatID: key,
-            id: req.body.user1d
+            googleID: req.body.user1Id
         });
 
         db.ref("userChat").push().set({
             chatID: key,
-            id: req.body.user2d
+            googleID: req.body.user2Id
         });
     } else {
+        //TODO: Add to userChat
         ref.set({
             type: "group",
             name: req.body.name
@@ -61,7 +62,7 @@ async function getChatId(id) {
     let notes = [];
 
     var snapshot = await db.ref('userChat')
-        .orderByChild("id")
+        .orderByChild("googleID")
         .equalTo(id)
         .once('value');
 
@@ -69,6 +70,8 @@ async function getChatId(id) {
         snapshot.forEach((childSnapshot) => {
             notes.push(childSnapshot.val().chatID);
         });
+    } else {
+        notes.push("nothing");
     }
 
     return notes;

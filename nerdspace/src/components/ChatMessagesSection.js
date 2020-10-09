@@ -42,7 +42,7 @@ class ChatMessagesSection extends React.Component {
                                 key={message.key}
                                 user={this.state.user}
                                 username={msg.username}
-                                senderId={msg.senderId}
+                                senderId={msg.googleID}
                                 message={msg.message}
                                 timestamp={msg.timestamp}/>;
                     })}
