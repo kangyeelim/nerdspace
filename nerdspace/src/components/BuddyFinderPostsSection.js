@@ -79,7 +79,13 @@ class BuddyFinderPostsSection extends React.Component {
 }
 
 const styles = {
-
+    card: {
+        minWidth: "70vw",
+        display: "inline-block",
+        verticalAlign: "middle",
+        flexDirection: "column",
+        justifyContent: "center",
+    }
 }
 
 const mapStateToProps = (state) => {

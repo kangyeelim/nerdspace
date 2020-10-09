@@ -6,9 +6,9 @@ import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardFooter, MDBCard
 
 export default function BuddyPost(props) {
   return (
-    <MDBContainer>
-      <MDBCardGroup deck style={{flex: 1, flexDirection: "row", flexWrap: "wrap", alignSelf:'right'}}>
-        <MDBCard style={{ width: "22rem", marginTop: "1rem" }}>
+    <MDBContainer style={{ minWidth: "50vw" }}>
+      <MDBCardGroup deck style={{alignSelf:'center', textAlign: "center", justifyContent: 'center'}}>
+        <MDBCard style={{ width: "60rem", marginTop: "1rem" }}>
           <MDBCardBody>
             <MDBCardTitle tag="h2" style={{fontSize: 40, fontWeight: 600}}>Form {props.id}</MDBCardTitle>
 
@@ -19,7 +19,7 @@ export default function BuddyPost(props) {
 
           </MDBCardBody>
           <MDBCardFooter small muted>
-            <Row style={{marginLeft: 10, marginRight:10, alignSelf:'right'}}>
+            <Row style={{marginLeft: 10, marginRight:10, alignSelf:'center'}}>
               <Col md="auto">
                 <a onClick={() => props.deletePost(props.id)}>
                   <FontAwesomeIcon className="icon" icon={faTrashAlt} style={{alignSelf:'right'}}/>
@@ -49,11 +49,11 @@ const styles = {
 //     marginTop: "10px"
 //   },
 
-  card: {
-    width: '18rem',
-    height: "auto",
-    borderRadius: "10%",
-    backgroundColor: "#A9A9A9",
-    marginLeft: 0
-  }
+  // card: {
+  //   width: '18rem',
+  //   height: "auto",
+  //   borderRadius: "10%",
+  //   backgroundColor: "#A9A9A9",
+  //   marginLeft: 0
+  // }
 }
