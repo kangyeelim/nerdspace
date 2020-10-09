@@ -32,7 +32,7 @@ class BuddyFinder extends React.Component {
                 <div style={styles.container}>
                     <Col>
                         <BuddyFinderHeader createBuddyForm={this.createBuddyForm} />
-                        <BuddyFinderPostsSection />
+                        <BuddyFinderPostsSection history={this.props.history}/>
                     </Col>
                 </div>
             </div>

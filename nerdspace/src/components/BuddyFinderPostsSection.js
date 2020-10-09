@@ -26,11 +26,31 @@ class BuddyFinderPostsSection extends React.Component {
           });
     }
     
-    submitPost(id) {
-
+    async submitPost(id, gender, educationLevel, yearOfStudy, interest) {
+        console.log(gender + educationLevel + interest + id + "THISS");
+        this.props.history.push({
+            pathname:'/buddy-finder-result',
+            state: {
+                gender: gender,
+                educationLevel: educationLevel,
+                yearOfStudy: yearOfStudy,
+                interest: interest,
+                googleID: this.props.profile[0].googleId
+            }
+        });
+        console.log(gender + educationLevel + interest + id + "THISS");
     }
 
-    deletePost(id) {
+    async deletePost(id) {
+        // event.preventDefault();
+        axios.delete(`http://localhost:5000/buddyfinderposts/${id}`)
+        .catch(err => {
+            console.error(err);
+        });
+        axios.get(`http://localhost:5000/buddyfinderposts/byGoogleID/${this.props.profile[0].googleId}`)
+          .then(res => {
+            this.setState({ forms: res.data.data });
+        });
 
     }
 

@@ -13,7 +13,7 @@ class BuddyFinderResult extends React.Component {
         super();
         this.state = {
             results: [],
-            isLoading: true
+            // isLoading: true
           }
         this.goToBuddyFinder = this.goToBuddyFinder.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
@@ -21,39 +21,47 @@ class BuddyFinderResult extends React.Component {
     }
 
     async componentDidMount() {
-        var matchingRes = [];
-        // var results = [];
         axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
         .then(res => {
             console.log(res);
-            matchingRes = res.data.data;
-            matchingRes.forEach(matchRes => {
-                var googleID = matchRes.googleID;
-                var name = "";
-                var email = "";
-                axios.get(`http://localhost:5000/users/byGoogleID/${googleID}`)
-                  .then(profileRes => {
-                    matchRes.name = profileRes.name;
-                    matchRes.email  = profileRes.email;
-                      })
-                    //   matchRes.name = name;
-                    //   matchRes.email = email;
-                  })
-                  
-                  
-                //axios to get the the user obj from db using googleID
-                //add the name and email to the res obj
-                //add res to the results array
-              })
-              
-            this.setState({results: matchingRes});
-            this.setState({isLoading: false});
-            //this.setState({results: res.data.data});
-            // this.setState({results: res.docs.data});
-        //   });
-        //   this.setState({isLoading: true});
-        // this.getUserData();
+            this.setState({results: res.data.data});
+        })
     }
+
+    // async componentDidMount() {
+    //     var matchingRes = [];
+    //     // var results = [];
+    //     axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
+    //     .then(res => {
+    //         console.log(res);
+    //         matchingRes = res.data.data;
+    //         matchingRes.forEach(matchRes => {
+    //             var googleID = matchRes.googleID;
+    //             var name = "";
+    //             var email = "";
+    //             axios.get(`http://localhost:5000/users/byGoogleID/${googleID}`)
+    //               .then(profileRes => {
+    //                 matchRes.name = profileRes.name;
+    //                 matchRes.email  = profileRes.email;
+    //                   })
+    //                 //   matchRes.name = name;
+    //                 //   matchRes.email = email;
+    //               })
+                  
+                  
+    //             //axios to get the the user obj from db using googleID
+    //             //add the name and email to the res obj
+    //             //add res to the results array
+    //           })
+              
+    //         this.setState({results: matchingRes});
+    //         this.setState({isLoading: false});
+    //         //this.setState({results: res.data.data});
+    //         // this.setState({results: res.docs.data});
+    //     //   });
+    //     //   this.setState({isLoading: true});
+    //     // this.getUserData();
+    // }
 
     goToBuddyFinder() {
         this.props.history.push('/buddy-finder');
@@ -89,11 +97,12 @@ class BuddyFinderResult extends React.Component {
                 <div style={styles.container}>
                     <div style={styles.header}>
                         <h1 style={styles.headerText}><strong>Results</strong></h1>
-                        <Button variant="primary" onClick={this.props.goToBuddyFinder}>Return to Buddy Finder main page</Button>
+                        <Button variant="primary" onClick={this.goToBuddyFinder}>Return to Buddy Finder main page</Button>
                     </div>
                     <CardDeck>
                         <Card>
-                        {!this.state.isLoading && this.state.results.map((result) => {
+                        {/* !this.state.isLoading &&  */}
+                        {this.state.results.map((result) => {
                             return <BuddyResult
                             key={result.key}
                             id={result.key}
