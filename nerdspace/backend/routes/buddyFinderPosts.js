@@ -86,8 +86,9 @@ router.route('/').post((req, res) => {
     // });
 })
 
-router.route('/').delete((req, res) => {
-    db.ref('buddyFinderPosts').child(req.body.key).remove(
+router.route('/:id').delete((req, res) => {
+    const key = req.params.id;
+    db.ref('buddyFinderPosts').child(key).remove(
         function (error) {
             if (error) {
                 res.send(error);
@@ -98,7 +99,6 @@ router.route('/').delete((req, res) => {
         }
     )
 })
-
 
 
 
