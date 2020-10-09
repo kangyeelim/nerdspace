@@ -14,7 +14,7 @@ export default function BuddyPost(props) {
 
               <p style={{fontSize: 20, fontWeight: 600}}>Gender: {props.gender}</p>
               <p style={{fontSize: 20, fontWeight: 600}}>Education Level: {props.educationLevel}</p>
-              <p style={{fontSize: 20, fontWeight: 600}}>Year Of study: {props.yearOfStudy}</p>
+              <p style={{fontSize: 20, fontWeight: 600}}>Year Of Study: {props.yearOfStudy}</p>
               <p style={{fontSize: 20, fontWeight: 600}}>Interest: {props.interest}</p>
 
           </MDBCardBody>
@@ -26,7 +26,7 @@ export default function BuddyPost(props) {
                 </a>
               </Col>
               <Col md="auto">
-                <a onClick={() => props.submitPost(props.id)}>
+                <a onClick={() => props.submitPost(props.id, props.gender, props.educationLevel, props.yearOfStudy, props.interest)}>
                   <FontAwesomeIcon icon={faPaperPlane} style={{alignSelf:'right'}}/>
                 </a>
               </Col>
