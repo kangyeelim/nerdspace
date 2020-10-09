@@ -8,7 +8,6 @@ import { deleteStudyRoomPost, findPostsByString, getAllRoomPosts } from '../../s
 import { goToCreatePostForm, goToEditPostForm } from '../../navigators/StudyRoomNavigator';
 
 class RoomPostsSection extends React.Component {
-
   constructor() {
     super();
     this.state ={
