@@ -26,7 +26,7 @@ const styles = {
     headerText: {
         margin: "2rem",
         fontSize: 60, 
-        fontWeight: 600
+        fontWeight: 500
     }
 }
 

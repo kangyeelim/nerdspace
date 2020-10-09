@@ -43,6 +43,7 @@ router.route('/').post((req, res) => {
     }
     
     res.send({
+        chatID: key,
         message: "POST success"
     });
 });

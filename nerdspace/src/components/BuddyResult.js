@@ -29,19 +29,17 @@ export default function BuddyResult(props) {
         <MDBCardGroup deck style={{flex: 1, flexWrap:"wrap"}}>
           <MDBCard>
             <MDBCardBody>
-              <Card.Img variant="top" src="https://images.unsplash.com/photo-1472457897821-70d3819a0e24?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1949&q=80" />
+              <Card.Img variant="top" style={{width: "30", height: "30"}} src="https://images.unsplash.com/photo-1472457897821-70d3819a0e24?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1949&q=80" />
               <MDBCardTitle tag="h5">{props.name}</MDBCardTitle>
-              <MDBCardText>
-                <h5>Gender: {props.gender}</h5>
-                <h5>Email: {props.email}</h5>
-                <h5>Education Level: {props.educationLevel}</h5>
-                <h5>Year Of Study: {props.year}</h5>
-              </MDBCardText>
+                <p style={{fontSize: 20, fontWeight: 600}}>Gender: {props.gender}</p>
+                <p style={{fontSize: 20, fontWeight: 600}}>Email: {props.email}</p>
+                <p style={{fontSize: 20, fontWeight: 600}}>Education Level: {props.educationLevel}</p>
+                <p style={{fontSize: 20, fontWeight: 600}}>Year Of Study: {props.year}</p>
             </MDBCardBody>
             <MDBCardFooter medium muted>
               <Row style={{marginLeft: 10, marginRight:10, alignSelf:'right'}}>
                 <Col md="auto">
-                  <a onClick={() => props.sendMessage(props.id)}>
+                  <a onClick={() => props.sendMessage(props.googleID)}>
                     <FontAwesomeIcon className="icon" icon={faEnvelope} style={{alignSelf:'right'}}/>
                   </a>
                 </Col>

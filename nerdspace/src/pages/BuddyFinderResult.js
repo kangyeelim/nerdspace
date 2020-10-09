@@ -13,6 +13,8 @@ class BuddyFinderResult extends React.Component {
         super();
         this.state = {
             results: [],
+            chatID: "",
+            noResults: false
             // isLoading: true
           }
         this.goToBuddyFinder = this.goToBuddyFinder.bind(this);
@@ -21,11 +23,15 @@ class BuddyFinderResult extends React.Component {
     }
 
     async componentDidMount() {
-        axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
+        await axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
         .then(res => {
             console.log(res);
             this.setState({results: res.data.data});
         })
+
+        if (this.state.results.length == 0) {
+            this.setState({noResults: true});
+        }
     }
 
     // async componentDidMount() {
@@ -67,8 +73,21 @@ class BuddyFinderResult extends React.Component {
         this.props.history.push('/buddy-finder');
     }
 
-    sendMessage() {
-        console.log("Sending message...")
+    async sendMessage(googleID) {
+        console.log("Sending message...");
+        axios.post('http://localhost:5000/contacts', {
+            type: "dm",
+            user1Id: googleID,
+            user2Id: this.props.profile[0].googleId
+        }).catch(err => {
+            console.error(err);
+        }).then(response => {
+            console.log(response);
+            this.setState({chatID: response})
+        })
+        console.log(this.state.chatID);
+
+        this.props.history.push('/chat/' + this.state.chatID);
     }
 
     // async getUserData() {
@@ -97,9 +116,13 @@ class BuddyFinderResult extends React.Component {
                 <div style={styles.container}>
                     <div style={styles.header}>
                         <h1 style={styles.headerText}><strong>Results</strong></h1>
+                        
                         <Button variant="primary" onClick={this.goToBuddyFinder}>Return to Buddy Finder main page</Button>
                     </div>
                     <CardDeck>
+                    {this.state.noResults ? (
+                        <h1 style={{padding: "3rem"}}>No match found! ): </h1>
+                    ) : (
                         <Card>
                         {/* !this.state.isLoading &&  */}
                         {this.state.results.map((result) => {
@@ -109,10 +132,15 @@ class BuddyFinderResult extends React.Component {
                             name={result.name}
                             gender={result.gender}
                             email={result.email}
+                            googleID={result.googleID}
                             educationLevel={result.educationLevel}
+                            year={result.year}
                             sendMessage={this.sendMessage}/>;
                         })}
+                        
                         </Card>
+                    )}
+
                     </CardDeck>
                 </div>
             </div>
@@ -121,6 +149,23 @@ class BuddyFinderResult extends React.Component {
 
 }
 
+
+// <Card>
+// {/* !this.state.isLoading &&  */}
+// {!this.state.noResults && this.state.results.map((result) => {
+//     return <BuddyResult
+//     key={result.key}
+//     id={result.key}
+//     name={result.name}
+//     gender={result.gender}
+//     email={result.email}
+//     googleID={result.googleID}
+//     educationLevel={result.educationLevel}
+//     year={result.year}
+//     sendMessage={this.sendMessage}/>;
+// })}
+
+// </Card>
 const styles = {
     container: {
         display: "flex",
@@ -137,7 +182,9 @@ const styles = {
         padding: "2rem",
     },
     headerText: {
-        margin: "2rem"
+        margin: "2rem",
+        fontSize: 60, 
+        fontWeight: 500
     }
 
 }
