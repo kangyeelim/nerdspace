@@ -19,6 +19,7 @@ const profilesRouter = require('./routes/profiles');
 const buddyFinderRouter = require('./routes/buddyFinderPosts');
 const imagesRouter = require('./routes/images');
 const messageRouter = require('./routes/message');
+const contactRouter = require('./routes/contacts');
 
 app.use('/users', usersRouter);
 app.use('/studyroomposts', studyRoomPostsRouter);
@@ -28,6 +29,7 @@ app.use('/profiles', profilesRouter);
 app.use('/buddyfinderposts', buddyFinderRouter);
 app.use('/images', imagesRouter);
 app.use('/message', messageRouter);
+app.use('/contacts', contactRouter);
 
 //starts server
 app.listen(port, () => {
