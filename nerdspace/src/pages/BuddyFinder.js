@@ -51,7 +51,7 @@ class BuddyFinder extends React.Component {
                 <div style={styles.container}>
                     <Col>
                         <BuddyFinderHeader createBuddyForm={this.createBuddyForm} />
-                        <BuddyFinderPostsSection />
+                        <BuddyFinderPostsSection history={this.props.history}/>
                     </Col>
                 </div>
             </div>
@@ -65,8 +65,9 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        margin: "2rem",
-        padding: "3rem",
+        textAlign: "center",
+        // margin: "2rem",
+        // padding: "3rem",
         textAlign: "center",
         justifyContent: "center",
     },

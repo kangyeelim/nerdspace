@@ -13,43 +13,100 @@ class BuddyFinderResult extends React.Component {
         super();
         this.state = {
             results: [],
-            isLoading: true
+            chatID: "",
+            noResults: false
+            // isLoading: true
           }
         this.goToBuddyFinder = this.goToBuddyFinder.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
+        // this.getUserData = this.getUserData.bind(this);
     }
 
-    componentDidMount() {
-        var matchingRes = [];
-        var results = [];
-        axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
+    async componentDidMount() {
+        await axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
         .then(res => {
             console.log(res);
-            matchingRes = res.data.data;
-            matchingRes.forEach(res => {
-              var googleID = res.googleID;
-              //axios to get the the user obj from db using googleID
-              //add the name and email to the res obj
-              //add res to the results array
-            })
-            this.setState({results:results});
-            this.setState({isLoading: false});
-            //this.setState({results: res.data.data});
-            // this.setState({results: res.docs.data});
-          });
+            this.setState({results: res.data.data});
+        })
+
+        if (this.state.results.length == 0) {
+            this.setState({noResults: true});
+        }
     }
+
+    // async componentDidMount() {
+    //     var matchingRes = [];
+    //     // var results = [];
+    //     axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
+    //     .then(res => {
+    //         console.log(res);
+    //         matchingRes = res.data.data;
+    //         matchingRes.forEach(matchRes => {
+    //             var googleID = matchRes.googleID;
+    //             var name = "";
+    //             var email = "";
+    //             axios.get(`http://localhost:5000/users/byGoogleID/${googleID}`)
+    //               .then(profileRes => {
+    //                 matchRes.name = profileRes.name;
+    //                 matchRes.email  = profileRes.email;
+    //                   })
+    //                 //   matchRes.name = name;
+    //                 //   matchRes.email = email;
+    //               })
+                  
+                  
+    //             //axios to get the the user obj from db using googleID
+    //             //add the name and email to the res obj
+    //             //add res to the results array
+    //           })
+              
+    //         this.setState({results: matchingRes});
+    //         this.setState({isLoading: false});
+    //         //this.setState({results: res.data.data});
+    //         // this.setState({results: res.docs.data});
+    //     //   });
+    //     //   this.setState({isLoading: true});
+    //     // this.getUserData();
+    // }
 
     goToBuddyFinder() {
         this.props.history.push('/buddy-finder');
     }
 
-    sendMessage() {
+    async sendMessage(googleID) {
+        console.log("Sending message...");
+        axios.post('http://localhost:5000/contacts', {
+            type: "dm",
+            user1Id: googleID,
+            user2Id: this.props.profile[0].googleId
+        }).catch(err => {
+            console.error(err);
+        }).then(response => {
+            console.log(response);
+            this.setState({chatID: response})
+        })
+        console.log(this.state.chatID);
 
+        this.props.history.push('/chat/' + this.state.chatID);
     }
 
-    // handleGenderInput(event) {
-    //     this.setState({gender:event.currentTarget.value});
-    //     console.log(event.currentTarget.value);
+    // async getUserData() {
+    //     this.state.results.forEach(matchRes => {
+    //         var googleID = matchRes.googleID;
+    //         axios.get(`http://localhost:5000/users/byGoogleID/${googleID}/`)
+    //           .then(profileRes => {
+    //               matchRes.push({
+    //                   name: profileRes.name,
+    //                   email: profileRes.email
+    //               })
+    //           })
+              
+    //         //axios to get the the user obj from db using googleID
+    //         //add the name and email to the res obj
+    //         //add res to the results array
+    //       })
+    //       this.setState({isLoading: false});
+    //       console.log("DONEE");
     // }
 
     render() {
@@ -59,21 +116,31 @@ class BuddyFinderResult extends React.Component {
                 <div style={styles.container}>
                     <div style={styles.header}>
                         <h1 style={styles.headerText}><strong>Results</strong></h1>
-                        <Button variant="primary" onClick={this.props.goToBuddyFinder}>Return to Buddy Finder main page</Button>
+                        
+                        <Button variant="primary" onClick={this.goToBuddyFinder}>Return to Buddy Finder main page</Button>
                     </div>
                     <CardDeck>
+                    {this.state.noResults ? (
+                        <h1 style={{padding: "3rem"}}>No match found! ): </h1>
+                    ) : (
                         <Card>
-                        {!this.state.isLoading && this.state.results.map((result) => {
+                        {/* !this.state.isLoading &&  */}
+                        {this.state.results.map((result) => {
                             return <BuddyResult
                             key={result.key}
                             id={result.key}
-                            // name={result.name}
+                            name={result.name}
                             gender={result.gender}
-                            // email={result.email}
+                            email={result.email}
+                            googleID={result.googleID}
                             educationLevel={result.educationLevel}
+                            year={result.year}
                             sendMessage={this.sendMessage}/>;
                         })}
+                        
                         </Card>
+                    )}
+
                     </CardDeck>
                 </div>
             </div>
@@ -82,6 +149,23 @@ class BuddyFinderResult extends React.Component {
 
 }
 
+
+// <Card>
+// {/* !this.state.isLoading &&  */}
+// {!this.state.noResults && this.state.results.map((result) => {
+//     return <BuddyResult
+//     key={result.key}
+//     id={result.key}
+//     name={result.name}
+//     gender={result.gender}
+//     email={result.email}
+//     googleID={result.googleID}
+//     educationLevel={result.educationLevel}
+//     year={result.year}
+//     sendMessage={this.sendMessage}/>;
+// })}
+
+// </Card>
 const styles = {
     container: {
         display: "flex",
@@ -98,7 +182,9 @@ const styles = {
         padding: "2rem",
     },
     headerText: {
-        margin: "2rem"
+        margin: "2rem",
+        fontSize: 60, 
+        fontWeight: 500
     }
 
 }

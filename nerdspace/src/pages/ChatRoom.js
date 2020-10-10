@@ -14,7 +14,6 @@ class ChatRoom extends React.Component {
     constructor(props) {
         super(props);
         const ID = props.match.params.id;
-        console.log(ID);
         this.state = {
             msg: "",
             user: props.profile[0].googleId,
