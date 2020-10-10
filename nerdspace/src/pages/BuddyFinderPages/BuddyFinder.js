@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../components/NavBar';
-import './General.css';
+import NavBar from '../../components/NavBar';
+import '../General.css';
 import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
-import BuddyFinderHeader from '../components/BuddyFinderHeader';
-import BuddyFinderPostsSection from '../components/BuddyFinderPostsSection';
+import BuddyFinderHeader from '../../components/BuddyFinderComponents/BuddyFinderHeader';
+import BuddyFinderPostsSection from '../../components/BuddyFinderComponents/BuddyFinderPostsSection';
 
 class BuddyFinder extends React.Component {
 
