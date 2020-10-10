@@ -14,11 +14,13 @@ export async function isRoomAccessibleToUser(googleID, roomID) {
   }
 }
 
-export async function isUserLoggedIn(googleID) {
+export async function isUserLoggedIn(googleID, name, email, imageUrl) {
   try {
     var res = await axios.get(USER_API_URL + `/byGoogleID/${googleID}`);
     if ((await res).data.message == 'GET success') {
-      return true;
+      return res.data.data[0].name == name &&
+      res.data.data[0].email == email &&
+      res.data.data[0].imageUrl == imageUrl;
     } else {
       return false;
     }

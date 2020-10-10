@@ -19,6 +19,7 @@
     "firebase": "^7.22.0",
     "mdbreact": "^4.27.0",
     "react": "^16.13.1",
+    "react-awesome-lightbox": "^1.7.3",
     "react-bootstrap": "^1.3.0",
     "react-dom": "^16.13.1",
     "react-google-login": "^5.1.21",

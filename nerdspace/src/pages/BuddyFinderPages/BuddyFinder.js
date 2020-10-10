@@ -2,9 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import NavBar from '../../components/NavBar';
 import '../General.css';
-import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
+import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
 import BuddyFinderHeader from '../../components/BuddyFinderComponents/BuddyFinderHeader';
 import BuddyFinderPostsSection from '../../components/BuddyFinderComponents/BuddyFinderPostsSection';
+import { isUserLoggedIn } from '../../services/Auth';
+import { Redirect } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class BuddyFinder extends React.Component {
 
@@ -12,8 +15,16 @@ class BuddyFinder extends React.Component {
         super();
         this.state = {
             viewAllPosts: false,
+            isAuthenticating: true,
+            isLoggedIn: false
           }
         this.createBuddyForm = this.createBuddyForm.bind(this);
+    }
+
+    async componentDidMount() {
+      const profile = this.props.profile[0];
+      var isLoggedIn = await isUserLoggedIn(profile.googleId, profile.name, profile.email, profile.imageUrl);
+      this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
     }
 
     createBuddyForm() {
@@ -26,6 +37,14 @@ class BuddyFinder extends React.Component {
     // }
 
     render() {
+      if (this.state.isAuthenticating) {
+        return <Container>
+          <CircularProgress/>
+        </Container>
+      }
+      if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
+        return <Redirect to="/"/>
+      }
         return (
             <div>
                 <NavBar history={this.props.history}/>
@@ -38,7 +57,7 @@ class BuddyFinder extends React.Component {
             </div>
         )
     }
-    
+
 }
 
 const styles = {
@@ -52,7 +71,7 @@ const styles = {
         textAlign: "center",
         justifyContent: "center",
     },
-    
+
 }
 
 const mapStateToProps = (state) => {

@@ -25,17 +25,18 @@ class CreateRoomForm extends React.Component {
       images: [],
       roomID: "",
       isEditing: false,
-      isLoaded: false
+      isLoaded: false,
+      addedMembers: []
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.titleInput = this.titleInput.bind(this);
     this.enterRoom = this.enterRoom.bind(this);
     this.handleImages = this.handleImages.bind(this);
     this.deleteUnpostImages = this.deleteUnpostImages.bind(this);
+    this.handleRoomMember = this.handleRoomMember.bind(this);
   }
 
   async componentDidMount() {
-    console.log("should load all friends in contact list for adding into room");
 
     if (typeof this.props.location.state != 'undefined' &&
     typeof this.props.location.state.roomName != 'undefined') {
@@ -49,7 +50,18 @@ class CreateRoomForm extends React.Component {
         this.setState({isLoaded:true});
       })
     } else {
-      this.setState({isLoaded:true});
+      try {
+        /*var res = await axios.get('http://localhost:5000/contacts', {
+            params: {
+                id: this.props.profile[0].googleId
+            }
+        })
+        var contacts = await res.data.contacts;*/
+        var contacts = [];
+        this.setState({friends:contacts, isLoaded:true});
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
@@ -73,10 +85,10 @@ class CreateRoomForm extends React.Component {
           name: this.state.name,
           isThereImage: (this.state.images.length == 1),
           imageUrl: imageUrl,
-          googleID: this.props.profile[0].googleId
+          googleIDs: this.state.addedMembers.push(this.props.profile[0].googleId)
         })
         .then((response) => {
-          this.addRoomIdToUser(response.data.data);
+          this.addRoomIdToUsers(response.data.data);
           this.setState({roomID: response.data.data});
         })
         .then(() => {
@@ -112,21 +124,38 @@ class CreateRoomForm extends React.Component {
     await deleteImages(this.state.images);
   }
 
-  addRoomIdToUser(roomID) {
+  addRoomIdToUsers(roomID) {
     //must add the roomID to the user's roomID
+    this.addRoomIdToUser(roomID, this.props.profile[0].googleId);
+    for (var i = 0; i < this.state.addedMembers.length; i++) {
+      this.addRoomIdToUser(roomID, this.state.addedMembers[i]);
+    }
+  }
+
+  addRoomIdToUser(roomID, googleID) {
     axios.post('http://localhost:5000/users/addRoomID', {
       roomID: roomID,
-      googleID: this.props.profile[0].googleId
+      googleID: googleID
     })
     .catch((err) => {
       console.error(err);
-    })
+    });
   }
 
   enterRoom(id) {
     enterRoom(this.props.history, id);
   }
 
+  handleRoomMember(id) {
+    if (this.state.addedMembers.includes(id)) {
+      var res = this.state.addedMembers.filter(added => {
+        return added == id;
+      })
+      this.setState({addedMembers:res});
+    } else {
+      this.setState({addedMembers:this.state.addedMembers.push(id)});
+    }
+  }
 
   render() {
     if (!this.state.isLoaded) {
@@ -153,13 +182,14 @@ class CreateRoomForm extends React.Component {
               <label style={styles.content} htmlFor="bio">Add Members: </label>
               {!this.state.isEditing && <div className="container" id="scrollableArea">
                 <Form>
-                { dummy_contacts.map((contact) => {
+                { this.state.friends.map((contact) => {
                   return (
                     <div key={`${contact.name}`} className="mb-3">
                     <Form.Check
                       type="checkbox"
                       id={`${contact.name}`}
                       label={`${contact.name}`}
+                      onChange={() => this.handleRoomMember(contact.id)}
                     />
                     </div>
                   );
