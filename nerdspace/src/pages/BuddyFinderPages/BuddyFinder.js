@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../components/NavBar';
-import './General.css';
+import NavBar from '../../components/NavBar';
+import '../General.css';
 import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
-import BuddyFinderHeader from '../components/BuddyFinderHeader';
-import BuddyFinderPostsSection from '../components/BuddyFinderPostsSection';
-import { isUserLoggedIn } from '../services/Auth';
+import BuddyFinderHeader from '../../components/BuddyFinderComponents/BuddyFinderHeader';
+import BuddyFinderPostsSection from '../../components/BuddyFinderComponents/BuddyFinderPostsSection';
+import { isUserLoggedIn } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
