@@ -6,9 +6,9 @@ import {
   Route
 } from "react-router-dom";
 import Login from './pages/Login';
-import BuddyFinder from './pages/BuddyFinder';
-import BuddyFinderForm from './pages/BuddyFinderForm';
-import BuddyFinderResult from './pages/BuddyFinderResult';
+import BuddyFinder from './pages/BuddyFinderPages/BuddyFinder';
+import BuddyFinderForm from './pages/BuddyFinderPages/BuddyFinderForm';
+import BuddyFinderResult from './pages/BuddyFinderPages/BuddyFinderResult';
 import UserHome from './pages/UserHome';
 import Community from './pages/StudyRoomPages/Community';
 import StudyRoom from './pages/StudyRoomPages/StudyRoom';

@@ -1,11 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../components/NavBar';
-import './General.css';
+import NavBar from '../../components/NavBar';
+import '../General.css';
 import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
 import CardDeck from 'react-bootstrap/CardDeck';
 import axios from 'axios';
-import BuddyResult from '../components/BuddyResult';
+import BuddyResult from '../../components/BuddyFinderComponents/BuddyResult';
+import { createBrowserHistory } from 'history';
+
+export const history = createBrowserHistory({ forceRefresh: true });
 
 class BuddyFinderResult extends React.Component {
 
@@ -26,7 +29,15 @@ class BuddyFinderResult extends React.Component {
         await axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
         .then(res => {
             console.log(res);
-            this.setState({results: res.data.data});
+            if (res.length != 0) {
+                this.setState({results: res.data.data});
+                this.setState({noResults: false});
+            } else {
+                this.setState({noResults: true});
+            }
+            
+        }).catch(err => {
+            console.error(err);
         })
 
         if (this.state.results.length == 0) {
@@ -70,7 +81,7 @@ class BuddyFinderResult extends React.Component {
     // }
 
     goToBuddyFinder() {
-        this.props.history.push('/buddy-finder');
+        history.push('/buddy-finder');
     }
 
     async sendMessage(googleID) {
@@ -124,7 +135,7 @@ class BuddyFinderResult extends React.Component {
                         <h1 style={{padding: "3rem"}}>No match found! ): </h1>
                     ) : (
                         <Card>
-                        {/* !this.state.isLoading &&  */}
+
                         {this.state.results.map((result) => {
                             return <BuddyResult
                             key={result.key}
