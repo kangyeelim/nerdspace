@@ -78,7 +78,7 @@ router.route('/').post((req, res) => {
   const name = req.body.name;
   const imageUrl = req.body.imageUrl;
   const isThereImage = req.body.isThereImage;
-  const memberID = req.body.googleID;
+  const memberIDs = req.body.googleIDs;
   var roomRef = db.ref('studyRooms').push();
   roomRef.set({
     'name': name,
@@ -89,7 +89,10 @@ router.route('/').post((req, res) => {
       res.send(error);
     }
   });
-  roomRef.child('members').push().set(memberID);
+  memberIDs.forEach(id => {
+    roomRef.child('members').push().set(memberID);
+  })
+  
   res.send({
     message: 'POST success',
     data: roomRef.key
