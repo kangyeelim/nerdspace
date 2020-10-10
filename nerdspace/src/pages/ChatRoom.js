@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import NavBar from '../components/NavBar';
 import axios from 'axios';
 import './General.css';
-import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
+import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
 import ChatMessageSection from '../components/ChatMessagesSection';
 import ContactsSection from '../components/ContactsSection';
+import { isUserLoggedIn } from '../services/Auth';
+import { Redirect } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class ChatRoom extends React.Component {
     constructor(props) {
@@ -17,10 +20,18 @@ class ChatRoom extends React.Component {
             user: props.profile[0].googleId,
             name: props.profile[0].name,
             id: ID,
+            isAuthenticating: true,
+            isLoggedIn: false
         }
         this.handleMsgChange = this.handleMsgChange.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.postChatMessage = this.postChatMessage.bind(this);
+    }
+
+    async componentDidMount() {
+      const profile = this.props.profile[0];
+      var isLoggedIn = await isUserLoggedIn(profile.googleId, profile.name, profile.email, profile.imageUrl);
+      this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
     }
 
     handleMsgChange(event) {
@@ -53,6 +64,14 @@ class ChatRoom extends React.Component {
     }
 
     render() {
+      if (this.state.isAuthenticating) {
+        return <Container>
+          <CircularProgress/>
+        </Container>
+      }
+      if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
+        return <Redirect to="/"/>
+      }
         return (
             <div>
                 <NavBar history={this.props.history} />

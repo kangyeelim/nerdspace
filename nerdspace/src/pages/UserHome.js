@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import ProfileBox from '../components/ProfileBox';
 import GroupBox from '../components/GroupBox';
 import Postbar from '../components/Postbar';
@@ -10,18 +10,23 @@ import QuoteBox from '../components/QuoteComponents/QuoteBox';
 import './General.css';
 import axios from 'axios';
 import { enterRoom } from '../navigators/StudyRoomNavigator';
+import { isUserLoggedIn } from '../services/Auth';
+import { Redirect } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class UserHome extends React.Component {
   constructor() {
     super();
     this.state = {
       studyRooms: [],
+      isAuthenticating: true,
+      isLoggedIn: false
     }
     this.retrieveRoomInfo = this.retrieveRoomInfo.bind(this);
     this.enterRoom = this.enterRoom.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log("mounted");
     axios.get(`http://localhost:5000/users/byGoogleID/${this.props.profile[0].googleId}`)
     .then((response) => {
@@ -33,6 +38,9 @@ class UserHome extends React.Component {
     .catch(err => {
       console.error(err);
     })
+    const profile = this.props.profile[0];
+    var isLoggedIn = await isUserLoggedIn(profile.googleId, profile.name, profile.email, profile.imageUrl);
+    this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
   }
 
   retrieveRoomInfo(id) {
@@ -53,6 +61,14 @@ class UserHome extends React.Component {
   }
 
   render() {
+    if (this.state.isAuthenticating) {
+      return <Container>
+        <CircularProgress/>
+      </Container>
+    }
+    if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
+      return <Redirect to="/"/>
+    }
     return (
       <div>
         <NavBar history={this.props.history} />
