@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../components/NavBar';
-import './General.css';
+import NavBar from '../../components/NavBar';
+import '../General.css';
 import axios from 'axios';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';

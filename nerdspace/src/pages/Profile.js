@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import NavBar from '../components/NavBar';
 import './General.css';
-import { Col, Row } from 'react-bootstrap';
-
+import { Col, Row, Container } from 'react-bootstrap';
+import { isUserLoggedIn } from '../services/Auth';
+import { Redirect } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 class Profile extends React.Component {
 
     constructor(props) {
@@ -15,9 +17,17 @@ class Profile extends React.Component {
                     name: this.props.profile[0].name,
                     bio: ''
                 },
-            ]
+            ],
+            isAuthenticating: true,
+            isLoggedIn: false
         }
         this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    componentDidMount = async () => {
+      const profile = this.props.profile[0];
+      var isLoggedIn = await isUserLoggedIn(profile.googleId, profile.name, profile.email, profile.imageUrl);
+      this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
     }
 
     onSubmit = event => {
@@ -37,6 +47,14 @@ class Profile extends React.Component {
     };
 
     render() {
+      if (this.state.isAuthenticating) {
+        return <Container>
+          <CircularProgress/>
+        </Container>
+      }
+      if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
+        return <Redirect to="/"/>
+      }
         return (
             <div>
                 <NavBar history={this.props.history}/>

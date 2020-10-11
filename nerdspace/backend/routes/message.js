@@ -15,7 +15,7 @@ router.route('/').post((req, res) => {
     const timestamp = Date.now();
     db.ref('messages').child(room).push().set({
         'username': name,
-        'senderId': id,
+        'googleID': id,
         'message': message,
         'timestamp': timestamp
     });

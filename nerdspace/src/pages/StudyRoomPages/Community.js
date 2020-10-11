@@ -2,10 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import NavBar from '../../components/NavBar';
 import '../General.css';
-import { Col, Row, Form, Button, FormControl } from 'react-bootstrap';
+import { Col, Row, Form, Button, FormControl, Container } from 'react-bootstrap';
 import RoomBox from '../../components/StudyRoomComponents/RoomBox';
 import axios from 'axios';
 import { enterRoom } from '../../navigators/StudyRoomNavigator';
+import { isUserLoggedIn } from '../../services/Auth';
+import { Redirect } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const stub = [ {id:1, name:"GP resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
 {id:2, name:"A Maths resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
@@ -20,7 +23,9 @@ class Community extends React.Component {
       keyword: "",
       roomsAllowed: [],
       rooms: [],
-      requestedRooms: []
+      requestedRooms: [],
+      isAuthenticating: true,
+      isLoggedIn: false
     }
     this.enterRoom = this.enterRoom.bind(this);
     this.requestJoinRoom = this.requestJoinRoom.bind(this);
@@ -33,8 +38,11 @@ class Community extends React.Component {
     this.loadAndApplyStatusToRooms = this.loadAndApplyStatusToRooms.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.loadAndApplyStatusToRooms();
+    const profile = this.props.profile[0];
+    var isLoggedIn = await isUserLoggedIn(profile.googleId, profile.name, profile.email, profile.imageUrl);
+    this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
   }
 
   loadAndApplyStatusToRooms() {
@@ -128,6 +136,14 @@ class Community extends React.Component {
   }
 
   render() {
+    if (this.state.isAuthenticating) {
+      return <Container>
+        <CircularProgress/>
+      </Container>
+    }
+    if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
+      return <Redirect to="/"/>
+    }
     return (
       <div>
         <NavBar history={this.props.history}/>
