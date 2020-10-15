@@ -16,6 +16,7 @@ import Profile from './pages/Profile';
 import CreatePostForm from './pages/StudyRoomPages/CreatePostForm';
 import CreateRoomForm from './pages/StudyRoomPages/CreateRoomForm';
 import ChatRoom from './pages/ChatRoom';
+import CommonTimes from './pages/StudyRoomPages/CommonTimes';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route exact path="/createPost/:id?" component={CreatePostForm}/>
           <Route exact path="/createStudyRoom" component={CreateRoomForm}/>
           <Route exact path="/chat/:id?" component={ChatRoom} />
+          <Route exact path="/commonTimes/:id?" component={CommonTimes} />
         </Switch>
       </Router>
     </div>

@@ -39,3 +39,12 @@ export function goToEditPostForm(history, postId, images, title,
       }
     });
   }
+
+  export function goToCommonTimesPage(history, roomID) {
+    history.push({
+      pathname: `/commonTimes/${roomID}`,
+      state: {
+        id: roomID
+      }
+    })
+  }

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import RequestNotification from './RequestNotification';
 import UserCard from './UserCard';
+import { goToCommonTimesPage } from '../../navigators/StudyRoomNavigator';
 
 const db = require('../../services/firebase').db;
 
@@ -23,6 +24,7 @@ class RoomSideBar extends React.Component {
     this.rejectRequest = this.rejectRequest.bind(this);
     this.addRoomIdToUser = this.addRoomIdToUser.bind(this);
     this.getAllMembers = this.getAllMembers.bind(this);
+    this.findCommonTimes = this.findCommonTimes.bind(this);
   }
 
   async componentDidMount() {
@@ -166,6 +168,10 @@ class RoomSideBar extends React.Component {
       })
   }
 
+  findCommonTimes() {
+    goToCommonTimesPage(this.props.history, this.props.id);
+  }
+
   render() {
       return (
         <Card style={styles.card}>
@@ -179,6 +185,10 @@ class RoomSideBar extends React.Component {
                     imageUrl={member.imageUrl}/>
                 );
               })}
+          </Card.Body>
+          <Card.Body>
+            <Card.Title>Common Times</Card.Title>
+            <Button variant="primary"onClick={this.findCommonTimes}>Find</Button>
           </Card.Body>
           <Card.Body>
             <Card.Title>Requests</Card.Title>

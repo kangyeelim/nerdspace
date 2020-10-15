@@ -135,6 +135,7 @@ class StudyRoom extends React.Component {
                   imageUrl={this.state.imageUrl}
                   roomName={this.state.roomName}
                   id={this.state.roomID}
+                  history={this.props.history}
                 />
               </Col>
             </Row>
