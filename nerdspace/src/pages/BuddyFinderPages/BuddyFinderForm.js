@@ -92,6 +92,7 @@ class BuddyFinderForm extends React.Component {
 
     handleInterestText(event) {
         this.setState({interestField: event.target.value.trim()});
+        this.setState({interest: event.target.value.trim()});
         console.log(`Input text interest. Input value ${event.target.value.trim()}.`);
     }
 
