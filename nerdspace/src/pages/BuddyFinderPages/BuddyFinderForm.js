@@ -16,10 +16,12 @@ class BuddyFinderForm extends React.Component {
             educationLevel: "Primary",
             yearOfStudy: 1,
             interest: null,
-            errors: {}
+            errors: {},
+            interestField: null,
         }
         // this.handleYearStudyInput = this.handleYearStudyInput.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleInterestText = this.handleInterestText.bind(this);
         // this.goResults = this.goResults.bind(this);
         this.submitForm = this.submitForm.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
@@ -88,10 +90,10 @@ class BuddyFinderForm extends React.Component {
         // this.handleValidation();
     }
 
-    // handleInterestInput(event) {
-    //     this.setState({interest: event.target.value.trim()});
-    //     console.log(`Input name interest. Input value ${event.target.value.trim()}.`);
-    // }
+    handleInterestText(event) {
+        this.setState({interestField: event.target.value.trim()});
+        console.log(`Input text interest. Input value ${event.target.value.trim()}.`);
+    }
 
     handleValidation() {
         // let errors = {};
@@ -211,7 +213,7 @@ class BuddyFinderForm extends React.Component {
                             </Form.Group>
                             <fieldset>
                                 <Form.Group as={Row} onChange={this.handleInputChange}>
-                                    <Form.Label InputLabelProps={{ required: true }}  as="legend" column sm={2} style={{bottom: "1rem", fontWeight: "800"}}>Interests</Form.Label>
+                                    <Form.Label as="legend" column sm={2} style={{bottom: "1rem", fontWeight: "800"}}>Interests</Form.Label>
                                     <Col sm={10}>
                                         <Form.Check 
                                         type="radio"
@@ -219,6 +221,7 @@ class BuddyFinderForm extends React.Component {
                                         name="interest"
                                         value="Math"
                                         label="Math"
+                                        disabled={this.state.interestField}
                                         />
                                         <Form.Check 
                                         type="radio"
@@ -226,6 +229,7 @@ class BuddyFinderForm extends React.Component {
                                         name="interest"
                                         value="General Paper"
                                         label="General Paper"
+                                        disabled={this.state.interestField}
                                         />
                                         <Form.Check 
                                         type="radio"
@@ -233,6 +237,7 @@ class BuddyFinderForm extends React.Component {
                                         name="interest"
                                         value="Chemistry"
                                         label="Chemistry"
+                                        disabled={this.state.interestField}
                                         />
                                         <Form.Check 
                                         type="radio"
@@ -240,6 +245,7 @@ class BuddyFinderForm extends React.Component {
                                         name="interest"
                                         value="Physics"
                                         label="Physics"
+                                        disabled={this.state.interestField}
                                         />
                                         <Form.Check 
                                         type="radio"
@@ -247,6 +253,7 @@ class BuddyFinderForm extends React.Component {
                                         name="interest"
                                         value="Computing"
                                         label="Computing"
+                                        disabled={this.state.interestField}
                                         />
                                         <Form.Check 
                                         type="radio"
@@ -254,8 +261,9 @@ class BuddyFinderForm extends React.Component {
                                         name="interest"
                                         value="Economics"
                                         label="Economics"
+                                        disabled={this.state.interestField}
                                         />
-                                        <Form.Control type="input" id="interest" value={this.state.name} name="interest" placeholder="Others" />
+                                        <Form.Control type="input" id="interest" name="this.state.name" placeholder="Others" onChange={this.handleInterestText}/>
                                         <span style={{color: "red"}}>{this.state.errors["interest"]}</span>
                                     </Col>
                                 </Form.Group>
