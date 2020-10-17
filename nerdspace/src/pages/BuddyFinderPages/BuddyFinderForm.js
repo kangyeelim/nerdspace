@@ -15,37 +15,43 @@ class BuddyFinderForm extends React.Component {
             gender: null,
             educationLevel: null,
             yearOfStudy: null,
-            interest: null
+            interest: null,
+            errors: {}
         }
         // this.handleYearStudyInput = this.handleYearStudyInput.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         // this.goResults = this.goResults.bind(this);
         this.submitForm = this.submitForm.bind(this);
+        this.handleValidation = this.handleValidation.bind(this);
     }
 
     submitForm(event) {
         event.preventDefault();
-        axios.post('http://localhost:5000/buddyfinderposts', {
-            educationLevel: this.state.educationLevel,
-            yearOfStudy: this.state.yearOfStudy,
-            interest: this.state.interest,
-            gender: this.state.gender,
-            googleID: this.props.profile[0].googleId
-        })
-        .catch(err => {
-            console.error(err);
-        });
-
-        this.props.history.push({
-            pathname:'/buddy-finder-result',
-            state: {
+        if(this.handleValidation()){
+            axios.post('http://localhost:5000/buddyfinderposts', {
                 educationLevel: this.state.educationLevel,
                 yearOfStudy: this.state.yearOfStudy,
                 interest: this.state.interest,
                 gender: this.state.gender,
                 googleID: this.props.profile[0].googleId
-            }
-        });
+            })
+            .catch(err => {
+                console.error(err);
+            });
+
+            this.props.history.push({
+                pathname:'/buddy-finder-result',
+                state: {
+                    educationLevel: this.state.educationLevel,
+                    yearOfStudy: this.state.yearOfStudy,
+                    interest: this.state.interest,
+                    gender: this.state.gender,
+                    googleID: this.props.profile[0].googleId
+                }
+            });
+        } else {
+            alert("Invalid Form.")
+        }
 
     }
 
