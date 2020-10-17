@@ -90,9 +90,9 @@ router.route('/').post((req, res) => {
     }
   });
   memberIDs.forEach(id => {
-    roomRef.child('members').push().set(memberID);
+    roomRef.child('members').push().set(id);
   })
-  
+
   res.send({
     message: 'POST success',
     data: roomRef.key

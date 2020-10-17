@@ -81,11 +81,13 @@ class CreateRoomForm extends React.Component {
     }
     this.setState({isSubmitted: true}, async () => {
       if (this.state.images.length <= 1 && !this.state.isEditing) {
+        this.state.addedMembers.push(this.props.profile[0].googleId)
+        console.log(this.state.addedMembers)
         axios.post('http://localhost:5000/studyrooms/', {
           name: this.state.name,
           isThereImage: (this.state.images.length == 1),
           imageUrl: imageUrl,
-          googleIDs: this.state.addedMembers.push(this.props.profile[0].googleId)
+          googleIDs: this.state.addedMembers
         })
         .then((response) => {
           this.addRoomIdToUsers(response.data.data);

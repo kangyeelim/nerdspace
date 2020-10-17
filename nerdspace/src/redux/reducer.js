@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { UPDATE_PROFILE, DELETE_PROFILE } from './actions';
+import { UPDATE_PROFILE, DELETE_PROFILE, UPDATE_TOKEN, DELETE_TOKEN } from './actions';
 
 
 const profileReducer = (state=[], action) => {
@@ -15,6 +15,21 @@ const profileReducer = (state=[], action) => {
   }
 }
 
+const tokenReducer = (state=[], action) => {
+  switch(action.type) {
+    case UPDATE_TOKEN:
+      var newState = [];
+      newState.push(action.payload);
+      return newState;
+    case DELETE_TOKEN:
+      var emptyState = [];
+      return emptyState;
+    default:
+      return state;
+  }
+}
+
 export const reducer = combineReducers({
   profile: profileReducer,
+  token: tokenReducer
 })
