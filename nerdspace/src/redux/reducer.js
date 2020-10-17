@@ -5,7 +5,8 @@ import { UPDATE_PROFILE, DELETE_PROFILE, UPDATE_TOKEN, DELETE_TOKEN } from './ac
 const profileReducer = (state=[], action) => {
   switch (action.type) {
     case UPDATE_PROFILE:
-      var newState = state.concat(action.payload)
+      var newState = [];
+      newState.push(action.payload);
       return newState;
     case DELETE_PROFILE:
       var emptyState = [];

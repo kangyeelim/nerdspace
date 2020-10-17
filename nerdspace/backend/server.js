@@ -20,6 +20,7 @@ const buddyFinderRouter = require('./routes/buddyFinderPosts');
 const imagesRouter = require('./routes/images');
 const messageRouter = require('./routes/message');
 const contactRouter = require('./routes/contacts');
+const tokensRouter = require('./routes/tokens');
 
 app.use('/users', usersRouter);
 app.use('/studyroomposts', studyRoomPostsRouter);
@@ -30,6 +31,7 @@ app.use('/buddyfinderposts', buddyFinderRouter);
 app.use('/images', imagesRouter);
 app.use('/message', messageRouter);
 app.use('/contacts', contactRouter);
+app.use('/tokens', tokensRouter);
 
 //starts server
 app.listen(port, () => {
