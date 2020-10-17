@@ -38,7 +38,12 @@ export async function isTokenAccepted(tokenProp) {
     var res = await axios.get(`http://localhost:5000/tokens/byAccessToken/${accessToken}`);
     if ((await res).data.message == 'GET success') {
       var expires_at = res.data.data[0].session_state.expires_at;
-      return (Date.now() < expires_at)
+      if (Date.now() < expires_at) {
+        return true;
+      } else {
+        deleteTokenFromDB(tokenProp);
+        return false;
+      }
     } else {
       return false;
     }

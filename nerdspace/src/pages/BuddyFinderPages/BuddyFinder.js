@@ -23,7 +23,7 @@ class BuddyFinder extends React.Component {
 
     async componentDidMount() {
       var isLoggedIn = await isTokenAccepted(this.props.token);
-      this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
+      this.setState({isLoggedIn: await isLoggedIn, isAuthenticating:false});
     }
 
     createBuddyForm() {
