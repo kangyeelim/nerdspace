@@ -6,18 +6,39 @@ import TimeTableForm from '../../components/StudyRoomComponents/TimeTableForm';
 import TimeTableView from '../../components/StudyRoomComponents/TimeTableView';
 import NavBar from '../../components/NavBar';
 
+const dummyExistingRecord = [{day:"Mon", time: "8pm"}, {day:"Mon", time: "10.30am"},{day:"Mon", time: "9.30am"}, {day:"Mon", time: "9am"},{day:"Tue", time: "8.30pm"}, {day:"Tue", time: "8pm"}, {day:"Tue", time: "7.30pm"}];
+
 class CommonTimes extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const roomID = props.match.params.id;
     this.state = {
       memberRecords: [],
-      isExistingRecord : false
+      isExistingRecord : false,
+      roomId: roomID,
+      isEditingMode: false,
+      existingRecord: []
     }
+    this.switchEditingMode = this.switchEditingMode.bind(this);
+    this.findCommonStudyTime = this.findCommonStudyTime.bind(this);
   }
   componentDidMount() {
+    //to be implemented
     //get timings by the room id.
     //check if existing record present
+    //assume i have a record
+    this.setState({isExistingRecord: true});
+    this.setState({existingRecord: dummyExistingRecord});
   }
+
+  switchEditingMode() {
+    this.setState({isEditingMode: !this.state.isEditingMode});
+  }
+
+  findCommonStudyTime() {
+    //to be implemented
+  }
+
   render() {
     return (
       <div>
@@ -34,14 +55,24 @@ class CommonTimes extends React.Component {
               );
             })}
           </ol>
-          <Button onClick={this.onSubmit} className="btn btn-primary">Find!</Button>
-          {this.state.isExistingRecord && <div>
-            <h4>Your Timetable Input</h4>
-              <TimeTableView/>
+          <Button onClick={this.findCommonStudyTime} style={styles.button} className="btn btn-primary">Find!</Button>
+          {this.state.isExistingRecord && !this.state.isEditingMode && <div>
+            <h4 style={styles.heading}>Your Submitted Timetable Entry</h4>
+            <p style={styles.subHeader}>This is your previously submitted available time slots which is used to find common study times</p>
+              <TimeTableView roomId={this.state.roomId}
+              history={this.props.history}
+              existingRecord={this.state.existingRecord}
+              switchEditingMode={this.switchEditingMode}/>
             </div>}
+          {this.state.isEditingMode && <div>
+              <h4 style={styles.heading}>Re-submit your Timetable</h4>
+              <p style={styles.subHeader}>Input your available time slots again to be used to find common study times</p>
+              <TimeTableForm roomId={this.state.roomId}/>
+          </div>}
           {!this.state.isExistingRecord && <div>
-              <h4>Input your Timetable</h4>
-              <TimeTableForm/>
+              <h4 style={styles.heading}>Input your Timetable</h4>
+              <p style={styles.subHeader}>You have yet to input your available time slots to include yourself in finding common study times</p>
+              <TimeTableForm roomId={this.state.roomId}/>
           </div>}
         </div>
       </div>
@@ -53,7 +84,19 @@ const styles = {
   container: {
     justifyContent: 'center',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    alignItems: 'center',
+    alignText: 'center'
+  },
+  button: {
+    maxWidth: "80px"
+  },
+  heading: {
+    marginTop: "50px",
+    marginBottom: "20px"
+  },
+  subHeader: {
+    marginBottom: "20px"
   }
 }
 
