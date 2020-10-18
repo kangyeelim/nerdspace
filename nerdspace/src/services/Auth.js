@@ -14,8 +14,15 @@ export async function isRoomAccessibleToUser(googleID, roomID) {
   }
 }
 
-export async function isUserLoggedIn(googleID, name, email, imageUrl) {
-  try {
+export async function isTokenAccepted(tokenProp) {
+  if (tokenProp.length == 0) {
+    return false;
+  }
+  if (typeof tokenProp[0].access_token == undefined) {
+    return false;
+  }
+  var accessToken = tokenProp[0].access_token;
+  /*try {
     var res = await axios.get(USER_API_URL + `/byGoogleID/${googleID}`);
     if ((await res).data.message == 'GET success') {
       return res.data.data[0].name == name &&
@@ -26,6 +33,34 @@ export async function isUserLoggedIn(googleID, name, email, imageUrl) {
     }
   } catch (error) {
     return false;
+  }*/
+  try {
+    var res = await axios.get(`http://localhost:5000/tokens/byAccessToken/${accessToken}`);
+    if ((await res).data.message == 'GET success') {
+      var expires_at = res.data.data[0].session_state.expires_at;
+      if (Date.now() < expires_at) {
+        return true;
+      } else {
+        deleteTokenFromDB(tokenProp);
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } catch {
+    return false;
   }
+}
 
+export async function deleteTokenFromDB(tokenProp) {
+  if (tokenProp.length == 0 || typeof tokenProp[0].access_token == undefined) {
+
+  } else {
+    var accessToken = tokenProp[0].access_token;
+    try {
+      var res = await axios.delete(`http://localhost:5000/tokens/byAccessToken/${accessToken}`);
+    } catch {
+      return false;
+    }
+  }
 }

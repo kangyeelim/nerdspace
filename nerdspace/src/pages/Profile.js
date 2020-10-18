@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import NavBar from '../components/NavBar';
 import './General.css';
 import { Col, Row, Container } from 'react-bootstrap';
-import { isUserLoggedIn } from '../services/Auth';
+import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 class Profile extends React.Component {
@@ -25,8 +25,7 @@ class Profile extends React.Component {
     }
 
     componentDidMount = async () => {
-      const profile = this.props.profile[0];
-      var isLoggedIn = await isUserLoggedIn(profile.googleId, profile.name, profile.email, profile.imageUrl);
+      var isLoggedIn = await isTokenAccepted(this.props.token);
       this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
     }
 
@@ -138,6 +137,7 @@ const styles = {
 const mapStateToProps = (state) => {
     return {
       profile: state.profile,
+      token: state.token
     }
 }
 

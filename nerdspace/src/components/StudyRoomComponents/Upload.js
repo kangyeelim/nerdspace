@@ -33,9 +33,11 @@ class Upload extends React.Component {
     var imageData = await uploadImage(data,
       (err)=>{this.setState({isUploading: false})});
 
-    this.setState({images: this.state.images.concat(await imageData)});
-    this.props.handleImages(this.state.images);
+    if (imageData) {
+        this.setState({images: this.state.images.concat(await imageData)});
+        this.props.handleImages(this.state.images);
 
+    }
     this.setState({isUploading:false});
   }
 
@@ -43,7 +45,7 @@ class Upload extends React.Component {
     var arr = [];
     arr.push(imageData.secure_url);
     var res = await deleteImages(arr);
-    
+
     var updatedState = this.state.images.filter(image => image !== imageData);
     this.setState({images:updatedState});
     this.props.handleImages(this.state.images);

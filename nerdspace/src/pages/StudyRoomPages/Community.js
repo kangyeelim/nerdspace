@@ -6,7 +6,7 @@ import { Col, Row, Form, Button, FormControl, Container } from 'react-bootstrap'
 import RoomBox from '../../components/StudyRoomComponents/RoomBox';
 import axios from 'axios';
 import { enterRoom } from '../../navigators/StudyRoomNavigator';
-import { isUserLoggedIn } from '../../services/Auth';
+import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -39,10 +39,12 @@ class Community extends React.Component {
   }
 
   async componentDidMount() {
-    this.loadAndApplyStatusToRooms();
-    const profile = this.props.profile[0];
-    var isLoggedIn = await isUserLoggedIn(profile.googleId, profile.name, profile.email, profile.imageUrl);
-    this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
+    if (await isTokenAccepted(this.props.token)) {
+      this.loadAndApplyStatusToRooms();
+      this.setState({isLoggedIn: true, isAuthenticating:false});
+    } else {
+      this.setState({isLoggedIn: false, isAuthenticating:false});
+    }
   }
 
   loadAndApplyStatusToRooms() {
@@ -201,6 +203,7 @@ const styles = {
 const mapStateToProps = (state) => {
     return {
       profile: state.profile,
+      token: state.token
     }
 }
 

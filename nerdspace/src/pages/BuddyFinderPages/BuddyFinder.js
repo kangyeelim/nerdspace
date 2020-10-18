@@ -5,7 +5,7 @@ import '../General.css';
 import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
 import BuddyFinderHeader from '../../components/BuddyFinderComponents/BuddyFinderHeader';
 import BuddyFinderPostsSection from '../../components/BuddyFinderComponents/BuddyFinderPostsSection';
-import { isUserLoggedIn } from '../../services/Auth';
+import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -22,9 +22,8 @@ class BuddyFinder extends React.Component {
     }
 
     async componentDidMount() {
-      const profile = this.props.profile[0];
-      var isLoggedIn = await isUserLoggedIn(profile.googleId, profile.name, profile.email, profile.imageUrl);
-      this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
+      var isLoggedIn = await isTokenAccepted(this.props.token);
+      this.setState({isLoggedIn: await isLoggedIn, isAuthenticating:false});
     }
 
     createBuddyForm() {
@@ -77,6 +76,7 @@ const styles = {
 const mapStateToProps = (state) => {
     return {
         profile: state.profile,
+        token: state.token
     }
 }
 
