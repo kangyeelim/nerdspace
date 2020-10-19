@@ -66,25 +66,6 @@ class StudyRoom extends React.Component {
           var imageArr = [];
           imageArr.push(this.state.imageUrl);
           await deleteImages(imageArr);
-          /*var arr = this.state.imageUrl.split("/");
-          var size = arr.length;
-          var last = arr[size - 1];
-          var arr2 = last.split(".");
-          var public_id = arr2[0];
-          axios.delete(`http://localhost:5000/images/byUrl/${public_id}`)
-            .then(res => {
-              var images = res.data.data;
-              axios.post('http://localhost:5000/images/delete', {
-                images: images
-              })
-              .catch(err => {
-                console.error(err);
-              })
-            })
-            .catch(err => {
-              console.error(err);
-            })*/
-
         }
       })
       .catch(err => {
