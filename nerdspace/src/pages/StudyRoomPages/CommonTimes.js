@@ -7,7 +7,7 @@ import TimeTableForm from '../../components/StudyRoomComponents/TimeTableForm';
 import TimeTableView from '../../components/StudyRoomComponents/TimeTableView';
 import NavBar from '../../components/NavBar';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { isRoomAccessibleToUser } from '../../services/Auth';
+import { isRoomAccessibleToUser, isTokenAccepted } from '../../services/Auth';
 
 const dummyExistingRecord = [{day:"Mon", time: "8pm"}, {day:"Mon", time: "10.30am"},{day:"Mon", time: "9.30am"}, {day:"Mon", time: "9am"},{day:"Tue", time: "8.30pm"}, {day:"Tue", time: "8pm"}, {day:"Tue", time: "7.30pm"}];
 
@@ -30,7 +30,7 @@ class CommonTimes extends React.Component {
 
   async componentDidMount() {
     var isAuthenticated = await isRoomAccessibleToUser(this.props.profile[0].googleId,
-      this.state.roomId);
+      this.state.roomId) && isTokenAccepted(this.props.token);
     this.setState({isAuthenticated:await isAuthenticated});
     //to be implemented
     //get timings by the room id.

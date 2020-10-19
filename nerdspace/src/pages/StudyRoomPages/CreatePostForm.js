@@ -8,7 +8,7 @@ import Upload from '../../components/StudyRoomComponents/Upload';
 import { deleteImages } from '../../services/ImageService';
 import { createNewPost, updateExistingPost } from '../../services/StudyRoomPostService';
 import { enterRoom } from '../../navigators/StudyRoomNavigator';
-import { isRoomAccessibleToUser } from '../../services/Auth';
+import { isRoomAccessibleToUser, isTokenAccepted } from '../../services/Auth';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 class CreatePostForm extends React.Component {
@@ -36,7 +36,7 @@ class CreatePostForm extends React.Component {
 
   async componentDidMount() {
     var isAuthenticated = await isRoomAccessibleToUser(this.props.profile[0].googleId,
-      this.state.roomId);
+      this.state.roomId) && isTokenAccepted(this.props.token);
     this.setState({isAuthenticated:await isAuthenticated});
     if (typeof this.props.location.state != 'undefined' && typeof this.props.location.state.title != 'undefined') {
       this.setState({title:this.props.location.state.title,
@@ -204,6 +204,7 @@ const styles = {
 const mapStateToProps = (state) => {
     return {
       profile: state.profile,
+      token: state.token
     }
 }
 
