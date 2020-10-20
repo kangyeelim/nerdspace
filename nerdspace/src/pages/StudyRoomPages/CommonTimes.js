@@ -1,10 +1,13 @@
 import React from "react";
 import { Container, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import TimeTableForm from '../../components/StudyRoomComponents/TimeTableForm';
 import TimeTableView from '../../components/StudyRoomComponents/TimeTableView';
 import NavBar from '../../components/NavBar';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { isRoomAccessibleToUser } from '../../services/Auth';
 
 const dummyExistingRecord = [{day:"Mon", time: "8pm"}, {day:"Mon", time: "10.30am"},{day:"Mon", time: "9.30am"}, {day:"Mon", time: "9am"},{day:"Tue", time: "8.30pm"}, {day:"Tue", time: "8pm"}, {day:"Tue", time: "7.30pm"}];
 
@@ -17,18 +20,25 @@ class CommonTimes extends React.Component {
       isExistingRecord : false,
       roomId: roomID,
       isEditingMode: false,
-      existingRecord: []
+      existingRecord: [],
+      isAuthenticating: true,
+      isAuthenticated: false
     }
     this.switchEditingMode = this.switchEditingMode.bind(this);
     this.findCommonStudyTime = this.findCommonStudyTime.bind(this);
   }
-  componentDidMount() {
+
+  async componentDidMount() {
+    var isAuthenticated = await isRoomAccessibleToUser(this.props.profile[0].googleId,
+      this.state.roomId);
+    this.setState({isAuthenticated:await isAuthenticated});
     //to be implemented
     //get timings by the room id.
     //check if existing record present
     //assume i have a record
     this.setState({isExistingRecord: true});
     this.setState({existingRecord: dummyExistingRecord});
+    this.setState({isAuthenticating:false});
   }
 
   switchEditingMode() {
@@ -40,6 +50,14 @@ class CommonTimes extends React.Component {
   }
 
   render() {
+    if (this.state.isAuthenticating) {
+      return <Container>
+        <CircularProgress/>
+      </Container>
+    }
+    if (!this.state.isAuthenticated) {
+      return <Redirect to="/community"/>;
+    }
     return (
       <div>
         <NavBar history={this.props.history}/>
@@ -103,6 +121,7 @@ const styles = {
 const mapStateToProps = (state) => {
   return {
     profile: state.profile,
+    token: state.token
   }
 }
 

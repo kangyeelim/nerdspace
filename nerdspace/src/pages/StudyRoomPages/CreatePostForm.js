@@ -8,17 +8,23 @@ import Upload from '../../components/StudyRoomComponents/Upload';
 import { deleteImages } from '../../services/ImageService';
 import { createNewPost, updateExistingPost } from '../../services/StudyRoomPostService';
 import { enterRoom } from '../../navigators/StudyRoomNavigator';
+import { isRoomAccessibleToUser } from '../../services/Auth';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class CreatePostForm extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const roomID = props.match.params.id;
     this.state = {
       title: "",
       content: "",
       isSubmitted: false,
       images: [],
       isEditing: false,
-      key: null
+      key: null,
+      roomId: roomID,
+      isAuthenticating: true,
+      isAuthenticated: false
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.titleInput = this.titleInput.bind(this);
@@ -28,7 +34,10 @@ class CreatePostForm extends React.Component {
     this.deleteUnpostImages = this.deleteUnpostImages.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    var isAuthenticated = await isRoomAccessibleToUser(this.props.profile[0].googleId,
+      this.state.roomId);
+    this.setState({isAuthenticated:await isAuthenticated});
     if (typeof this.props.location.state != 'undefined' && typeof this.props.location.state.title != 'undefined') {
       this.setState({title:this.props.location.state.title,
         content:this.props.location.state.content,
@@ -36,6 +45,7 @@ class CreatePostForm extends React.Component {
         key:this.props.location.state.key,
         isEditing:true});
     }
+    this.setState({isAuthenticating:false});
   }
 
   titleInput(e) {
@@ -110,6 +120,14 @@ class CreatePostForm extends React.Component {
   }
 
   render() {
+    if (this.state.isAuthenticating) {
+      return <Container>
+        <CircularProgress/>
+      </Container>
+    }
+    if (!this.state.isAuthenticated) {
+      return <Redirect to="/community"/>;
+    }
     return (
       <div>
         <NavBar history={this.props.history}/>

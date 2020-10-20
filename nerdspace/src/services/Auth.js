@@ -41,7 +41,7 @@ export async function isTokenAccepted(tokenProp) {
       if (Date.now() < expires_at) {
         return true;
       } else {
-        deleteTokenFromDB(tokenProp);
+        await deleteTokenFromDB(tokenProp);
         return false;
       }
     } else {
