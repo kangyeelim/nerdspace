@@ -220,8 +220,8 @@ const styles = {
     },
     headerText: {
         margin: "2rem",
-        fontSize: 60, 
-        fontWeight: 500
+        fontSize: 40, 
+        fontWeight: 350
     }
 
 }

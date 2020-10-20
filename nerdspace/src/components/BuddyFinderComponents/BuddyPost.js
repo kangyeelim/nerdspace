@@ -5,12 +5,13 @@ import { faTrashAlt, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardFooter, MDBCardGroup, MDBContainer } from "mdbreact";
 
 export default function BuddyPost(props) {
+
   return (
     <MDBContainer style={{ minWidth: "50vw" }}>
       <MDBCardGroup deck style={{alignSelf:'center', textAlign: "center", justifyContent: 'center'}}>
-        <MDBCard style={{ width: "60rem", marginTop: "1rem" }}>
+        <MDBCard style={{ width: "60rem" }}>
           <MDBCardBody>
-            <MDBCardTitle tag="h2" style={{fontSize: 40, fontWeight: 600}}>Form {props.id}</MDBCardTitle>
+            <MDBCardTitle tag="h2" style={{fontSize: 30, fontWeight: 600, textDecoration: "underline"}}>Form {props.index}</MDBCardTitle>
 
               <p style={{fontSize: 20, fontWeight: 600}}>Gender: {props.gender}</p>
               <p style={{fontSize: 20, fontWeight: 600}}>Education Level: {props.educationLevel}</p>
