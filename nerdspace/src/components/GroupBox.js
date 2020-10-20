@@ -17,6 +17,7 @@ class GroupBox extends React.Component {
               <Card.Text>
                 {this.props.rooms.map(room => {
                   return (<li
+                    key={room.key}
                     onClick={()=> this.props.enterRoom(room.key, room.name, room.imageUrl)}
                     >{room.name}
                   </li>);

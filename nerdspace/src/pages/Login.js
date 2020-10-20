@@ -1,38 +1,45 @@
 import React from 'react';
 import GoogleButton from '../components/GoogleLoginButton';
+import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { updateProfile, deleteProfile } from '../redux/actions';
+import { updateProfile, deleteProfile, updateToken } from '../redux/actions';
+import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      isAuthenticated: false,
+      isAuthenticating: true,
+      isLoggedIn: false
     }
     this.responseGoogleSuccess = this.responseGoogleSuccess.bind(this);
     this.responseGoogleFailure = this.responseGoogleFailure.bind(this);
     this.addUserOnFirstLogin = this.addUserOnFirstLogin.bind(this);
+    this.addToken = this.addToken.bind(this);
   }
 
-  componentDidMount() {
-    //check if user is authenticated already and redirect if yes
-    //totally insecure lol
-    if (this.props.profile.length > 0) {
-      this.setState({isAuthenticated: true});
+  async componentDidMount() {
+    if (await isTokenAccepted(this.props.token)) {
+      this.setState({isLoggedIn:true});
     }
+    this.setState({isAuthenticating:false});
   }
 
   responseGoogleSuccess(response) {
     const profile = response.profileObj;
+    const token = response.tokenObj;
     this.props.updateProfile(profile);
+    this.props.updateToken(token);
     //adds user in database on first login
     this.addUserOnFirstLogin(profile, () => {
-      this.setState({isAuthenticated: true})
+      this.setState({isLoggedIn: true})
       }, () => {
         alert("Login failed. Please try again.")
       });
+    this.addToken(token);
   }
 
   addUserOnFirstLogin(profile, _callback, _callback2) {
@@ -58,13 +65,54 @@ class Login extends React.Component {
     })
   }
 
+  addToken(token) {
+    axios.get(`http://localhost:5000/tokens/byAccessToken/${token.access_token}`)
+      .then((response) => {
+        if (response.data.message == 'Token does not exist.') {
+          axios.post(`http://localhost:5000/tokens`, {
+            access_token: token.access_token,
+            token_id: token.id_token,
+            session_state: {
+              expires_in: token.expires_in,
+              expires_at: token.expires_at,
+              first_issued_at: token.first_issued_at
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          })
+        } else {
+          axios.post(`http://localhost:5000/tokens/update`, {
+            access_token: token.access_token,
+            token_id: token.token_id,
+            session_state: {
+              expires_in: token.expires_in,
+              expires_at: token.expires_at,
+              first_issued_at: token.first_issued_at
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          })
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
+
   responseGoogleFailure(response) {
     alert("Login failed. Please try again.");
   }
 
   render() {
-    if (this.state.isAuthenticated) {
+    if (!this.state.isAuthenticating && this.state.isLoggedIn) {
       return <Redirect to="/home"/>
+    }
+    if (this.state.isAuthenticating) {
+      return <Container>
+        <CircularProgress/>
+      </Container>
     }
     return (
       <div>
@@ -104,7 +152,8 @@ const styles = {
 const mapStateToProps = (state) => {
     return {
       profile: state.profile,
+      token: state.token
     }
 }
 
-export default connect(mapStateToProps, {updateProfile:updateProfile, deleteProfile:deleteProfile}) (Login);
+export default connect(mapStateToProps, {updateProfile:updateProfile, deleteProfile:deleteProfile, updateToken: updateToken}) (Login);

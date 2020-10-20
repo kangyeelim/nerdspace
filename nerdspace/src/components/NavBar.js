@@ -1,7 +1,8 @@
 import React from 'react';
 import { Navbar, Nav, Image, NavDropdown, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { deleteProfile } from '../redux/actions';
+import { deleteProfile, deleteToken } from '../redux/actions';
+import { deleteTokenFromDB } from '../services/Auth';
 
 class NavBar extends React.Component {
 
@@ -26,6 +27,8 @@ class NavBar extends React.Component {
 
   handleLogout(){
     this.props.deleteProfile();
+    this.props.deleteToken();
+    deleteTokenFromDB(this.props.token);
     this.props.history.push("/");
   }
 
@@ -62,7 +65,7 @@ class NavBar extends React.Component {
         <Navbar expand="lg" className="shadow" style={{ backgroundColor: "#D3D3D3" }}>
           <Navbar.Brand href="#">
             Nerdspace
-          </Navbar.Brand>     
+          </Navbar.Brand>
           <Navbar.Toggle style={styles.navlink} aria-controls="basic-navbar-nav" />
           <Navbar.Collapse style={styles.navlink} id="basic-navbar-nav">
           <Nav.Link style={styles.navlink} onClick={this.goFindBuddyPage}>Find Study Buddies</Nav.Link>
@@ -123,7 +126,8 @@ const styles = {
 const mapStateToProps = (state) => {
   return {
     profile: state.profile,
+    token: state.token
   }
 }
 
-export default connect(mapStateToProps, {deleteProfile:deleteProfile}) (NavBar);
+export default connect(mapStateToProps, {deleteProfile:deleteProfile, deleteToken: deleteToken}) (NavBar);

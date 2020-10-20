@@ -68,6 +68,7 @@ class RoomPostsSection extends React.Component {
   }
 
   async deletePost(id, images) {
+    console.log(images);
     await deleteStudyRoomPost(id, images);
     this.getAllRoomPosts();
   }

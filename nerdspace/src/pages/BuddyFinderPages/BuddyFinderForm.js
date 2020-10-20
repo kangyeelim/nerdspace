@@ -13,39 +13,54 @@ class BuddyFinderForm extends React.Component {
         super();
         this.state = {
             gender: null,
-            educationLevel: null,
-            yearOfStudy: null,
-            interest: null
+            educationLevel: "Primary",
+            yearOfStudy: 1,
+            interest: null,
+            errors: {},
+            interestField: null,
         }
         // this.handleYearStudyInput = this.handleYearStudyInput.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleInterestText = this.handleInterestText.bind(this);
         // this.goResults = this.goResults.bind(this);
         this.submitForm = this.submitForm.bind(this);
+        this.handleValidation = this.handleValidation.bind(this);
     }
+    
+    // componentDidMount() {
+    //     this.handleValidation();
+    //     console.log("ERR " + this.state.errors["yearOfStudy"]);
+    // }
 
     submitForm(event) {
         event.preventDefault();
-        axios.post('http://localhost:5000/buddyfinderposts', {
-            educationLevel: this.state.educationLevel,
-            yearOfStudy: this.state.yearOfStudy,
-            interest: this.state.interest,
-            gender: this.state.gender,
-            googleID: this.props.profile[0].googleId
-        })
-        .catch(err => {
-            console.error(err);
-        });
 
-        this.props.history.push({
-            pathname:'/buddy-finder-result',
-            state: {
+        if(this.handleValidation()){
+            axios.post('http://localhost:5000/buddyfinderposts', {
                 educationLevel: this.state.educationLevel,
                 yearOfStudy: this.state.yearOfStudy,
                 interest: this.state.interest,
                 gender: this.state.gender,
                 googleID: this.props.profile[0].googleId
-            }
-        });
+            })
+            .catch(err => {
+                console.error(err);
+            });
+
+            this.props.history.push({
+                pathname:'/buddy-finder-result',
+                state: {
+                    educationLevel: this.state.educationLevel,
+                    yearOfStudy: this.state.yearOfStudy,
+                    interest: this.state.interest,
+                    gender: this.state.gender,
+                    googleID: this.props.profile[0].googleId
+                }
+            });
+        } else {
+            this.handleValidation();
+           // alert("Invalid Form. Please fill in all fields with valid inputs.")
+        }
 
     }
 
@@ -71,12 +86,70 @@ class BuddyFinderForm extends React.Component {
             [name]: value
         });
         console.log(`Input name ${name}. Input value ${value}.`);
+
+        // this.handleValidation();
     }
 
-    // handleInterestInput(event) {
-    //     this.setState({interest: event.target.value.trim()});
-    //     console.log(`Input name interest. Input value ${event.target.value.trim()}.`);
-    // }
+    handleInterestText(event) {
+        this.setState({interestField: event.target.value.trim()});
+        this.setState({interest: event.target.value.trim()});
+        console.log(`Input text interest. Input value ${event.target.value.trim()}.`);
+    }
+
+    handleValidation() {
+        // let errors = {};
+        let formIsValid = true;
+
+        if (this.state.gender == null) {
+            this.state.errors["gender"] = "Gender field cannot be empty";
+            formIsValid = false;
+        } 
+        // if (this.state.gender != null) {
+        //     if(!this.state.gender.match(/^[a-zA-Z]+$/)){
+        //         formIsValid = false;
+        //         this.state.errors["gender"] = "Gender field cannot be empty";
+        //      } 
+        // }
+
+        // if (this.state.yearOfStudy == null) {
+        //     this.state.errors["yearOfStudy"] = "YearOfStudy field cannot be empty";
+        //     formIsValid = false;
+        // }
+
+        if (this.state.educationLevel == "Junior College") {
+            const re = /^[0-9\b]+$/;
+            if (!re.test(this.state.yearOfStudy)) {
+                this.state.errors["yearOfStudy"] = "YearOfStudy field must only have numbers";
+                formIsValid = false;
+            } else {
+                if (parseInt(this.state.yearOfStudy) > 2) {
+                    this.state.errors["yearOfStudy"] = "Year of study for junior college must be below 3";
+                    formIsValid = false;
+                }
+            }
+        }
+        if (this.state.educationLevel == "Polytechnic") {
+            const re = /^[0-9\b]+$/;
+            if (!re.test(this.state.yearOfStudy)) {
+                this.state.errors["yearOfStudy"] = "YearOfStudy field must only have numbers";
+                formIsValid = false;
+            } else {
+                if (parseInt(this.state.yearOfStudy) > 3) {
+                    this.state.errors["yearOfStudy"] = "Year of study for polytechnic must be below 4";
+                    formIsValid = false;
+                }
+            }
+        }
+
+        
+        if (this.state.interest == null) {
+            this.state.errors["interest"] = "Interest field cannot be empty";
+            formIsValid = false;
+        } 
+        
+        this.forceUpdate();
+        return formIsValid;
+    }
 
 
 
@@ -93,8 +166,8 @@ class BuddyFinderForm extends React.Component {
                     <div>
                         <Form style={styles.form}>
                             <fieldset>
-                                <Form.Group as={Row} onSubmit={this.findBuddy}>
-                                    <Form.Label as="legend" column sm={2}>Gender</Form.Label>
+                                <Form.Group as={Row} onSubmit={this.findBuddy} style={{padding: "1rem"}}>
+                                    <Form.Label as="legend" column sm={2} style={{bottom: "1rem", fontWeight: "800", right: "1rem"}}>Gender</Form.Label>
                                     <Col sm={10}>
                                         <Form.Check
                                         type="radio"
@@ -113,11 +186,12 @@ class BuddyFinderForm extends React.Component {
                                         onChange={this.handleInputChange}
                                         />
                                     </Col>
+                                    <span style={{color: "red", right: "3rem"}}>{this.state.errors["gender"]}</span>
                                 </Form.Group>
                             </fieldset>
                             <Form.Group as={Row}>
-                                <Form.Label as="legend" column sm={2}>Level of education</Form.Label>
-                                <Col>
+                                <Form.Label as="legend" column sm={2} style={{bottom: "1rem", fontWeight: "800"}}>Level of education</Form.Label>
+                                <Col sm={7} style={{left: "1.5rem"}}>
                                     <Form.Control as="select" id="educationLevel" name="educationLevel" onChange={this.handleInputChange}>
                                         <option>Primary</option>
                                         <option>Secondary</option>
@@ -126,13 +200,21 @@ class BuddyFinderForm extends React.Component {
                                         <option>University</option>
                                     </Form.Control>
                                 </Col>
-                                <Col sm={6}>
-                                    <Form.Control id="yearOfStudy" name="yearOfStudy" type="input" placeholder="Year of study" onChange={this.handleInputChange}/>
+                                <Col sm={3} style={{left: "1.5rem"}}>
+                                    <Form.Control required as="select" id="yearOfStudy" name="yearOfStudy" placeholder="Year of study" onChange={this.handleInputChange}>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                    </Form.Control>
+                                    <span style={{color: "red", left: "3rem"}}>{this.state.errors["yearOfStudy"]}</span>
                                 </Col>
                             </Form.Group>
                             <fieldset>
                                 <Form.Group as={Row} onChange={this.handleInputChange}>
-                                    <Form.Label as="legend" column sm={2}>Interests</Form.Label>
+                                    <Form.Label as="legend" column sm={2} style={{bottom: "1rem", fontWeight: "800"}}>Interests</Form.Label>
                                     <Col sm={10}>
                                         <Form.Check 
                                         type="radio"
@@ -140,6 +222,7 @@ class BuddyFinderForm extends React.Component {
                                         name="interest"
                                         value="Math"
                                         label="Math"
+                                        disabled={this.state.interestField}
                                         />
                                         <Form.Check 
                                         type="radio"
@@ -147,6 +230,7 @@ class BuddyFinderForm extends React.Component {
                                         name="interest"
                                         value="General Paper"
                                         label="General Paper"
+                                        disabled={this.state.interestField}
                                         />
                                         <Form.Check 
                                         type="radio"
@@ -154,6 +238,7 @@ class BuddyFinderForm extends React.Component {
                                         name="interest"
                                         value="Chemistry"
                                         label="Chemistry"
+                                        disabled={this.state.interestField}
                                         />
                                         <Form.Check 
                                         type="radio"
@@ -161,6 +246,7 @@ class BuddyFinderForm extends React.Component {
                                         name="interest"
                                         value="Physics"
                                         label="Physics"
+                                        disabled={this.state.interestField}
                                         />
                                         <Form.Check 
                                         type="radio"
@@ -168,6 +254,7 @@ class BuddyFinderForm extends React.Component {
                                         name="interest"
                                         value="Computing"
                                         label="Computing"
+                                        disabled={this.state.interestField}
                                         />
                                         <Form.Check 
                                         type="radio"
@@ -175,8 +262,10 @@ class BuddyFinderForm extends React.Component {
                                         name="interest"
                                         value="Economics"
                                         label="Economics"
+                                        disabled={this.state.interestField}
                                         />
-                                        <Form.Control type="input" id="interest" value={this.state.name} name="interest" placeholder="Others" />
+                                        <Form.Control type="input" id="interest" name="this.state.name" placeholder="Others" onChange={this.handleInterestText}/>
+                                        <span style={{color: "red"}}>{this.state.errors["interest"]}</span>
                                     </Col>
                                 </Form.Group>
                             </fieldset>
@@ -230,7 +319,7 @@ const styles = {
     },
     form: {
         justifyContent: "space-between",
-        padding: "1rem",
+        padding: "1.4rem",
         justifyContent: "left",
     }
 }

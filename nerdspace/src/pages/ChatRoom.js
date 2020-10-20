@@ -6,7 +6,7 @@ import './General.css';
 import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
 import ChatMessageSection from '../components/ChatMessagesSection';
 import ContactsSection from '../components/ContactsSection';
-import { isUserLoggedIn } from '../services/Auth';
+import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -28,8 +28,7 @@ class ChatRoom extends React.Component {
     }
 
     async componentDidMount() {
-      const profile = this.props.profile[0];
-      var isLoggedIn = await isUserLoggedIn(profile.googleId, profile.name, profile.email, profile.imageUrl);
+      var isLoggedIn = await isTokenAccepted(this.props.token);
       this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
     }
 
@@ -109,6 +108,7 @@ const styles = {
 const mapStateToProps = (state) => {
     return {
         profile: state.profile,
+        token: state.token
     }
 }
 

@@ -10,7 +10,7 @@ import QuoteBox from '../components/QuoteComponents/QuoteBox';
 import './General.css';
 import axios from 'axios';
 import { enterRoom } from '../navigators/StudyRoomNavigator';
-import { isUserLoggedIn } from '../services/Auth';
+import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -27,20 +27,21 @@ class UserHome extends React.Component {
   }
 
   async componentDidMount() {
-    console.log("mounted");
-    axios.get(`http://localhost:5000/users/byGoogleID/${this.props.profile[0].googleId}`)
-    .then((response) => {
-      var rooms = response.data.data[0].rooms;
-      Object.values(rooms).map(room => {
-        this.retrieveRoomInfo(room)
+    if (await isTokenAccepted(this.props.token)) {
+      axios.get(`http://localhost:5000/users/byGoogleID/${this.props.profile[0].googleId}`)
+      .then((response) => {
+        var rooms = response.data.data[0].rooms;
+        Object.values(rooms).map(room => {
+          this.retrieveRoomInfo(room)
+        })
       })
-    })
-    .catch(err => {
-      console.error(err);
-    })
-    const profile = this.props.profile[0];
-    var isLoggedIn = await isUserLoggedIn(profile.googleId, profile.name, profile.email, profile.imageUrl);
-    this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
+      .catch(err => {
+        console.error(err);
+      })
+      this.setState({isLoggedIn: true, isAuthenticating:false});
+    } else {
+      this.setState({isLoggedIn: false, isAuthenticating:false});
+    }
   }
 
   retrieveRoomInfo(id) {
@@ -61,13 +62,13 @@ class UserHome extends React.Component {
   }
 
   render() {
+    if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
+      return <Redirect to="/"/>
+    }
     if (this.state.isAuthenticating) {
       return <Container>
         <CircularProgress/>
       </Container>
-    }
-    if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
-      return <Redirect to="/"/>
     }
     return (
       <div>
@@ -95,6 +96,7 @@ class UserHome extends React.Component {
 const mapStateToProps = (state) => {
     return {
       profile: state.profile,
+      token: state.token
     }
 }
 
