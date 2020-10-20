@@ -5,7 +5,10 @@ import '../General.css';
 import axios from 'axios';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
+import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
+import { isTokenAccepted } from '../../services/Auth';
+import { Redirect } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class BuddyFinderForm extends React.Component {
 
@@ -18,6 +21,8 @@ class BuddyFinderForm extends React.Component {
             interest: null,
             errors: {},
             interestField: null,
+            isAuthenticating: true,
+            isLoggedIn: false
         }
         // this.handleYearStudyInput = this.handleYearStudyInput.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -27,6 +32,11 @@ class BuddyFinderForm extends React.Component {
         this.handleValidation = this.handleValidation.bind(this);
     }
     
+    async componentDidMount() {
+        var isLoggedIn = await isTokenAccepted(this.props.token);
+        this.setState({isLoggedIn: await isLoggedIn, isAuthenticating:false});
+    }
+
     // componentDidMount() {
     //     this.handleValidation();
     //     console.log("ERR " + this.state.errors["yearOfStudy"]);
@@ -154,6 +164,14 @@ class BuddyFinderForm extends React.Component {
 
 
     render() {
+        if (this.state.isAuthenticating) {
+            return <Container>
+              <CircularProgress/>
+            </Container>
+        }
+        if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
+        return <Redirect to="/"/>
+        }
         return (
             <div>
                 <NavBar history={this.props.history}/>
@@ -327,6 +345,7 @@ const styles = {
 const mapStateToProps = (state) => {
     return {
         profile: state.profile,
+        token: state.token
     }
 }
 
