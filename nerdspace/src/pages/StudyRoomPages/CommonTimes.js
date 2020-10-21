@@ -26,6 +26,7 @@ class CommonTimes extends React.Component {
     }
     this.switchEditingMode = this.switchEditingMode.bind(this);
     this.findCommonStudyTime = this.findCommonStudyTime.bind(this);
+    this.submitTimetable = this.submitTimetable.bind(this);
   }
 
   async componentDidMount() {
@@ -34,11 +35,21 @@ class CommonTimes extends React.Component {
     this.setState({isAuthenticated:await isAuthenticated});
     //to be implemented
     //get timings by the room id.
-    //check if existing record present
-    //assume i have a record
-    this.setState({isExistingRecord: true});
-    this.setState({existingRecord: dummyExistingRecord});
+    try {
+      var res = await axios.get(`http://localhost:5000/time/byRoomID/${this.state.roomId}`);
+      var memberIds = Object.keys((await res).data.data[0].times);
+      var memberRecords = Object.values(res.data.data[0].times);
+      this.setState({memberRecords:memberRecords});
+      var googleId = this.props.profile[0].googleId;
+      if (memberIds.includes(googleId)) {
+        this.setState({isExistingRecord: true});
+        this.setState({existingRecord: res.data.data[0].times[googleId]});
+      }
+    } catch (err) {
+      console.error(err);
+    }
     this.setState({isAuthenticating:false});
+
   }
 
   switchEditingMode() {
@@ -47,6 +58,32 @@ class CommonTimes extends React.Component {
 
   findCommonStudyTime() {
     //to be implemented
+  }
+
+  async submitTimetable(inputArr) {
+      var profile = this.props.profile[0];
+    if (this.state.memberRecords.length > 0) {
+      try {
+        var res = await axios.post(`http://localhost:5000/time/update/byRoomID`, {
+          roomId: this.state.roomId,
+          userId: profile.googleId,
+          time: inputArr
+        })
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      try {
+        var obj = {};
+        obj[profile.googleId] = inputArr;
+        var res = await axios.post(`http://localhost:5000/time/`, {
+          roomId: this.state.roomId,
+          times: obj
+        })
+      } catch (err) {
+        console.error(err);
+      }
+    }
   }
 
   render() {
@@ -85,12 +122,12 @@ class CommonTimes extends React.Component {
           {this.state.isEditingMode && <div>
               <h4 style={styles.heading}>Re-submit your Timetable</h4>
               <p style={styles.subHeader}>Input your available time slots again to be used to find common study times</p>
-              <TimeTableForm roomId={this.state.roomId}/>
+              <TimeTableForm roomId={this.state.roomId} submitTimetable={this.submitTimetable}/>
           </div>}
           {!this.state.isExistingRecord && <div>
               <h4 style={styles.heading}>Input your Timetable</h4>
               <p style={styles.subHeader}>You have yet to input your available time slots to include yourself in finding common study times</p>
-              <TimeTableForm roomId={this.state.roomId}/>
+              <TimeTableForm roomId={this.state.roomId} submitTimetable={this.submitTimetable}/>
           </div>}
         </div>
       </div>
