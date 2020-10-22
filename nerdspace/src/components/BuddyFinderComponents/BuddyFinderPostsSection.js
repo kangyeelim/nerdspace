@@ -53,16 +53,19 @@ class BuddyFinderPostsSection extends React.Component {
     }
 
     render() {
+        let count = 1;
+
         return (
             <Card style={styles.card}>
                 <Card.Body>
                     <Row>
                         <Col>
-                            <Card.Title style={{fontSize: 50, fontWeight: 600}}>Saved Forms</Card.Title>
+                            <Card.Title style={{fontSize: 40, fontWeight: 500}}>Saved Forms</Card.Title>
                             {this.state.forms.map((form) => {
                                 return <BuddyPost
                                 key={form.key}
                                 id={form.key}
+                                index={count++}
                                 gender={form.gender}
                                 educationLevel={form.educationLevel}
                                 yearOfStudy={form.yearOfStudy}

@@ -29,7 +29,7 @@ export default function BuddyResult(props) {
         <MDBCardGroup deck style={{flex: 1, flexWrap:"wrap"}}>
           <MDBCard>
             <MDBCardBody>
-              <Card.Img variant="top" style={{width: "30", height: "30"}} src="https://images.unsplash.com/photo-1472457897821-70d3819a0e24?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1949&q=80" />
+              <Card.Img variant="top" style={{width: "7", height: "7"}} src="https://images.unsplash.com/photo-1472457897821-70d3819a0e24?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1949&q=80" />
               <MDBCardTitle tag="h5">{props.name}</MDBCardTitle>
                 <p style={{fontSize: 20, fontWeight: 600}}>Gender: {props.gender}</p>
                 <p style={{fontSize: 20, fontWeight: 600}}>Email: {props.email}</p>
