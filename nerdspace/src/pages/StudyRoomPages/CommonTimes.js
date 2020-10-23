@@ -22,23 +22,38 @@ class CommonTimes extends React.Component {
       isEditingMode: false,
       existingRecord: [],
       isAuthenticating: true,
-      isAuthenticated: false
+      isAuthenticated: false,
+      submittedNames:[],
+      isFound: false,
+      commonTimes: []
     }
     this.switchEditingMode = this.switchEditingMode.bind(this);
     this.findCommonStudyTime = this.findCommonStudyTime.bind(this);
     this.submitTimetable = this.submitTimetable.bind(this);
+    this.retrieveSubmittedTimesInfo = this.retrieveSubmittedTimesInfo.bind(this);
   }
 
   async componentDidMount() {
     var isAuthenticated = await isRoomAccessibleToUser(this.props.profile[0].googleId,
       this.state.roomId) && isTokenAccepted(this.props.token);
     this.setState({isAuthenticated:await isAuthenticated});
-    //to be implemented
-    //get timings by the room id.
+    await this.retrieveSubmittedTimesInfo();
+    this.setState({isAuthenticating:false});
+
+  }
+
+  async retrieveSubmittedTimesInfo() {
     try {
       var res = await axios.get(`http://localhost:5000/time/byRoomID/${this.state.roomId}`);
       var memberIds = Object.keys((await res).data.data[0].times);
       var memberRecords = Object.values(res.data.data[0].times);
+      var submittedNames = [];
+      for (var i = 0; i < memberIds.length; i++) {
+          var result = await axios.get(`http://localhost:5000/users/byGoogleID/${memberIds[i]}`);
+          var name = await result.data.data[0].name;
+          this.state.submittedNames.push(name);
+          this.setState({submittedNames: this.state.submittedNames});
+      }
       this.setState({memberRecords:memberRecords});
       var googleId = this.props.profile[0].googleId;
       if (memberIds.includes(googleId)) {
@@ -48,8 +63,6 @@ class CommonTimes extends React.Component {
     } catch (err) {
       console.error(err);
     }
-    this.setState({isAuthenticating:false});
-
   }
 
   switchEditingMode() {
@@ -57,7 +70,25 @@ class CommonTimes extends React.Component {
   }
 
   findCommonStudyTime() {
-    //to be implemented
+    console.log(this.state.memberRecords);
+    var records = this.state.memberRecords;
+    var numOfMembers = records.length;
+    var commonTimes = [];
+    for (var i = 0; i < records[0].length; i++) {
+      var dateTimeObj =  records[0][i];
+      var count = 0;
+      for (var j = 0; j < records.length; j++) {
+        if (records[j].filter(obj => {
+          return obj.time == dateTimeObj.time && obj.day == dateTimeObj.day
+        }).length > 0) {
+            count = count + 1;
+        }
+      }
+      if (count == numOfMembers) {
+        commonTimes.push(dateTimeObj);
+      }
+    }
+    this.setState({isFound: true, commonTimes:commonTimes});
   }
 
   async submitTimetable(inputArr) {
@@ -69,6 +100,9 @@ class CommonTimes extends React.Component {
           userId: profile.googleId,
           time: inputArr
         })
+        if (res.data.message == 'UPDATE success') {
+          await this.retrieveSubmittedTimesInfo();
+        }
       } catch (err) {
         console.error(err);
       }
@@ -80,6 +114,9 @@ class CommonTimes extends React.Component {
           roomId: this.state.roomId,
           times: obj
         })
+        if (res.data.message == 'POST success') {
+          await this.retrieveSubmittedTimesInfo();
+        }
       } catch (err) {
         console.error(err);
       }
@@ -98,25 +135,34 @@ class CommonTimes extends React.Component {
     return (
       <div>
         <NavBar history={this.props.history}/>
-        <div class="container" style={styles.container}>
-          <h2>Find Common Times</h2>
-          <p>Members that have submitted their timetable:</p>
-          <ol>
-            {this.state.memberRecords.map((record) => {
+        <div className="container" style={styles.container}>
+          <h2 style={styles.title}>Find Common Times</h2>
+          <h6>Members that have submitted their timetable:</h6>
+          <ol style={styles.subHeader}>
+            {this.state.submittedNames.map((name) => {
               return (
-                <li>
-                  {record.name}
+                <li key={name}>
+                  {name}
                 </li>
               );
             })}
           </ol>
+          <h6>Find the common available timings of members that have submitted their timetable:</h6>
           <Button onClick={this.findCommonStudyTime} style={styles.button} className="btn btn-primary">Find!</Button>
+          {this.state.isFound && !this.state.isEditingMode && this.state.commonTimes && <div>
+            <h4 style={styles.heading}>Results</h4>
+              <TimeTableView roomId={this.state.roomId}
+              history={this.props.history}
+              existingRecord={this.state.commonTimes}
+              isEditingDisabled={true}/>
+            </div>}
           {this.state.isExistingRecord && !this.state.isEditingMode && <div>
             <h4 style={styles.heading}>Your Submitted Timetable Entry</h4>
             <p style={styles.subHeader}>This is your previously submitted available time slots which is used to find common study times</p>
               <TimeTableView roomId={this.state.roomId}
               history={this.props.history}
               existingRecord={this.state.existingRecord}
+              isEditingDisabled={false}
               switchEditingMode={this.switchEditingMode}/>
             </div>}
           {this.state.isEditingMode && <div>
@@ -152,6 +198,9 @@ const styles = {
   },
   subHeader: {
     marginBottom: "20px"
+  },
+  title: {
+    marginBottom: "30px"
   }
 }
 

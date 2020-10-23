@@ -31,7 +31,7 @@ class TimeTableForm extends React.Component {
   }
 
   submitTimetable() {
-    //to be implemented
+    this.props.submitTimetable(this.state.dayTimeArr);
   }
 
   render() {
@@ -50,84 +50,84 @@ class TimeTableForm extends React.Component {
           </tr>
           <tr>
             {DAY_ARR.map(day => {
-              return <Cell time={"5am"} day={day} addDayTime={this.addDayTime}
+              return <Cell key={day} time={"5am"} day={day} addDayTime={this.addDayTime}
               removeDayTime={this.removeDayTime}
               isClickingDisable={false}/>
             })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"5.30am"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"5.30am"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"6am"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"6am"} day={day} addDayTime={this.addDayTime}
             removeDayTime={this.removeDayTime}
             isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"6.30am"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"6.30am"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"7am"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"7am"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"7.30am"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"7.30am"} day={day} addDayTime={this.addDayTime}
             removeDayTime={this.removeDayTime}
             isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"8am"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"8am"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"8.30am"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"8.30am"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"9am"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"9am"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"9.30am"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"9.30am"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"10am"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"10am"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"10.30am"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"10.30am"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
@@ -141,175 +141,175 @@ class TimeTableForm extends React.Component {
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"11.30am"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"11.30am"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"12pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"12pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"12.30pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"12.30pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"1pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"1pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"1.30pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"1.30pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"2pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"2pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"2.30pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"2.30pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"3pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"3pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"3.30pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"3.30pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"4pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"4pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"4.30pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"4.30pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"5pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"5pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"5.30pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"5.30pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"6pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"6pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"6.30pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"6.30pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"7pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"7pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"7.30pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"7.30pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"8pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"8pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"8.30pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"8.30pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"9pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"9pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"9.30pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"9.30pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"10pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"10pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"10.30pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"10.30pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"11pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day}time={"11pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
           </tr>
           <tr>
           {DAY_ARR.map(day => {
-            return <Cell time={"11.30pm"} day={day} addDayTime={this.addDayTime}
+            return <Cell key={day} time={"11.30pm"} day={day} addDayTime={this.addDayTime}
              removeDayTime={this.removeDayTime}
              isClickingDisable={false}/>
           })}
