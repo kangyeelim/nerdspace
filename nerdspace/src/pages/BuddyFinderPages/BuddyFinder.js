@@ -69,6 +69,7 @@ const styles = {
         // padding: "3rem",
         textAlign: "center",
         justifyContent: "center",
+
     },
 
 }
