@@ -238,7 +238,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
-      profile: state.profile,
+      profile: state.profile
     }
 }
 
