@@ -12,7 +12,6 @@ router.route('/').get((req, res) => {
         key: key,
         name: data.name,
         imageUrl: data.imageUrl,
-        googleID: data.googleID,
         email: data.email,
         rooms: data.rooms ? data.rooms : {}
       });
@@ -28,41 +27,36 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/byGoogleID/:id').get((req, res) => {
-  const googleID = req.params.id;
-  db.ref('users')
-  .orderByChild("googleID")
-  .equalTo(googleID)
-  .once("value", function(snapshot, error) {
-    if (snapshot.exists()) {
-      var resArr = [];
-      snapshot.forEach(function (child) {
-        var key = child.key;
-        var data = child.val();
+    const googleID = req.params.id;
+    db.ref('users')
+        .child(googleID)
+        .once("value", function (snapshot, error) {
+            if (snapshot.exists()) {
+                var resArr = [];
+                var key = googleID;
+                var data = snapshot.val();
 
-        resArr.push({
-          key: key,
-          name: data.name,
-          imageUrl: data.imageUrl,
-          googleID: data.googleID,
-          email: data.email,
-          rooms: data.rooms ? data.rooms : {}
+                resArr.push({
+                    key: key,
+                    name: data.name,
+                    imageUrl: data.imageUrl,
+                    email: data.email,
+                    rooms: data.rooms ? data.rooms : {}
+                });
+
+                res.send({
+                    data: resArr,
+                    message: 'GET success'
+                });
+            } else {
+                res.send({
+                    message: 'User does not exist.'
+                })
+            }
         });
-      });
-
-      res.send({
-        data: resArr,
-        message: 'GET success'
-      });
-    } else {
-      res.send({
-        message: 'User does not exist.'
-      })
-    }
-  })
 });
 
 router.route('/').post((req, res) => {
-  const googleID = req.body.googleID;
   const email = req.body.email;
   const name = req.body.name;
   const imageUrl = req.body.imageUrl;
@@ -71,14 +65,13 @@ router.route('/').post((req, res) => {
   ref.set({
     'name': name,
     'imageUrl': imageUrl,
-    'googleID': googleID,
     'email': email
   }, function (error) {
     if (error) {
       res.send(error);
     } else {
       res.send({
-        key: key,
+        data: key,
         message: 'POST success'
       })
     }
@@ -87,14 +80,12 @@ router.route('/').post((req, res) => {
 
 router.route('/update').post((req, res) => {
   const key = req.body.key;
-  const googleID = req.body.googleID;
   const email = req.body.email;
   const name = req.body.name;
   const imageUrl = req.body.imageUrl;
   db.ref('users').child(key).update({
     'name': name,
     'imageUrl': imageUrl,
-    'googleID': googleID,
     'email': email
   }, function (error) {
     if (error) {
@@ -110,61 +101,66 @@ router.route('/update').post((req, res) => {
 router.route('/addRoomID').post((req, res) => {
   const roomID = req.body.roomID;
   const googleID = req.body.googleID;
-  db.ref('users')
-  .orderByChild('googleID')
-  .equalTo(googleID)
-  .once('value', function(snapshot, error) {
-    if (snapshot.exists()) {
-      var key;
-      snapshot.forEach(function (child) {
-        key = child.key;
-        db.ref('users').child(key).child('rooms').push().set(roomID)
-      });
+    var ref = db.ref('users')
+        .child(googleID)
+        .child('rooms')
+        .push();
+    var key = ref.getKey();
+    ref.set(roomID);
 
-      res.send({
+    res.send({
         key: key,
         message: 'ROOM ID added to user'
-      })
-    } else {
-      res.send({
-        message: 'User does not exist.'
-      })
-    }
-  });
+    })
 });
 
 router.route('/removeRoom/:roomID/:googleID').delete((req, res) => {
   const roomID = req.params.roomID;
   const googleID = req.params.googleID;
-  db.ref('users')
-  .orderByChild('googleID')
-  .equalTo(googleID)
-  .once('value', function(snapshot, error) {
-    if (snapshot.exists()) {
-      snapshot.forEach(function (child) {
-        var key = child.key;
-        var ref = db.ref('users').child(key).child('rooms');
-        var query = ref.orderByKey();
+  var ref = db.ref('users')
+        .child(googleID)
+        .child('rooms');
+    var query = ref.orderByKey();
         query.once('value', function(snapshot) {
-          snapshot.forEach(function(childSnapshot) {
-            var pkey = childSnapshot.key;
-            var chval = childSnapshot.val();
-            if (chval == roomID) {
-              ref.child(pkey).remove(function (error) {
-                if (error) {
-                  res.send(error);
-                } else {
-                  res.send({
-                    message: 'DELETE ROOMID success'
-                  });
-                }
-              });
+        snapshot.forEach(function(childSnapshot) {
+        var pkey = childSnapshot.key;
+        var chval = childSnapshot.val();
+        if (chval == roomID) {
+            ref.child(pkey).remove(function (error) {
+            if (error) {
+                res.send(error);
+            } else {
+                res.send({
+                message: 'DELETE ROOMID success'
+                });
             }
-          });
+            });
+        }
         });
-      })
-    }
-  })
+    });
+});
+
+router.route('/byEmail').get((req, res) => {
+    const email = req.query.email;
+    db.ref('users')
+        .orderByChild("email")
+        .equalTo(email)
+        .once("value", function (snapshot, error) {
+            if (snapshot.exists()) {
+                snapshot.forEach(function (childSnapshot) {
+                    var key = childSnapshot.key;
+
+                    res.send({
+                        data: key,
+                        message: 'GET success'
+                    });
+                });
+            } else {
+              res.send({
+                 message: 'User does not exist.'
+              })
+            }
+        });
 });
 
 

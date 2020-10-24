@@ -167,7 +167,6 @@ class CreateRoomForm extends React.Component {
         this.state.addedMembers.push(id);
         this.setState({ addedMembers: this.state.addedMembers });
       }
-      console.log(this.state.addedMembers);
   }
 
   render() {
@@ -249,6 +248,7 @@ const styles = {
 const mapStateToProps = (state) => {
     return {
       profile: state.profile,
+      token: state.token
     }
 }
 

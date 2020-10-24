@@ -46,27 +46,29 @@ class Login extends React.Component {
 
   async addUserOnFirstLogin(profile, _callback, _callback2) {
     var key;
-    await axios.get(`http://localhost:5000/users/byGoogleID/${profile.googleId}/`)
+      await axios.get(`http://localhost:5000/users/byEmail`, {
+          params: {
+              email: profile.email
+          }
+      })
     .then((response) => {
       if (response.data.message == 'User does not exist.') {
         console.log("Doesn't exist");
         axios.post('http://localhost:5000/users', {
           name: profile.name,
           imageUrl: profile.imageUrl,
-          googleID: profile.googleId,
           email: profile.email,
         })
         .catch(err => {
             _callback2();
         })
         .then((response) => {
-            console.log(response.data.key);
-            key = response.data.key;
+            key = response.data.data;
             console.log("Within: " + key);
         });
       } else {
           console.log("Exists");
-          key = response.data.data[0].key;
+          key = response.data.data;
           console.log("Within: " + key);
       }
     })
