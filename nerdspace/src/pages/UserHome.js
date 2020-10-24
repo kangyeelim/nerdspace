@@ -20,7 +20,8 @@ class UserHome extends React.Component {
     this.state = {
       studyRooms: [],
       isAuthenticating: true,
-      isLoggedIn: false
+      isLoggedIn: false,
+      connections: 0,
     }
     this.retrieveRoomInfo = this.retrieveRoomInfo.bind(this);
     this.enterRoom = this.enterRoom.bind(this);
@@ -28,7 +29,7 @@ class UserHome extends React.Component {
 
   async componentDidMount() {
     if (await isTokenAccepted(this.props.token)) {
-      axios.get(`http://localhost:5000/users/byGoogleID/${this.props.profile[0].googleId}`)
+      /*axios.get(`http://localhost:5000/users/byGoogleID/${this.props.profile[0].googleId}`)
       .then((response) => {
         var rooms = response.data.data[0].rooms;
         Object.values(rooms).map(room => {
@@ -37,7 +38,24 @@ class UserHome extends React.Component {
       })
       .catch(err => {
         console.error(err);
-      })
+      })*/
+      try {
+        var response = await axios.get(`http://localhost:5000/users/byGoogleID/${this.props.profile[0].googleId}`);
+        var rooms = (await response).data.data[0].rooms;
+        Object.values(rooms).map(room => {
+          this.retrieveRoomInfo(room)
+        });
+        var res2 = await axios.get('http://localhost:5000/contacts', {
+             params: {
+                 id: this.props.profile[0].googleId,
+                 type: "dm"
+             }
+         })
+        var contacts = res2.data.contacts;
+        this.setState({connections:contacts.length});
+      } catch (err) {
+        console.error(err);
+      }
       this.setState({isLoggedIn: true, isAuthenticating:false});
     } else {
       this.setState({isLoggedIn: false, isAuthenticating:false});
@@ -76,7 +94,7 @@ class UserHome extends React.Component {
         <div className="container">
           <Row>
             <Col md={6}>
-              <ProfileBox />
+              <ProfileBox connections={this.state.connections}/>
               <GroupBox
                 rooms={this.state.studyRooms}
                 enterRoom={this.enterRoom}/>

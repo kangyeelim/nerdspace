@@ -12,7 +12,7 @@ import axios from 'axios';
 import { deleteImages } from '../../services/ImageService';
 import { goToCreateRoomForm } from '../../navigators/StudyRoomNavigator';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { isRoomAccessibleToUser } from '../../services/Auth';
+import { isRoomAccessibleToUser, isTokenAccepted } from '../../services/Auth';
 import { getRoomDetails } from '../../services/StudyRoomService';
 
 class StudyRoom extends React.Component {
@@ -32,7 +32,7 @@ class StudyRoom extends React.Component {
 
   async componentDidMount() {
     var isAuthenticated = await isRoomAccessibleToUser(this.props.profile[0].googleId,
-      this.state.roomID);
+      this.state.roomID) && await isTokenAccepted(this.props.token);
     this.setState({isAuthenticated:await isAuthenticated});
     var res = await getRoomDetails(this.state.roomID);
     this.setState({roomName: (await res).data.name, imageUrl: (await res).data.imageUrl});
@@ -137,6 +137,7 @@ const styles = {
 const mapStateToProps = (state) => {
     return {
       profile: state.profile,
+      token: state.token
     }
 }
 
