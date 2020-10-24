@@ -3,114 +3,119 @@ const db = require('../firebase').db;
 
 router.route('/').get((req, res) => {
     const id = req.query.id;
+    if (req.query.type == "dm") {
+        (async () => {
+            let contacts = await getDM(id);
 
+            res.send({
+                contacts: contacts,
+                message: "GET success"
+            });
+        })();
+    } else {
+        (async () => {
+            let contacts = await getContacts(id);
+
+            res.send({
+                contacts: contacts,
+                message: "GET success"
+            });
+        })();
+    }
+});
+
+router.route('/').post((req, res) => {
     (async () => {
-        let contacts = await wrap(id);
+        let key;
+
+        if (req.body.type == "dm") {
+            let ref = db.ref("contact").child(req.body.user1Id).child("dm").push();
+            key = ref.getKey();
+
+            postDM(ref, req.body.user2Id)
+        } else {
+            let IDs = req.body.IDs;
+            var id;
+            let ref = db.ref("contact").child(IDs[0]).child("group").push();
+            key = ref.getKey();
+
+            for (id of IDs) {
+                ref = db.ref("contact").child(id).child("group").child(key);
+                ref.set({
+                    name: req.body.name
+                });
+            }
+        }
 
         res.send({
-            contacts: contacts,
-            message: "GET success"
+            chatID: key,
+            message: "POST success"
         });
     })();
 });
 
-router.route('/').post((req, res) => {
-    let ref = db.ref("contacts").push();
-    let key = ref.getKey();
-
-    if (req.body.type == "dm") {
-        ref.set({
-            user1Id: req.body.user1Id,
-            user2Id: req.body.user2Id,
-            type: "dm"
-        });
-
-        db.ref("userChat").push().set({
-            chatID: key,
-            googleID: req.body.user1Id
-        });
-
-        db.ref("userChat").push().set({
-            chatID: key,
-            googleID: req.body.user2Id
-        });
-    } else {
-        //TODO: Add to userChat
-        ref.set({
-            type: "group",
-            name: req.body.name
-        });
-    }
-    
-    res.send({
-        chatID: key,
-        message: "POST success"
+async function postDM(ref, id) {
+    ref.set({
+        userId: id,
+        name: await getName(id)
     });
-});
+}
 
-async function wrap(id) {
-    const ids = await getChatId(id);
+async function getDM(id) {
     var contacts = [];
 
-    for (i = 0; i < ids.length; i++) {
-        contacts.push(await getContacts(ids[i], id));
+    var dmSnapshot = await db.ref('contact')
+        .child(id)
+        .child('dm')
+        .once('value');
+
+    if (dmSnapshot.exists()) {
+        dmSnapshot.forEach((childSnapshot) => {
+            let obj = {
+                name: childSnapshot.val().name,
+                id: childSnapshot.val().userID
+            };
+            contacts.push(obj);
+        });
     }
 
     return contacts;
 }
 
-async function getChatId(id) {
-    let notes = [];
+async function getContacts(id) {
+    var contacts = [];
 
-    var snapshot = await db.ref('userChat')
-        .orderByChild("googleID")
-        .equalTo(id)
-        .once('value');
-
-    if (snapshot.exists()) {
-        snapshot.forEach((childSnapshot) => {
-            notes.push(childSnapshot.val().chatID);
-        });
-    } else {
-        notes.push("nothing");
-    }
-
-    return notes;
-}
-
-async function getContacts(id, userId) {
-    var snapshot = await db.ref('contacts')
+    var groupSnapshot = await db.ref('contact')
         .child(id)
+        .child('group')
         .once('value');
 
-    if (snapshot.exists()) {
-        if (snapshot.val().type == "group") {
+    var dmSnapshot = await db.ref('contact')
+        .child(id)
+        .child('dm')
+        .once('value');
+
+    if (groupSnapshot.exists()) {
+        groupSnapshot.forEach((child) => {
             let obj = {
-                name: snapshot.val().name,
-                id: id
+                name: child.val().name,
+                id: child.key
             };
-            return obj;
-        } else {
-            let u1 = snapshot.val().user1Id;
-            if (u1 == userId) {
-                let name = await getName(snapshot.val().user2Id)
-                let obj = {
-                    name: name,
-                    id: id
-                };
-                return obj;
-            } else {
-                let name = await getName(snapshot.val().user1Id)
-                let obj = {
-                    name: name,
-                    id: id
-                };
-                return obj;
-            }
-        }
-    } else {
-        return [];
+            contacts.push(obj);
+        });
     }
+
+    if (dmSnapshot.exists()) {
+        dmSnapshot.forEach((childSnapshot) => {
+            let obj = {
+                name: childSnapshot.val().name,
+                id: childSnapshot.val().userID
+            };
+            contacts.push(obj);
+        });
+    }
+
+    return contacts;
 }
 
 async function getName(id) {
