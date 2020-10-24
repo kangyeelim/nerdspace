@@ -22,18 +22,7 @@ export async function isTokenAccepted(tokenProp) {
     return false;
   }
   var accessToken = tokenProp[0].access_token;
-  /*try {
-    var res = await axios.get(USER_API_URL + `/byGoogleID/${googleID}`);
-    if ((await res).data.message == 'GET success') {
-      return res.data.data[0].name == name &&
-      res.data.data[0].email == email &&
-      res.data.data[0].imageUrl == imageUrl;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    return false;
-  }*/
+  
   try {
     var res = await axios.get(`http://localhost:5000/tokens/byAccessToken/${accessToken}`);
     if ((await res).data.message == 'GET success') {
@@ -57,8 +46,10 @@ export async function deleteTokenFromDB(tokenProp) {
 
   } else {
     var accessToken = tokenProp[0].access_token;
+    var token_id = tokenProp[0].id_token;
     try {
       var res = await axios.delete(`http://localhost:5000/tokens/byAccessToken/${accessToken}`);
+      var res = await axios.delete(`http://localhost:5000/tokens/byTokenId/${token_id}`);
     } catch {
       return false;
     }

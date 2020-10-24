@@ -26,8 +26,8 @@ class NavBar extends React.Component {
   }
 
   handleLogout(){
-    this.props.deleteProfile();
     this.props.deleteToken();
+    this.props.deleteProfile();
     deleteTokenFromDB(this.props.token);
     this.props.history.push("/");
   }

@@ -104,5 +104,28 @@ router.route('/byAccessToken/:id').delete((req, res) => {
   })
 });
 
+router.route('/byTokenId/:id').delete((req, res) => {
+  const token_id = req.params.id;
+  db.ref('tokens')
+  .orderByChild("token_id")
+  .equalTo(token_id)
+  .once("value", function(snapshot, error) {
+    if (snapshot.exists()) {
+      snapshot.forEach(function (child) {
+        var key = child.key;
+        db.ref('tokens').child(key).remove();
+      });
+
+      res.send({
+        message: 'DELETE success'
+      });
+    } else {
+      res.send({
+        message: 'Token does not exist.'
+      })
+    }
+  })
+});
+
 
 module.exports = router;
