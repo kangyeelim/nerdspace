@@ -1,0 +1,4 @@
+This folder is needed to make a copy of the image to be uploaded from the file system.
+The image url from this folder is used for the image uploading in routes.
+After the image url from this folder is used to upload the image to Cloudinary,
+the image will be deleted from this folder.

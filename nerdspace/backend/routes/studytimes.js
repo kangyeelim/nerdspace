@@ -103,6 +103,11 @@ router.route('/update/byRoomID').post((req, res) => {
       .child(key)
       .child('times')
       .child(userId)
+      .remove();
+      db.ref('studyTimes')
+      .child(key)
+      .child('times')
+      .child(userId)
       .update(time);
     });
     res.send({
