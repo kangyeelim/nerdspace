@@ -51,13 +51,13 @@ class CreateRoomForm extends React.Component {
       })
     } else {
       try {
-        /*var res = await axios.get('http://localhost:5000/contacts', {
+       var res = await axios.get('http://localhost:5000/contacts', {
             params: {
-                id: this.props.profile[0].googleId
+                id: this.props.profile[0].googleId,
+                type: "dm"
             }
         })
-        var contacts = await res.data.contacts;*/
-        var contacts = [];
+        var contacts = await res.data.contacts;
         this.setState({friends:contacts, isLoaded:true});
       } catch (error) {
         console.error(error);
@@ -81,7 +81,15 @@ class CreateRoomForm extends React.Component {
     }
     this.setState({isSubmitted: true}, async () => {
       if (this.state.images.length <= 1 && !this.state.isEditing) {
-        this.state.addedMembers.push(this.props.profile[0].googleId)
+          this.state.addedMembers.push(this.props.profile[0].googleId);
+          this.setState({ addedMembers: this.state.addedMembers });
+        axios.post('http://localhost:5000/contacts/', {
+          name:this.state.name,
+          IDs: this.state.addedMembers
+        })
+        .then((response) => {
+          console.log(response.data.chatID);
+        })
         axios.post('http://localhost:5000/studyrooms/', {
           name: this.state.name,
           isThereImage: (this.state.images.length == 1),
@@ -151,10 +159,12 @@ class CreateRoomForm extends React.Component {
       var res = this.state.addedMembers.filter(added => {
         return added == id;
       })
-      this.setState({addedMembers:res});
+        this.setState({ addedMembers: res });
     } else {
-      this.setState({addedMembers:this.state.addedMembers.push(id)});
-    }
+        this.state.addedMembers.push(id);
+        this.setState({ addedMembers: this.state.addedMembers });
+      }
+      console.log(this.state.addedMembers);
   }
 
   render() {

@@ -31,21 +31,25 @@ class Login extends React.Component {
   responseGoogleSuccess(response) {
     const profile = response.profileObj;
     const token = response.tokenObj;
-    this.props.updateProfile(profile);
-    this.props.updateToken(token);
     //adds user in database on first login
-    this.addUserOnFirstLogin(profile, () => {
-      this.setState({isLoggedIn: true})
-      }, () => {
-        alert("Login failed. Please try again.")
-      });
+    (async () => {
+        profile.googleId = await this.addUserOnFirstLogin(profile, () => {
+            this.setState({ isLoggedIn: true })
+        }, () => {
+            alert("Login failed. Please try again.")
+        });
+        this.props.updateProfile(profile);
+    })();
+    this.props.updateToken(token);
     this.addToken(token);
   }
 
-  addUserOnFirstLogin(profile, _callback, _callback2) {
-    axios.get(`http://localhost:5000/users/byGoogleID/${profile.googleId}/`)
+  async addUserOnFirstLogin(profile, _callback, _callback2) {
+    var key;
+    await axios.get(`http://localhost:5000/users/byGoogleID/${profile.googleId}/`)
     .then((response) => {
       if (response.data.message == 'User does not exist.') {
+        console.log("Doesn't exist");
         axios.post('http://localhost:5000/users', {
           name: profile.name,
           imageUrl: profile.imageUrl,
@@ -53,8 +57,17 @@ class Login extends React.Component {
           email: profile.email,
         })
         .catch(err => {
-          _callback2();
+            _callback2();
         })
+        .then((response) => {
+            console.log(response.data.key);
+            key = response.data.key;
+            console.log("Within: " + key);
+        });
+      } else {
+          console.log("Exists");
+          key = response.data.data[0].key;
+          console.log("Within: " + key);
       }
     })
     .then(() => {
@@ -63,6 +76,8 @@ class Login extends React.Component {
     .catch(err => {
       _callback2();
     })
+    console.log("Outside:" + key);
+    return key;
   }
 
   addToken(token) {
@@ -107,7 +122,7 @@ class Login extends React.Component {
 
   render() {
     if (!this.state.isAuthenticating && this.state.isLoggedIn) {
-      return <Redirect to="/home"/>
+        return <Redirect to="/home" />
     }
     if (this.state.isAuthenticating) {
       return <Container>
