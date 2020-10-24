@@ -40,6 +40,7 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
   // var userKey;
   // var userData;
   // var userArr;
+  console.log("GETSS: " + educationLevel + gender + year);
 
   db.ref('profiles')
   .orderByChild('educationLevel')
@@ -49,9 +50,9 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
       var key = child.key;
       var data = child.val();
       
-      console.log(data.educationLevel + data.gender + data.year);
+      console.log(data.educationLevel + data.gender + data.yearOfStudy);
       var interestArr = Object.values(data.interests); 
-      if ((interestArr.includes(interest) && data.googleID != googleID) && (data.year == year && data.gender == gender)) {
+      if ((interestArr.includes(interest) && data.googleID != googleID) && (data.yearOfStudy == year && data.gender == gender)) {
 
         // db.ref('users').orderByChild('googleID')
         //   .equalTo(data.googleID)
@@ -89,7 +90,7 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
           key: key,
           googleID: data.googleID,
           educationLevel: data.educationLevel,
-          year: data.year,
+          year: data.yearOfStudy,
           gender: data.gender,
           interest: data.interests,
           name: userName,
@@ -144,6 +145,7 @@ router.route('/updateInfo').post((req, res) => {
   const educationLevel = req.body.educationLevel;
   const year = req.body.year;
   const gender = req.body.gender;
+  
   db.ref('profiles').child(key).update({
     'googleID': googleID,
     'educationLevel': educationLevel,

@@ -51,6 +51,7 @@ class Community extends React.Component {
     axios.get(`http://localhost:5000/users/byGoogleID/${this.props.profile[0].googleId}`)
       .then((response) => {
         if (response.data.data[0].rooms != null) {
+
           var roomsAllowed = response.data.data[0].rooms;
           this.setState({roomsAllowed: Object.values(roomsAllowed)});
         }

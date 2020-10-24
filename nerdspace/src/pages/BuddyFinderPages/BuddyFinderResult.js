@@ -2,11 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import NavBar from '../../components/NavBar';
 import '../General.css';
-import { Col, Row, Form, Button, Image, Card, FormControl } from 'react-bootstrap';
+import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
 import CardDeck from 'react-bootstrap/CardDeck';
 import axios from 'axios';
 import BuddyResult from '../../components/BuddyFinderComponents/BuddyResult';
 import { createBrowserHistory } from 'history';
+import { isTokenAccepted } from '../../services/Auth';
+import { Redirect } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const history = createBrowserHistory({ forceRefresh: true });
 
@@ -17,18 +20,32 @@ class BuddyFinderResult extends React.Component {
         this.state = {
             results: [],
             chatID: "",
-            noResults: false
+            noResults: false,
+            isAuthenticating: true,
+            isLoggedIn: false
             // isLoading: true
           }
         this.goToBuddyFinder = this.goToBuddyFinder.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
+        this.getSearchResults = this.getSearchResults.bind(this);
         // this.getUserData = this.getUserData.bind(this);
     }
 
     async componentDidMount() {
+      if (await isTokenAccepted(this.props.token)) {
+        this.getSearchResults();
+        this.setState({isLoggedIn: true, isAuthenticating:false});
+      } else {
+        this.setState({isLoggedIn: false, isAuthenticating:false});
+      }
+    }
+
+    // async componentDidMount() {
+
+    async getSearchResults() {
         await axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
         .then(res => {
-            console.log(res);
+            console.log("RESU:TSS: " + res);
             if (res.length != 0) {
                 this.setState({results: res.data.data});
                 this.setState({noResults: false});
@@ -121,6 +138,15 @@ class BuddyFinderResult extends React.Component {
     // }
 
     render() {
+        if (this.state.isAuthenticating) {
+            return <Container>
+              <CircularProgress/>
+            </Container>
+        }
+        if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
+        return <Redirect to="/"/>
+        }
+
         return (
             <div>
                 <NavBar history={this.props.history}/>
@@ -194,8 +220,8 @@ const styles = {
     },
     headerText: {
         margin: "2rem",
-        fontSize: 60, 
-        fontWeight: 500
+        fontSize: 40, 
+        fontWeight: 350
     }
 
 }
@@ -203,6 +229,7 @@ const styles = {
 const mapStateToProps = (state) => {
     return {
         profile: state.profile,
+        token: state.token
     }
 }
 

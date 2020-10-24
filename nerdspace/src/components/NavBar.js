@@ -63,14 +63,14 @@ class NavBar extends React.Component {
   render() {
     return (
         <Navbar expand="lg" className="shadow" style={{ backgroundColor: "#D3D3D3" }}>
-          <Navbar.Brand href="#">
+          <Navbar.Brand style={{fontFamily: "Georgia"}} href="#">
             Nerdspace
           </Navbar.Brand>
           <Navbar.Toggle style={styles.navlink} aria-controls="basic-navbar-nav" />
           <Navbar.Collapse style={styles.navlink} id="basic-navbar-nav">
-          <Nav.Link style={styles.navlink} onClick={this.goFindBuddyPage}>Find Study Buddies</Nav.Link>
             <Nav style={styles.navlink} activeKey={this.props.activeKey} className="ml-auto">
               <Nav.Link eventKey={1} style={styles.navlink} onClick={this.goHome}>Home</Nav.Link>
+              <Nav.Link eventKey={1} style={styles.navlink} onClick={this.goFindBuddyPage}>BuddyFinder</Nav.Link>
               <Nav.Link eventKey={2} style={styles.navlink} onClick={this.goCommunity}>Community</Nav.Link>
               <Nav.Link eventKey={3} style={styles.navlink} onClick={this.goMessaging}>Messaging</Nav.Link>
               <NavDropdown className="nav-dropdown"
