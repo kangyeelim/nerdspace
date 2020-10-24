@@ -54,8 +54,6 @@ router.route('/byGoogleID/:id').get((req, res) => {
         message: 'GET success'
       });
     } else {
-      console.log("here");
-
       res.send({
         message: 'User does not exist.'
       })
@@ -68,7 +66,9 @@ router.route('/').post((req, res) => {
   const email = req.body.email;
   const name = req.body.name;
   const imageUrl = req.body.imageUrl;
-  db.ref('users').push().set({
+  const ref = db.ref('users').push();
+  const key = ref.key;
+  ref.set({
     'name': name,
     'imageUrl': imageUrl,
     'googleID': googleID,
@@ -78,6 +78,7 @@ router.route('/').post((req, res) => {
       res.send(error);
     } else {
       res.send({
+        key: key,
         message: 'POST success'
       })
     }
@@ -114,11 +115,14 @@ router.route('/addRoomID').post((req, res) => {
   .equalTo(googleID)
   .once('value', function(snapshot, error) {
     if (snapshot.exists()) {
+      var key;
       snapshot.forEach(function (child) {
-        var key = child.key;
+        key = child.key;
         db.ref('users').child(key).child('rooms').push().set(roomID)
       });
+
       res.send({
+        key: key,
         message: 'ROOM ID added to user'
       })
     } else {
