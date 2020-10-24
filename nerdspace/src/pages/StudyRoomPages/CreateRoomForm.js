@@ -10,6 +10,7 @@ import { getImage, deleteImages } from '../../services/ImageService';
 import { enterRoom } from '../../navigators/StudyRoomNavigator';
 import { updateRoomDetails } from '../../services/StudyRoomService';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { isTokenAccepted } from '../../services/Auth';
 
 const DEFAULT_URL = "https://source.unsplash.com/aJnHSrgSWkk/1600x900";
 const dummy_contacts = [ {name: "michaela"}, {name: "evon"}, {name: "yenpeng"}];
@@ -26,7 +27,8 @@ class CreateRoomForm extends React.Component {
       roomID: "",
       isEditing: false,
       isLoaded: false,
-      addedMembers: []
+      addedMembers: [],
+      isAuthenticated: false
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.titleInput = this.titleInput.bind(this);
@@ -37,7 +39,8 @@ class CreateRoomForm extends React.Component {
   }
 
   async componentDidMount() {
-
+    var isAuthenticated = await isTokenAccepted(this.props.token);
+    this.setState({isAuthenticated: isAuthenticated});
     if (typeof this.props.location.state != 'undefined' &&
     typeof this.props.location.state.roomName != 'undefined') {
       var images = (await getImage(this.props.location.state.imageUrl)).data;
@@ -172,6 +175,9 @@ class CreateRoomForm extends React.Component {
       return <Container>
         <CircularProgress/>
       </Container>
+    }
+    if (this.state.isLoaded && !this.state.isAuthenticated) {
+        return <Redirect to="/"/>;
     }
     return (
       <div>

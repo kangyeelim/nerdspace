@@ -21,6 +21,7 @@ const imagesRouter = require('./routes/images');
 const messageRouter = require('./routes/message');
 const contactRouter = require('./routes/contacts');
 const tokensRouter = require('./routes/tokens');
+const timesRouter = require('./routes/studytimes');
 
 app.use('/users', usersRouter);
 app.use('/studyroomposts', studyRoomPostsRouter);
@@ -32,6 +33,7 @@ app.use('/images', imagesRouter);
 app.use('/message', messageRouter);
 app.use('/contacts', contactRouter);
 app.use('/tokens', tokensRouter);
+app.use('/time', timesRouter);
 
 //starts server
 app.listen(port, () => {

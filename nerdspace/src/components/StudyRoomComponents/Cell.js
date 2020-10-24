@@ -31,19 +31,19 @@ class Cell extends React.Component {
   render() {
     if (this.state.isSelected && !this.props.isClickingDisable) {
       return (
-        <td id="selectedCell" onClick={this.handleSelect}>{this.props.time}</td>
+        <td key={this.props.day} id="selectedCell" onClick={this.handleSelect}>{this.props.time}</td>
       );
     } else if (!this.state.isSelected && !this.props.isClickingDisable){
       return (
-        <td onClick={this.handleSelect}>{this.props.time}</td>
+        <td key={this.props.day} onClick={this.handleSelect}>{this.props.time}</td>
       );
     } else if (this.props.isClickingDisable && this.isChoosenInRecord()) {
         return (
-          <td id="selectedCell">{this.props.time}</td>
+          <td key={this.props.day} id="selectedCell">{this.props.time}</td>
         );
     } else {
         return (
-          <td>{this.props.time}</td>
+          <td key={this.props.day}>{this.props.time}</td>
         );
     }
   }
