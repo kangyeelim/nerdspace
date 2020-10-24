@@ -145,6 +145,7 @@ router.route('/updateInfo').post((req, res) => {
   const educationLevel = req.body.educationLevel;
   const year = req.body.year;
   const gender = req.body.gender;
+  
   db.ref('profiles').child(key).update({
     'googleID': googleID,
     'educationLevel': educationLevel,
