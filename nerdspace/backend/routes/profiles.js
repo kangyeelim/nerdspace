@@ -35,8 +35,8 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
   const interest = req.params.interest;
   var resArr = [];
 
-  var userName = "";
-  var userEmail = "";
+  // var userName = "";
+  // var userEmail = "";
   // var userKey;
   // var userData;
   // var userArr;
@@ -85,7 +85,7 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
 
           // userName = userArr.filter(el => el != null );
           // userEmail = userArr.filter(el => el != null );
-          console.log("THISsss" +userName + userEmail);
+          // console.log("THISsss" +userName + userEmail);
         resArr.unshift({
           key: key,
           googleID: data.googleID,
@@ -93,12 +93,14 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
           year: data.yearOfStudy,
           gender: data.gender,
           interest: data.interests,
-          name: userName,
-          email: userEmail
+          name: data.name,
+          email: data.email,
+          imageUrl: data.imageUrl
         });
+        console.log("RESARR" + resArr + data.name + data.email + data.imageUrl);
       }
     });
-    console.log("RESARR" + resArr);
+    
     // var results = resArr.filter((obj) => {
     //   return (obj.googleID != googleID) && (obj.year == year) && (obj.gender == gender) 
     // }) //(obj.interest.includes(interest)) &&
