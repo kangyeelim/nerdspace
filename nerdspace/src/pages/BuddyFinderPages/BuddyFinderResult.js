@@ -210,7 +210,7 @@ const styles = {
         // flexDirection: "column",
         alignItems: "center",
         // // margin: "2rem",
-        // padding: "3rem",
+        padding: "3rem",
         textAlign: "center",
         justifyContent: "center",
     },
@@ -220,7 +220,7 @@ const styles = {
         padding: "2rem",
     },
     headerText: {
-        margin: "2rem",
+        margin: "0.5rem",
         fontSize: 40, 
         fontWeight: 350
     }
