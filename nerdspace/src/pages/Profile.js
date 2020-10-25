@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import NavBar from '../components/NavBar';
 import './General.css';
-import { Col, Row, Container, Form, Button, Image } from 'react-bootstrap';
+import { Col, Container } from 'react-bootstrap';
 import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import axios from 'axios';
+import { FormControl, FormHelperText, Select, Avatar, Checkbox, Typography, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, TextField, Button } from "@material-ui/core";
 
 class Profile extends React.Component {
 
@@ -156,139 +156,206 @@ class Profile extends React.Component {
         return <Redirect to="/"/>
       }
         return (
-            <div>
-                <NavBar history={this.props.history}/>
-                <div className="container">
-                <Col>
-                    <Row style={styles.image}>
-                    <img className="thumbnail-image"
-                        src={this.state.profilePic}
+          <div>
+            <NavBar history={this.props.history} />
+            <div className="container">
+              <Col>
+                <Avatar
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                  }}
+                  src={this.state.profilePic}
+                  alt="Profile"
+                />
+                <form className="form" onSubmit={this.onSubmit}>
+                  <div className="input-group" style={styles.bar}>
+                    <TextField
+                      label="Name"
+                      id="name"
+                      name="name"
+                      placeholder={this.props.profile[0].name}
+                      onChange={this.handleInputChange}
                     />
-                    </Row>
-                    <Row>
-                    <form className="form" onSubmit={this.onSubmit}>
-                        <div className="input-group" style={styles.bar}>
-                            <label style={styles.nameLabel} >Name: </label>
-                            <input
-                                type="input"
-                                className="form-control"
-                                name="name" 
-                                placeholder={this.props.profile[0].name}
-                                onChange={this.handleInputChange}
-                            />
-                        </div>
-                        <div className="input-group" style={styles.bar}>
-                            <label style={styles.nameLabel} >Gender: </label>
-                                <Row>
-                                    <Form.Check
-                                    type="radio"
-                                    label="Male"
-                                    name="gender"
-                                    id="gender"
-                                    value="Male"
-                                    onChange={this.handleInputChange}
-                                    />
-                                    <Form.Check
-                                    type="radio"
-                                    label="Female"
-                                    name="gender"
-                                    id="gender"
-                                    value="Female"
-                                    onChange={this.handleInputChange}
-                                    />
-                                </Row>
-                                <span style={{color: "red", right: "3rem"}}>{}</span>
-                        </div>
-                        <div className="input-group" style={styles.bar}>
-                            <label style={styles.bioLabel}>EducationLevel: </label>
-                            <Row sm={7} style={{left: "1.5rem"}}>
-                                    <Form.Control as="select" id="educationLevel" name="educationLevel" onChange={this.handleInputChange}>
-                                        <option>Primary</option>
-                                        <option>Secondary</option>
-                                        <option>Polytechnic</option>
-                                        <option>Junior College</option>
-                                        <option>University</option>
-                                    </Form.Control>
-                                </Row>
-                                <Row sm={3} style={{left: "1.5rem"}}>
-                                    <Form.Control required as="select" id="yearOfStudy" name="yearOfStudy" placeholder="Year of study" onChange={this.handleInputChange}>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                        <option>6</option>
-                                    </Form.Control>
-                                    <span style={{color: "red", left: "3rem"}}>{}</span>
-                                </Row>
-                        </div>
-                        <div className="input-group" style={styles.bar}>
-                            <label style={styles.bioLabel}>Bio: </label>
-                            <textarea
-                                type="input"
-                                className="form-control"
-                                id="bio"
-                                name="bio" 
-                                placeholder="Describe yourself (e.g. likes, dislikes, favourite subjects)"
-                                onChange={this.handleInputChange}
-                            />
-                        </div>
-                        <div> Interests: </div>
-                        <div className="input-group" style={styles.bar}>
-                            <ul style={{listStyleType:"none"}}>
-                                <li><input type="checkbox" id="Math" value="Math" onChange={this.handleInterest}/><label for="Math"> Math </label> </li>
-                                <li><input type="checkbox" id="General Paper" value="General Paper" onChange={this.handleInterest}/><label for="General Paper"> General Paper </label> </li>
-                                <li><input type="checkbox" id="Chemistry" value="Chemistry" onChange={this.handleInterest}/><label for="Chemistry"> Chemistry </label></li>
-                                <li><input type="checkbox" id="Physics" value="Physics" onChange={this.handleInterest}/><label for="Physics"> Physics </label></li>
-                                <li><input type="checkbox" id="Computing" value="Computing" onChange={this.handleInterest}/><label for="Computing"> Computing </label></li>
-                                <li><input type="checkbox" id="Economics" value="Economics" onChange={this.handleInterest}/><label for="Economics"> Economics </label></li>
-                            </ul>
-                        </div>
-                        <Form.Control type="input" id="interest" name="interests" placeholder="Others" onChange={this.handleInterestText} />
-                        <button type="submit" onClick={this.onSubmit} className="btn btn-primary">Save</button>
-                    </form>
-                    </Row>
-                    </Col>
-                </div>
+                  </div>
+                  <div className="input-group" style={styles.bar}>
+                    <FormLabel component="legend">Gender:</FormLabel>
+                    <RadioGroup>
+                      <FormControlLabel
+                        label="Female"
+                        name="gender"
+                        value="female"
+                        control={<Radio />}
+                        onChange={this.handleInputChange}
+                      />
+                      <FormControlLabel
+                        label="Male"
+                        name="gender"
+                        value="male"
+                        control={<Radio />}
+                        onChange={this.handleInputChange}
+                      />
+                      <FormControlLabel
+                        label="Other"
+                        name="gender"
+                        value="other"
+                        control={<Radio />}
+                        onChange={this.handleInputChange}
+                      />
+                    </RadioGroup>
+                    <span style={{ color: "red", right: "3rem" }}>{}</span>
+                  </div>
+                  <div className="input-group" style={styles.bar}>
+                    <FormLabel component="legend">Education Level:</FormLabel>
+                    <FormControl style={{padding: "10px"}}>
+                      <Select
+                        native
+                        onChange={this.handleInputChange}
+                        inputProps={{
+                          name: "educationLevel",
+                          id: "educationLevel",
+                        }}
+                      >
+                        <option aria-label="None" value="" />
+                        <option>Primary</option>
+                        <option>Secondary</option>
+                        <option>Polytechnic</option>
+                        <option>Junior College</option>
+                        <option>University</option>
+                      </Select>
+                      <FormHelperText>Education Level</FormHelperText>
+                    </FormControl>
+                    <FormControl>
+                      <Select
+                        native
+                        onChange={this.handleInputChange}
+                        inputProps={{
+                          name: "yearOfStudy",
+                          id: "yearOfStudy",
+                        }}
+                      >
+                        <option aria-label="None" value="" />
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                        <option value={4}>4</option>
+                        <option value={5}>5</option>
+                        <option value={6}>6</option>
+                      </Select>
+                      <FormHelperText>Year of study</FormHelperText>
+                    </FormControl>
+                  </div>
+                  <div className="input-group" style={styles.bar}>
+                    <TextField
+                      variant="outlined"
+                      label="Bio"
+                      id="bio"
+                      name="bio"
+                      multiline
+                      rows={5}
+                      rowsMax={10}
+                      onChange={this.handleInputChange}
+                    />
+                  </div>
+                  <div className="input-group" style={styles.bar}>
+                    <FormLabel component="legend">Interests:</FormLabel>
+                    <FormGroup column>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            onChange={this.handleInterest}
+                            id="Math"
+                            value="Math"
+                          />
+                        }
+                        label="Math"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            onChange={this.handleInterest}
+                            id="General Paper"
+                            value="General Paper"
+                          />
+                        }
+                        label="General Paper"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            onChange={this.handleInterest}
+                            id="Chemistry"
+                            value="Chemistry"
+                          />
+                        }
+                        label="Chemistry"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            onChange={this.handleInterest}
+                            id="Physics"
+                            value="Physics"
+                          />
+                        }
+                        label="Physics"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            onChange={this.handleInterest}
+                            id="Computing"
+                            value="Computing"
+                          />
+                        }
+                        label="Computing"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            onChange={this.handleInterest}
+                            id="Economics"
+                            value="Economics"
+                          />
+                        }
+                        label="Economics"
+                      />
+                      <TextField
+                        id="interest"
+                        name="interests"
+                        placeholder="Others"
+                        onChange={this.handleInterestText}
+                      />
+                    </FormGroup>
+                    <div className="input-group" style={styles.bar}>
+                      <Button
+                        type="submit"
+                        size="medium"
+                        color="primary"
+                        variant="contained"
+                      >
+                        Save
+                      </Button>
+                    </div>
+                  </div>
+                </form>
+              </Col>
             </div>
-        )
+          </div>
+        );
     }
 }
-
-const Card = props =>
-    <div className="col-md-6 col-lg-3">
-        <div className="card mb-3">
-            <div className="card-body">
-                <p className="card-title"><span>Name: </span>{props.info.name}</p>
-                <p className="card-text">
-                    <span>Bio: </span>{props.info.bio}
-                </p>
-            </div>
-        </div>
-    </div>;
 
 const styles = {
     bar: {
         width: '70vw',
-        margin: '40px',
+        padding: "10px",
         justifyContent:'center',
         alignText: 'center',
         alignItems: 'center',
         display: 'flex',
-        flexDirection: 'row'
-    },
-    nameLabel: {
-        marginRight: '10px',
-        fontWeight: 'bold',
-    },
-    bioLabel: {
-        marginRight: '30px',
-        fontWeight: 'bold',
-    },
-    image: {
-        justifyContent:'center',
-        alignSelf: 'center',
-    },
+        flexDirection: 'row',
+    }
 }
 
 const mapStateToProps = (state) => {
