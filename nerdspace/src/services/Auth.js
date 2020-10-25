@@ -22,7 +22,7 @@ export async function isTokenAccepted(tokenProp) {
     return false;
   }
   var accessToken = tokenProp[0].access_token;
-  
+
   try {
     var res = await axios.get(`http://localhost:5000/tokens/byAccessToken/${accessToken}`);
     if ((await res).data.message == 'GET success') {
@@ -30,6 +30,7 @@ export async function isTokenAccepted(tokenProp) {
       if (Date.now() < expires_at) {
         return true;
       } else {
+        console.log("expired token");
         await deleteTokenFromDB(tokenProp);
         return false;
       }

@@ -41,7 +41,7 @@ class Login extends React.Component {
         this.props.updateProfile(profile);
     })();
     this.props.updateToken(token);
-    this.addToken(token);
+    this.addToken(token, profile.name);
   }
 
   async addUserOnFirstLogin(profile, _callback, _callback2) {
@@ -53,7 +53,6 @@ class Login extends React.Component {
       })
     .then((response) => {
       if (response.data.message == 'User does not exist.') {
-        console.log("Doesn't exist");
         axios.post('http://localhost:5000/users', {
           name: profile.name,
           imageUrl: profile.imageUrl,
@@ -64,12 +63,9 @@ class Login extends React.Component {
         })
         .then((response) => {
             key = response.data.data;
-            console.log("Within: " + key);
         });
       } else {
-          console.log("Exists");
           key = response.data.data;
-          console.log("Within: " + key);
       }
     })
     .then(() => {
@@ -78,11 +74,10 @@ class Login extends React.Component {
     .catch(err => {
       _callback2();
     })
-    console.log("Outside:" + key);
     return key;
   }
 
-  addToken(token) {
+  addToken(token, name) {
     axios.get(`http://localhost:5000/tokens/byAccessToken/${token.access_token}`)
       .then((response) => {
         if (response.data.message == 'Token does not exist.') {
@@ -93,7 +88,8 @@ class Login extends React.Component {
               expires_in: token.expires_in,
               expires_at: token.expires_at,
               first_issued_at: token.first_issued_at
-            }
+            },
+            name: name
           })
           .catch(err => {
             console.error(err);
@@ -106,7 +102,8 @@ class Login extends React.Component {
               expires_in: token.expires_in,
               expires_at: token.expires_at,
               first_issued_at: token.first_issued_at
-            }
+            },
+            name:name
           })
           .catch(err => {
             console.error(err);

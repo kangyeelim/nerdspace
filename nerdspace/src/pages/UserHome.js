@@ -29,16 +29,6 @@ class UserHome extends React.Component {
 
   async componentDidMount() {
     if (await isTokenAccepted(this.props.token)) {
-      /*axios.get(`http://localhost:5000/users/byGoogleID/${this.props.profile[0].googleId}`)
-      .then((response) => {
-        var rooms = response.data.data[0].rooms;
-        Object.values(rooms).map(room => {
-          this.retrieveRoomInfo(room)
-        })
-      })
-      .catch(err => {
-        console.error(err);
-      })*/
       try {
         var response = await axios.get(`http://localhost:5000/users/byGoogleID/${this.props.profile[0].googleId}`);
         var rooms = (await response).data.data[0].rooms;
@@ -66,7 +56,7 @@ class UserHome extends React.Component {
     axios.get(`http://localhost:5000/studyrooms/byRoomID/${id}`)
       .then((response) => {
         var room = response.data.data;
-        room.key = id;
+        room['key'] = id;
         this.state.studyRooms.push(room);
         this.setState({studyRooms:this.state.studyRooms});
       })
