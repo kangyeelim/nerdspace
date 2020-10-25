@@ -27,16 +27,22 @@ function TodoForm({ addTodo }) {
     }
 
     return (
-        <form onSubmit = {handleSubmit}>
-            <TextField
-                label="Task"
-                name="task"
-                type="text"
-                value={todo.task}
-                onChange={handleTaskInputChange}
-            />
-            <Button type="submit">Add</Button>
-        </form>
+      <form onSubmit={handleSubmit}>
+        <TextField
+          label="Task"
+          name="task"
+          type="text"
+          value={todo.task}
+          onChange={handleTaskInputChange}
+        />
+        <Button 
+         type="submit" 
+         size="medium" 
+         color="primary"
+        >
+          Add
+        </Button>
+      </form>
     );
 }
 
