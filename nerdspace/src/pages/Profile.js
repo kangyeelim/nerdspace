@@ -88,6 +88,28 @@ class Profile extends React.Component {
             return;
         }
 
+        if (this.state.educationLevel == "Secondary") {
+            if (parseInt(this.state.yearOfStudy) > 5) {
+                alert("Year of study in Secondary cannot go beyond 5");
+                return;
+            }
+        } else if (this.state.educationLevel == "Polytechnic") {
+            if (parseInt(this.state.yearOfStudy) > 3) {
+                alert("Year of study in Polytechnic cannot go beyond 3");
+                return;
+            }
+        } else if (this.state.educationLevel == "Junior College") {
+            if (parseInt(this.state.yearOfStudy) > 2) {
+                alert("Year of study in Junior College cannot go beyond 2");
+                return;
+            }
+        } else if (this.state.educationLevel == "University") {
+            if (parseInt(this.state.yearOfStudy) > 5) {
+                alert("Year of study in University cannot go beyond 5");
+                return;
+            }
+        }
+
         if (this.state.interests.length < 1 && this.state.interestsText.length < 1) {
             alert("Please add an interest");
             return;
@@ -96,7 +118,9 @@ class Profile extends React.Component {
         var intArray = this.state.interestsText.split(",");
         var i;
         for (i of intArray) {
-            this.state.interests.push(i.trim());
+            if (i.trim().length > 0) {
+                this.state.interests.push(i.trim());
+            }
         }
 
         this.setState({interests: this.state.interests});
@@ -109,7 +133,8 @@ class Profile extends React.Component {
             email: this.props.profile[0].email,
             name: this.state.name,
             key: this.props.profile[0].googleId,
-            bio: this.state.bio
+            bio: this.state.bio,
+            imageUrl: this.state.profilePic
         })
         .catch(err => {
             console.error(err);
