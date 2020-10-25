@@ -156,11 +156,11 @@ class BuddyFinderResult extends React.Component {
                         
                         <Button variant="primary" onClick={this.goToBuddyFinder}>Return to Buddy Finder main page</Button>
                     </div>
-                    <CardDeck>
+                    <CardDeck style={{ display: "flex", flexDirection: "column" }}>
                     {this.state.noResults ? (
                         <h1 style={{padding: "3rem"}}>No match found! ): </h1>
                     ) : (
-                        <Card>
+                        <Card style={{ display: "flex", flexDirection: "row" }}>
 
                         {this.state.results.map((result) => {
                             return <BuddyResult
@@ -206,11 +206,11 @@ class BuddyFinderResult extends React.Component {
 // </Card>
 const styles = {
     container: {
-        display: "flex",
-        flexDirection: "column",
+        // display: "flex",
+        // flexDirection: "column",
         alignItems: "center",
-        margin: "2rem",
-        padding: "3rem",
+        // // margin: "2rem",
+        // padding: "3rem",
         textAlign: "center",
         justifyContent: "center",
     },
