@@ -18,11 +18,11 @@ class Profile extends React.Component {
             name: this.props.profile[0].name,
             email: this.props.profile[0].email,
             bio: null,
-            interests: null,
+            interests: [],
+            interestsText: "",
             gender: null,
             educationLevel: null,
             yearOfStudy: null,
-            interestField: null,
             // key: null,
             isAuthenticating: true,
             isLoggedIn: false
@@ -30,8 +30,8 @@ class Profile extends React.Component {
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.onSubmit.bind(this);
+        this.handleInterest = this.handleInterest.bind(this);
         this.handleInterestText = this.handleInterestText.bind(this);
-        console.log(this.state.name)
     }
 
     componentDidMount = async () => {
@@ -48,48 +48,78 @@ class Profile extends React.Component {
             [name]: value
         });
         console.log(`Input name ${name}. Input value ${value}.`);
+    }
 
-        // this.handleValidation();
+    handleInterest(event) {
+        if (event.target.checked) {
+            this.state.interests.push(event.target.value);
+            this.setState({ interests: this.state.interests });
+        } else {
+            if (this.state.interests.includes(event.target.value)) {
+                this.state.interests.splice(this.state.interests.indexOf(event.target.value), 1);
+                this.setState({ interests: this.state.interests });
+            } else {
+                alert("Weird error??");
+            }
+        }
+        console.log(this.state.interests);
     }
 
     handleInterestText(event) {
-        this.setState({interestField: event.target.value.trim()});
-        this.setState({interest: event.target.value.trim()});
+        this.setState({ interestsText: event.target.value.trim() });
         console.log(`Input text interest. Input value ${event.target.value.trim()}.`);
     }
 
     onSubmit = event => {
         event.preventDefault();
-        // const name = this.name.value;
-        // const bio = this.bio.value;
-        // const info = {name: name, bio: bio};
-        // const data = [...this.state.data, info];
-        // this.setState({
-        //     data: data,
-        // });
 
+        if (this.state.gender == null) {
+            alert("Please indicate your gender");
+            return;
+        }
+
+        if (this.state.educationLevel == null) {
+            alert("Please indicate your education level");
+            return;
+        }
+
+        if (this.state.yearOfStudy == null) {
+            alert("Please indicate your year of study");
+            return;
+        }
+
+        if (this.state.interests.length < 1 && this.state.interestsText.length < 1) {
+            alert("Please add an interest");
+            return;
+        }
+
+        var intArray = this.state.interestsText.split(",");
+        var i;
+        for (i of intArray) {
+            this.state.interests.push(i.trim());
+        }
+
+        this.setState({interests: this.state.interests});
         
-        // axios.post('http://localhost:5000/profile/${this.props.profile[0].googleId}', {
-        //     educationLevel: this.state.educationLevel,
-        //     yearOfStudy: this.state.yearOfStudy,
-        //     interests: this.state.interests,
-        //     gender: this.state.gender,
-        //     email: this.props.profile[0].email,
-        //     name: this.props.profile[0].name,
-        //     googleID: this.props.profile[0].googleId,
-        //     key: this.state.key
-        // })
-        // .catch(err => {
-        //     console.error(err);
-        // });
+        axios.post('http://localhost:5000/profiles/updateProfile', {
+            educationLevel: this.state.educationLevel,
+            yearOfStudy: this.state.yearOfStudy,
+            interests: this.state.interests,
+            gender: this.state.gender,
+            email: this.props.profile[0].email,
+            name: this.state.name,
+            key: this.props.profile[0].googleId,
+            bio: this.state.bio
+        })
+        .catch(err => {
+            console.error(err);
+        })
+        .then((response) => {
+            console.log(response.data);
+        });
 
         alert('Your information has been successfully updated ' + this.state.name + this.state.bio + this.state.email + "Education: " + this.state.educationLevel + this.state.yearOfStudy + "Gender: " + this.state.gender);
     };
-
-    // handleSubmit = event => {
-    //     event.preventDefault();
-    //     alert('Your username is: ' + this.input.value + this.bio.value);
-    // };
 
     render() {
       if (this.state.isAuthenticating) {
@@ -111,16 +141,18 @@ class Profile extends React.Component {
                     />
                     </Row>
                     <Row>
-                    <form className="form" onSubmit={this.onSubmit} onChange={this.handleInputChange}>
-                        <div className="input-group" style={styles.bar} onChange={this.handleInputChange}>
+                    <form className="form" onSubmit={this.onSubmit}>
+                        <div className="input-group" style={styles.bar}>
                             <label style={styles.nameLabel} >Name: </label>
                             <input
                                 type="input"
                                 className="form-control"
+                                name="name" 
                                 placeholder={this.props.profile[0].name}
+                                onChange={this.handleInputChange}
                             />
                         </div>
-                        <div className="input-group" style={styles.bar} onChange={this.handleInputChange}>
+                        <div className="input-group" style={styles.bar}>
                             <label style={styles.nameLabel} >Gender: </label>
                                 <Row>
                                     <Form.Check
@@ -142,7 +174,7 @@ class Profile extends React.Component {
                                 </Row>
                                 <span style={{color: "red", right: "3rem"}}>{}</span>
                         </div>
-                        <div className="input-group" style={styles.bar} onChange={this.handleInputChange}>
+                        <div className="input-group" style={styles.bar}>
                             <label style={styles.bioLabel}>EducationLevel: </label>
                             <Row sm={7} style={{left: "1.5rem"}}>
                                     <Form.Control as="select" id="educationLevel" name="educationLevel" onChange={this.handleInputChange}>
@@ -165,7 +197,7 @@ class Profile extends React.Component {
                                     <span style={{color: "red", left: "3rem"}}>{}</span>
                                 </Row>
                         </div>
-                        <div className="input-group" style={styles.bar} onChange={this.handleInputChange}>
+                        <div className="input-group" style={styles.bar}>
                             <label style={styles.bioLabel}>Bio: </label>
                             <textarea
                                 type="input"
@@ -173,64 +205,21 @@ class Profile extends React.Component {
                                 id="bio"
                                 name="bio" 
                                 placeholder="Describe yourself (e.g. likes, dislikes, favourite subjects)"
+                                onChange={this.handleInputChange}
                             />
                         </div>
-                        <div className="input-group" style={styles.bar} onChange={this.handleInputChange}>
-                            <Form.Label as="legend" column style={styles.bioLabel} >Interests</Form.Label>
-                                <Row>
-                                    <Form.Check 
-                                    type="radio"
-                                    id="interest"
-                                    name="interest"
-                                    value="Math"
-                                    label="Math"
-                                    disabled={this.state.interestField}
-                                    />
-                                    <Form.Check 
-                                    type="radio"
-                                    id="interest"
-                                    name="interest"
-                                    value="General Paper"
-                                    label="General Paper"
-                                    disabled={this.state.interestField}
-                                    />
-                                    <Form.Check 
-                                    type="radio"
-                                    id="interest"
-                                    name="interest"
-                                    value="Chemistry"
-                                    label="Chemistry"
-                                    disabled={this.state.interestField}
-                                    />
-                                    <Form.Check 
-                                    type="radio"
-                                    id="interest"
-                                    name="interest"
-                                    value="Physics"
-                                    label="Physics"
-                                    disabled={this.state.interestField}
-                                    />
-                                    <Form.Check 
-                                    type="radio"
-                                    id="interest"
-                                    name="interest"
-                                    value="Computing"
-                                    label="Computing"
-                                    disabled={this.state.interestField}
-                                    />
-                                    <Form.Check 
-                                    type="radio"
-                                    id="interest"
-                                    name="interest"
-                                    value="Economics"
-                                    label="Economics"
-                                    disabled={this.state.interestField}
-                                    />
-                                    <Form.Control type="input" id="interest" name="this.state.name" placeholder="Others" onChange={this.handleInterestText}/>
-                                    <span style={{color: "red"}}>{}</span>
-                                </Row>
-                            </div>
-
+                        <div> Interests: </div>
+                        <div className="input-group" style={styles.bar}>
+                            <ul style={{listStyleType:"none"}}>
+                                <li><input type="checkbox" id="Math" value="Math" onChange={this.handleInterest}/><label for="Math"> Math </label> </li>
+                                <li><input type="checkbox" id="General Paper" value="General Paper" onChange={this.handleInterest}/><label for="General Paper"> General Paper </label> </li>
+                                <li><input type="checkbox" id="Chemistry" value="Chemistry" onChange={this.handleInterest}/><label for="Chemistry"> Chemistry </label></li>
+                                <li><input type="checkbox" id="Physics" value="Physics" onChange={this.handleInterest}/><label for="Physics"> Physics </label></li>
+                                <li><input type="checkbox" id="Computing" value="Computing" onChange={this.handleInterest}/><label for="Computing"> Computing </label></li>
+                                <li><input type="checkbox" id="Economics" value="Economics" onChange={this.handleInterest}/><label for="Economics"> Economics </label></li>
+                            </ul>
+                        </div>
+                        <Form.Control type="input" id="interest" name="interests" placeholder="Others" onChange={this.handleInterestText} />
                         <button type="submit" onClick={this.onSubmit} className="btn btn-primary">Save</button>
                     </form>
                     </Row>
