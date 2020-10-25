@@ -43,6 +43,7 @@ class CommonTimes extends React.Component {
   }
 
   async retrieveSubmittedTimesInfo() {
+    this.state.submittedNames = [];
     try {
       var res = await axios.get(`http://localhost:5000/time/byRoomID/${this.state.roomId}`);
       var memberIds = Object.keys((await res).data.data[0].times);
@@ -52,6 +53,7 @@ class CommonTimes extends React.Component {
           var result = await axios.get(`http://localhost:5000/users/byGoogleID/${memberIds[i]}`);
           var name = await result.data.data[0].name;
           this.state.submittedNames.push(name);
+          console.log(name);
           this.setState({submittedNames: this.state.submittedNames});
       }
       this.setState({memberRecords:memberRecords});
@@ -67,10 +69,11 @@ class CommonTimes extends React.Component {
 
   switchEditingMode() {
     this.setState({isEditingMode: !this.state.isEditingMode});
+    this.setState({isFound: false});
   }
 
   findCommonStudyTime() {
-    console.log(this.state.memberRecords);
+    this.setState({isAuthenticating:true});
     var records = this.state.memberRecords;
     var numOfMembers = records.length;
     var commonTimes = [];
@@ -88,11 +91,12 @@ class CommonTimes extends React.Component {
         commonTimes.push(dateTimeObj);
       }
     }
-    this.setState({isFound: true, commonTimes:commonTimes});
+    this.setState({isFound: true, commonTimes:commonTimes, isAuthenticating:false});
   }
 
   async submitTimetable(inputArr) {
-      var profile = this.props.profile[0];
+    this.setState({isAuthenticating:true});
+    var profile = this.props.profile[0];
     if (this.state.memberRecords.length > 0) {
       try {
         var res = await axios.post(`http://localhost:5000/time/update/byRoomID`, {
@@ -102,6 +106,7 @@ class CommonTimes extends React.Component {
         })
         if (res.data.message == 'UPDATE success') {
           await this.retrieveSubmittedTimesInfo();
+          this.setState({isEditingMode: false});
         }
       } catch (err) {
         console.error(err);
@@ -116,11 +121,14 @@ class CommonTimes extends React.Component {
         })
         if (res.data.message == 'POST success') {
           await this.retrieveSubmittedTimesInfo();
+          this.setState({isEditingMode: false});
+
         }
       } catch (err) {
         console.error(err);
       }
     }
+    this.setState({isAuthenticating:false});
   }
 
   render() {

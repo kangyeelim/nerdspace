@@ -26,8 +26,8 @@ class NavBar extends React.Component {
   }
 
   handleLogout(){
-    this.props.deleteProfile();
     this.props.deleteToken();
+    this.props.deleteProfile();
     deleteTokenFromDB(this.props.token);
     this.props.history.push("/");
   }
@@ -63,7 +63,7 @@ class NavBar extends React.Component {
   render() {
     return (
         <Navbar expand="lg" className="shadow" style={{ backgroundColor: "#D3D3D3" }}>
-          <Navbar.Brand href="#">
+          <Navbar.Brand style={{fontFamily: "Georgia"}} href="#">
             Nerdspace
           </Navbar.Brand>
           <Navbar.Toggle style={styles.navlink} aria-controls="basic-navbar-nav" />

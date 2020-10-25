@@ -51,6 +51,7 @@ class Community extends React.Component {
     axios.get(`http://localhost:5000/users/byGoogleID/${this.props.profile[0].googleId}`)
       .then((response) => {
         if (response.data.data[0].rooms != null) {
+
           var roomsAllowed = response.data.data[0].rooms;
           this.setState({roomsAllowed: Object.values(roomsAllowed)});
         }
@@ -103,7 +104,7 @@ class Community extends React.Component {
 
   searchRooms() {
     var filteredRooms = this.state.rooms.filter(obj => {
-      return obj.name.toUpperCase().includes(this.state.keyword.toUpperCase());
+      return obj.name.toUpperCase().includes(this.state.keyword.toUpperCase()) || obj.key.includes(this.state.keyword);
     });
     this.setState({rooms:filteredRooms});
   }
@@ -155,7 +156,7 @@ class Community extends React.Component {
           <Form className="ml-auto">
             <div style={styles.form}>
               <FormControl type="text"
-                placeholder="Search"
+                placeholder="Search by Room ID or name"
                 className="mr-sm-2"
                 onChange={this.keywordInput}/>
               <Button onClick={this.searchRooms}>Search</Button>

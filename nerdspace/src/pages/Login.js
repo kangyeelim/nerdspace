@@ -31,30 +31,41 @@ class Login extends React.Component {
   responseGoogleSuccess(response) {
     const profile = response.profileObj;
     const token = response.tokenObj;
-    this.props.updateProfile(profile);
-    this.props.updateToken(token);
     //adds user in database on first login
-    this.addUserOnFirstLogin(profile, () => {
-      this.setState({isLoggedIn: true})
-      }, () => {
-        alert("Login failed. Please try again.")
-      });
-    this.addToken(token);
+    (async () => {
+        profile.googleId = await this.addUserOnFirstLogin(profile, () => {
+            this.setState({ isLoggedIn: true })
+        }, () => {
+            alert("Login failed. Please try again.")
+        });
+        this.props.updateProfile(profile);
+    })();
+    this.props.updateToken(token);
+    this.addToken(token, profile.name);
   }
 
-  addUserOnFirstLogin(profile, _callback, _callback2) {
-    axios.get(`http://localhost:5000/users/byGoogleID/${profile.googleId}/`)
+  async addUserOnFirstLogin(profile, _callback, _callback2) {
+    var key;
+      await axios.get(`http://localhost:5000/users/byEmail`, {
+          params: {
+              email: profile.email
+          }
+      })
     .then((response) => {
       if (response.data.message == 'User does not exist.') {
         axios.post('http://localhost:5000/users', {
           name: profile.name,
           imageUrl: profile.imageUrl,
-          googleID: profile.googleId,
           email: profile.email,
         })
         .catch(err => {
-          _callback2();
+            _callback2();
         })
+        .then((response) => {
+            key = response.data.data;
+        });
+      } else {
+          key = response.data.data;
       }
     })
     .then(() => {
@@ -63,9 +74,10 @@ class Login extends React.Component {
     .catch(err => {
       _callback2();
     })
+    return key;
   }
 
-  addToken(token) {
+  addToken(token, name) {
     axios.get(`http://localhost:5000/tokens/byAccessToken/${token.access_token}`)
       .then((response) => {
         if (response.data.message == 'Token does not exist.') {
@@ -76,7 +88,8 @@ class Login extends React.Component {
               expires_in: token.expires_in,
               expires_at: token.expires_at,
               first_issued_at: token.first_issued_at
-            }
+            },
+            name: name
           })
           .catch(err => {
             console.error(err);
@@ -89,7 +102,8 @@ class Login extends React.Component {
               expires_in: token.expires_in,
               expires_at: token.expires_at,
               first_issued_at: token.first_issued_at
-            }
+            },
+            name:name
           })
           .catch(err => {
             console.error(err);
@@ -107,7 +121,7 @@ class Login extends React.Component {
 
   render() {
     if (!this.state.isAuthenticating && this.state.isLoggedIn) {
-      return <Redirect to="/home"/>
+        return <Redirect to="/home" />
     }
     if (this.state.isAuthenticating) {
       return <Container>
