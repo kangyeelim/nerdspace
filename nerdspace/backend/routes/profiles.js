@@ -115,7 +115,7 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
   });
 });
 
-
+/*
 router.route('/').post((req, res) => {
   const googleID = req.body.googleID;
   const educationLevel = req.body.educationLevel;
@@ -140,8 +140,8 @@ router.route('/').post((req, res) => {
   res.send({
     message: 'POST success'
   });
-});
-
+});*/
+/*
 router.route('/updateInfo').post((req, res) => {
   const googleID = req.body.googleID;
   const educationLevel = req.body.educationLevel;
@@ -180,6 +180,41 @@ router.route('/updateInterests').post((req, res) => {
   res.send({
     message: 'POST success'
   });
+});
+*/
+
+router.route('/updateProfile').post((req, res) => {
+    const key = req.body.key;
+    const interests = req.body.interests;
+    const edu = req.body.educationLevel;
+    const year = req.body.yearOfStudy;
+    const gender = req.body.gender;
+    const name = req.body.name;
+    const bio = req.body.bio;
+    db.ref('profiles').child(key).update({
+        'name': name,
+        'bio': bio,
+        'gender': gender,
+        'yearOfStudy': year,
+        'educationLevel': edu
+    }, function (error) {
+        if (error) {
+            res.send(error);
+        }
+    });
+    var profileRef = db.ref('profiles').child(key);
+    profileRef.child('interests').remove(
+        function (error) {
+            if (error) {
+                res.send(error);
+            }
+        });
+    interests.forEach((item, i) => {
+        profileRef.child('interests').push().set(item);
+    });
+    res.send({
+        message: 'UPDATE success'
+    });
 });
 
 router.route('/:id').delete((req, res) => {
