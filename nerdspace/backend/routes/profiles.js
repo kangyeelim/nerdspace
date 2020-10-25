@@ -98,13 +98,15 @@ router.route('/updateProfile').post((req, res) => {
     const name = req.body.name;
     const bio = req.body.bio;
     const pic = req.body.imageUrl;
+    const email = req.body.email;
     db.ref('profiles').child(key).update({
         'name': name,
         'bio': bio,
         'gender': gender,
         'yearOfStudy': year,
         'educationLevel': edu,
-        'imageUrl': pic
+        'imageUrl': pic,
+        'email': email
     }, function (error) {
         if (error) {
             res.send(error);
