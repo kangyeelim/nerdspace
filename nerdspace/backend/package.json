@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js",
+    "dev": "nodemon --watch backend backend/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +16,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "firebase": "^7.19.1",
-    "multer": "^1.4.2"
+    "multer": "^1.4.2",
+    "nodemon": "^2.0.6"
   }
 }

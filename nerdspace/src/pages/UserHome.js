@@ -91,7 +91,6 @@ class UserHome extends React.Component {
             </Col>
             <Col>
               <QuoteBox />
-              <Postbar />
               <TodoBox />
             </Col>
           </Row>
