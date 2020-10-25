@@ -26,15 +26,14 @@ router.route('/').get((req, res) => {
   });
 });
 
-router.route('/byKeyword/:keyword').get((req, res) => {
+router.route('/byKeyword/:keyword').get(async (req, res) => {
   const keyword = req.params.keyword;
-
-  db.ref('studyRooms').orderByChild('name')
+  var resArr = [];
+  await db.ref('studyRooms').orderByChild('name')
   .startAt(keyword)
   .endAt(keyword + "\uf8ff")
   .once('value',
   function (snapshot) {
-    var resArr = [];
     snapshot.forEach(function (child) {
       var key = child.key;
       var data = child.val();
@@ -47,12 +46,29 @@ router.route('/byKeyword/:keyword').get((req, res) => {
       });
     });
 
-    res.send({
-      data: resArr,
-      message: 'GET success'
-    });
   }, function (error) {
       res.send(error);
+  });
+  await db.ref('studyRooms').child(keyword)
+  .once('value', function(snapshot, error) {
+    if (snapshot.exists()) {
+      var key = keyword;
+      var data = snapshot.val();
+      console.log(data.name);
+      resArr.unshift({
+        key: key,
+        name: data.name,
+        imageUrl: data.imageUrl,
+        isThereImage: data.isThereImage,
+        members: data.members
+      });
+    }
+  },  function (error) {
+      res.send(error);
+  });
+  res.send({
+    data: resArr,
+    message: 'GET success'
   });
 });
 

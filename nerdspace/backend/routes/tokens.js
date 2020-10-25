@@ -18,6 +18,7 @@ router.route('/byAccessToken/:id').get((req, res) => {
           access_token: data.access_token,
           token_id: data.token_id,
           session_state: data.session_state,
+          name: data.name
         });
       });
 
@@ -37,10 +38,12 @@ router.route('/').post((req, res) => {
   const access_token = req.body.access_token;
   const token_id = req.body.token_id;
   const session_state = req.body.session_state;
+  const name = req.body.name;
   db.ref('tokens').push().set({
     'access_token': access_token,
     'token_id': token_id,
-    'session_state': session_state
+    'session_state': session_state,
+    'name':name
   }, function (error) {
     if (error) {
       res.send(error);
@@ -56,7 +59,7 @@ router.route('/update').post((req, res) => {
   const access_token = req.body.access_token;
   const token_id = req.body.token_id;
   const session_state = req.body.session_state;
-
+  const name = req.body.name
   db.ref('tokens')
   .orderByChild('access_token')
   .equalTo(access_token)
@@ -67,7 +70,8 @@ router.route('/update').post((req, res) => {
         db.ref('tokens').child(key).update({
           'access_token': access_token,
           'token_id': token_id,
-          'session_state': session_state
+          'session_state': session_state,
+          'name':name
         })
       })
       res.send({
@@ -86,6 +90,29 @@ router.route('/byAccessToken/:id').delete((req, res) => {
   db.ref('tokens')
   .orderByChild("access_token")
   .equalTo(token)
+  .once("value", function(snapshot, error) {
+    if (snapshot.exists()) {
+      snapshot.forEach(function (child) {
+        var key = child.key;
+        db.ref('tokens').child(key).remove();
+      });
+
+      res.send({
+        message: 'DELETE success'
+      });
+    } else {
+      res.send({
+        message: 'Token does not exist.'
+      })
+    }
+  })
+});
+
+router.route('/byTokenId/:id').delete((req, res) => {
+  const token_id = req.params.id;
+  db.ref('tokens')
+  .orderByChild("token_id")
+  .equalTo(token_id)
   .once("value", function(snapshot, error) {
     if (snapshot.exists()) {
       snapshot.forEach(function (child) {

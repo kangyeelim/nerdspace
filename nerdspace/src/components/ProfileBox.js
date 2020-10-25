@@ -14,7 +14,7 @@ class ProfileBox extends React.Component {
                     </Card.Header>
                     <Card.Body>
                         <Card.Text>
-                            Connections:  50
+                            Connections:  {this.props.connections}
                         </Card.Text>
                     </Card.Body>
                 </Card>
