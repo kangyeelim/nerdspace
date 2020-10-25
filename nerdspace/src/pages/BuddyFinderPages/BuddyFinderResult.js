@@ -166,6 +166,7 @@ class BuddyFinderResult extends React.Component {
                             return <BuddyResult
                             key={result.key}
                             id={result.key}
+                            imageUrl={result.imageUrl}
                             name={result.name}
                             gender={result.gender}
                             email={result.email}
