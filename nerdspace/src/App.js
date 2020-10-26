@@ -17,6 +17,7 @@ import CreatePostForm from './pages/StudyRoomPages/CreatePostForm';
 import CreateRoomForm from './pages/StudyRoomPages/CreateRoomForm';
 import ChatRoom from './pages/ChatRoom';
 import CommonTimes from './pages/StudyRoomPages/CommonTimes';
+import Logout from './components/Logout';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/" component={Login}/>
+          <Route exact path="/logout" component={Logout}/>
           <Route exact path="/buddy-finder" component={BuddyFinder}/>
           <Route exact path="/createBuddyForm" component={BuddyFinderForm}/>
           <Route exact path="/buddy-finder-result" component={BuddyFinderResult}/>

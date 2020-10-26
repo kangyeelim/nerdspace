@@ -7,6 +7,7 @@ import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import logo from "../assets/logoV2.png";
 
 class Login extends React.Component {
   constructor() {
@@ -134,26 +135,28 @@ class Login extends React.Component {
           <div style={styles.loginPanel}>
             <h3>Welcome to Nerdspace!</h3>
             <p>Login to get started.</p>
-            <div style={{marginTop:30}}>
+            <div style={{ marginTop: 30 }}>
               <GoogleButton
                 responseGoogleSuccess={this.responseGoogleSuccess}
                 responseGoogleFailure={this.responseGoogleFailure}
-                />
+              />
             </div>
+          </div>
+          <div style={styles.logo}>
+            <img src={logo} alt="logo" />
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
 const styles = {
   screen: {
-    width: "100vw",
     minHeight: "100vh",
     display: "flex",
     flexDirection: "row",
-    backgroundColor: "skyblue"
+    backgroundColor: "skyblue",
   },
   loginPanel: {
     width: "385px",
@@ -161,8 +164,15 @@ const styles = {
     padding: 30,
     backgroundColor: "white",
     paddingTop: "35vh",
-  }
-}
+  },
+  logo: {
+    width: "100vw",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#bbe1fa",
+  },
+};
 const mapStateToProps = (state) => {
     return {
       profile: state.profile,
