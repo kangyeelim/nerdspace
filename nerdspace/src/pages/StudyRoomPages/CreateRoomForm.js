@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Col, Row, Form } from 'react-bootstrap';
 import axios from 'axios';
-import NavBar from '../../components/NavBar';
 import { Redirect } from 'react-router-dom';
 import './CreateRoomForm.css';
 import Upload from '../../components/StudyRoomComponents/Upload';
@@ -11,6 +10,7 @@ import { enterRoom } from '../../navigators/StudyRoomNavigator';
 import { updateRoomDetails } from '../../services/StudyRoomService';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { isTokenAccepted } from '../../services/Auth';
+import Header from "../../components/NavigationComponents/Header";
 
 const DEFAULT_URL = "https://source.unsplash.com/aJnHSrgSWkk/1600x900";
 const dummy_contacts = [ {name: "michaela"}, {name: "evon"}, {name: "yenpeng"}];
@@ -180,7 +180,7 @@ class CreateRoomForm extends React.Component {
     }
     return (
       <div>
-        <NavBar history={this.props.history}/>
+        <Header history={this.props.history}/>
         <Container>
         <Col>
         <h3>Study Room Details</h3>

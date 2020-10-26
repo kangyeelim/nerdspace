@@ -1,13 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../components/NavBar';
-import './General.css';
 import { Col, Container } from 'react-bootstrap';
 import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
 import { FormControl, FormHelperText, Select, Avatar, Checkbox, Typography, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, TextField, Button } from "@material-ui/core";
+import Header from "../components/NavigationComponents/Header";
 
 class Profile extends React.Component {
 
@@ -157,7 +156,7 @@ class Profile extends React.Component {
       }
         return (
           <div>
-            <NavBar history={this.props.history} />
+            <Header history={this.props.history} />
             <div className="container">
               <Col>
                 <Avatar
@@ -207,7 +206,7 @@ class Profile extends React.Component {
                   </div>
                   <div className="input-group" style={styles.bar}>
                     <FormLabel component="legend">Education Level:</FormLabel>
-                    <FormControl style={{padding: "10px"}}>
+                    <FormControl style={{ padding: "10px" }}>
                       <Select
                         native
                         onChange={this.handleInputChange}
