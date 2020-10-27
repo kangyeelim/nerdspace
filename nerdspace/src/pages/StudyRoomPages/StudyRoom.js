@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../../components/NavBar';
 import '../General.css';
 import { Redirect } from 'react-router-dom';
 import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
@@ -14,6 +13,7 @@ import { goToCreateRoomForm } from '../../navigators/StudyRoomNavigator';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { isRoomAccessibleToUser, isTokenAccepted } from '../../services/Auth';
 import { getRoomDetails } from '../../services/StudyRoomService';
+import Header from "../../components/NavigationComponents/Header";
 
 class StudyRoom extends React.Component {
   constructor(props) {
@@ -96,7 +96,7 @@ class StudyRoom extends React.Component {
     }
     return (
       <div>
-        <NavBar history={this.props.history}/>
+        <Header history={this.props.history}/>
         <div className='container'>
           <Col>
             <TitleCard

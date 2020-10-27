@@ -9,6 +9,7 @@ import { enterRoom } from '../../navigators/StudyRoomNavigator';
 import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Header from "../../components/NavigationComponents/Header";
 
 const stub = [ {id:1, name:"GP resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
 {id:2, name:"A Maths resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
@@ -149,33 +150,42 @@ class Community extends React.Component {
     }
     return (
       <div>
-        <NavBar history={this.props.history}/>
-        <div className='container'>
-          <Col style={{width:"100vw"}}>
-          <h2 style={styles.heading}>Community of Study Groups</h2>
-          <Form className="ml-auto">
-            <div style={styles.form}>
-              <FormControl type="text"
-                placeholder="Search by Room ID or name"
-                className="mr-sm-2"
-                onChange={this.keywordInput}/>
-              <Button onClick={this.searchRooms}>Search</Button>
-              <Button style={styles.button} onClick={this.getAllRooms}>Show All</Button>
-              <Button style={styles.button} onClick={this.makeNewRoom}>New Room</Button>
-            </div>
-          </Form>
-          { this.state.rooms && this.state.rooms.map((room) => {
-            return (
-                <RoomBox roomName={room.name}
-                hasAccess={this.hasAccess(room.key)}
-                hasRequested={this.hasRequest(room.key)}
-                key={room.key}
-                id={room.key}
-                requestJoin={()=> this.requestJoinRoom(room.key)}
-                enter={() => this.enterRoom(room.key)}
-                imageUrl={room.imageUrl}/>
-            );
-          })}
+        <Header history={this.props.history} />
+        <div className="container">
+          <Col style={{ width: "100vw" }}>
+            <h2 style={styles.heading}>Community of Study Groups</h2>
+            <Form className="ml-auto">
+              <div style={styles.form}>
+                <FormControl
+                  type="text"
+                  placeholder="Search by Room ID or name"
+                  className="mr-sm-2"
+                  onChange={this.keywordInput}
+                />
+                <Button onClick={this.searchRooms}>Search</Button>
+                <Button style={styles.button} onClick={this.getAllRooms}>
+                  Show All
+                </Button>
+                <Button style={styles.button} onClick={this.makeNewRoom}>
+                  New Room
+                </Button>
+              </div>
+            </Form>
+            {this.state.rooms &&
+              this.state.rooms.map((room) => {
+                return (
+                  <RoomBox
+                    roomName={room.name}
+                    hasAccess={this.hasAccess(room.key)}
+                    hasRequested={this.hasRequest(room.key)}
+                    key={room.key}
+                    id={room.key}
+                    requestJoin={() => this.requestJoinRoom(room.key)}
+                    enter={() => this.enterRoom(room.key)}
+                    imageUrl={room.imageUrl}
+                  />
+                );
+              })}
           </Col>
         </div>
       </div>

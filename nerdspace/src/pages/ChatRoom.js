@@ -9,6 +9,7 @@ import ContactsSection from '../components/ContactsSection';
 import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Header from "../components/NavigationComponents/Header";
 
 class ChatRoom extends React.Component {
     constructor(props) {
@@ -72,7 +73,7 @@ class ChatRoom extends React.Component {
       }
         return (
             <div>
-                <NavBar history={this.props.history} />
+                <Header history={this.props.history} />
                 <div className='container' style={{margin:"auto"}}>
                     <Col>
                         <Row>

@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import ProfileBox from '../components/ProfileBox';
 import GroupBox from '../components/GroupBox';
-import Postbar from '../components/Postbar';
-import NavBar from '../components/NavBar';
 import TodoBox from '../components/TodoComponents/TodoBox';
 import QuoteBox from '../components/QuoteComponents/QuoteBox';
 import './General.css';
@@ -13,7 +11,7 @@ import { enterRoom } from '../navigators/StudyRoomNavigator';
 import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Grid, Paper } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Header from "../components/NavigationComponents/Header";
 
 class UserHome extends React.Component {
