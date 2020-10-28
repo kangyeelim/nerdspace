@@ -8,7 +8,7 @@ class BuddyFinderHeader extends React.Component {
         return (
             <div>
                 <div style={styles.header}>
-                    <Typography variant="h2">Find your ideal study buddy</Typography> 
+                    <Typography variant="h3">Find your ideal study buddy</Typography> 
                     <Button variant="primary" onClick={this.props.createBuddyForm}>Create a new form</Button>
                 </div>
             </div>
