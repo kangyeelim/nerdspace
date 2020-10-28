@@ -7,7 +7,7 @@ import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NavBar from "../../components/NavigationComponents/NavBar";
-import { RadioGroup, Radio, FormControlLabel, FormControl, FormHelperText, Select } from "@material-ui/core";
+import { RadioGroup, Radio, FormControlLabel, FormControl, FormHelperText, Select, Typography } from "@material-ui/core";
 
 class BuddyFinderForm extends React.Component {
 
@@ -177,14 +177,14 @@ class BuddyFinderForm extends React.Component {
                 <Col>
                 <div style={styles.container}>
                     <div style={styles.header}>
-                        <h1><strong>Find your ideal study buddy</strong></h1> 
-                        <h6>Fill in the desired attributes in your study buddy</h6>
+                        <Typography variant="h3">Find your ideal study buddy</Typography> 
+                        <Typography variant="h6">Fill in the desired attributes in your study buddy</Typography>
                     </div>
                     <div>
                         <Form style={styles.form}>
                             <fieldset>
                                 <Form.Group as={Row} onSubmit={this.findBuddy} style={{padding: "1rem"}}>
-                                    <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "800" }}>Gender</Form.Label>
+                                    <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "800", right: "1rem" }}>Gender</Form.Label>
                                         <Col sm={7} style={{ left: "3rem" }}>
                                         <RadioGroup>
                                             <FormControlLabel

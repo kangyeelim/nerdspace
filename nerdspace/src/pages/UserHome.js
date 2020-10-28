@@ -81,7 +81,7 @@ class UserHome extends React.Component {
     return (
       <div>
         <NavBar history={this.props.history} />
-        <div className="container">
+        <div className="container" style={{ margin: "auto" }}>
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <ProfileBox connections={this.state.connections} />

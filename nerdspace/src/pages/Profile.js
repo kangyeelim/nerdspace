@@ -5,7 +5,7 @@ import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
-import { FormControl, FormHelperText, Select, Avatar, Checkbox, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, TextField, Button } from "@material-ui/core";
+import { FormControl, FormHelperText, Select, Avatar, Checkbox, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, TextField, Button, Typography } from "@material-ui/core";
 import NavBar from "../components/NavigationComponents/NavBar";
 
 class Profile extends React.Component {
@@ -155,12 +155,13 @@ class Profile extends React.Component {
         return (
           <div>
             <NavBar history={this.props.history} />
-            <div className="container">
-              <Col>
+              <div className="container" style={{ margin: "auto" }}>
+                <Col>
                 <Avatar
                   style={{
                     width: "150px",
                     height: "150px",
+                    margin: "auto"
                   }}
                   src={this.state.profilePic}
                   alt="Profile"
@@ -176,7 +177,19 @@ class Profile extends React.Component {
                     />
                   </div>
                   <div className="input-group" style={styles.bar}>
-                    <FormLabel component="legend">Gender:</FormLabel>
+                    <TextField
+                      variant="outlined"
+                      label="Bio"
+                      id="bio"
+                      name="bio"
+                      multiline
+                      rows={5}
+                      rowsMax={10}
+                      onChange={this.handleInputChange}
+                    />
+                  </div>
+                  <div className="input-group" style={styles.bar}>
+                    <FormLabel component="legend">Gender</FormLabel>
                     <RadioGroup>
                       <FormControlLabel
                         label="Female"
@@ -203,7 +216,7 @@ class Profile extends React.Component {
                     <span style={{ color: "red", right: "3rem" }}>{}</span>
                   </div>
                   <div className="input-group" style={styles.bar}>
-                    <FormLabel component="legend">Education:</FormLabel>
+                    <FormLabel component="legend">Education</FormLabel>
                     <FormControl variant="outlined" style={{ padding: "10px" }}>
                       <Select
                         native
@@ -241,19 +254,7 @@ class Profile extends React.Component {
                     </FormControl>
                   </div>
                   <div className="input-group" style={styles.bar}>
-                    <TextField
-                      variant="outlined"
-                      label="Bio"
-                      id="bio"
-                      name="bio"
-                      multiline
-                      rows={5}
-                      rowsMax={10}
-                      onChange={this.handleInputChange}
-                    />
-                  </div>
-                  <div className="input-group" style={styles.bar}>
-                    <FormLabel component="legend">Interests:</FormLabel>
+                    <FormLabel component="legend">Interests</FormLabel>
                     <FormGroup column>
                       <FormControlLabel
                         control={
@@ -350,7 +351,7 @@ const styles = {
         alignItems: 'center',
         display: 'flex',
         flexDirection: 'row',
-    }
+    },
 }
 
 const mapStateToProps = (state) => {
