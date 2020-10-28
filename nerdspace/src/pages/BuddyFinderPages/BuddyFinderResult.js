@@ -102,7 +102,6 @@ class BuddyFinderResult extends React.Component {
     }
 
     async sendMessage(googleID) {
-        console.log("Sending message...");
         axios.post('http://localhost:5000/contacts', {
             type: "dm",
             user1Id: googleID,
@@ -110,12 +109,8 @@ class BuddyFinderResult extends React.Component {
         }).catch(err => {
             console.error(err);
         }).then(response => {
-            console.log(response);
-            this.setState({chatID: response})
+            this.props.history.push('/chat/' + response.data.chatID);
         })
-        console.log(this.state.chatID);
-
-        this.props.history.push('/chat/' + this.state.chatID);
     }
 
     // async getUserData() {

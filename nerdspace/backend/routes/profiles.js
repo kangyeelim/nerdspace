@@ -14,7 +14,6 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
   // var userKey;
   // var userData;
   // var userArr;
-  console.log("GETSS: " + educationLevel + gender + year);
 
   db.ref('profiles')
   .orderByChild('educationLevel')
@@ -24,7 +23,6 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
       var key = child.key;
       var data = child.val();
       
-      console.log(data.educationLevel + data.gender + data.yearOfStudy);
       var interestArr = Object.values(data.interests); 
       if ((interestArr.includes(interest) && data.googleID != googleID) && (data.yearOfStudy == year && data.gender == gender)) {
 
@@ -62,7 +60,7 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
           // console.log("THISsss" +userName + userEmail);
         resArr.unshift({
           key: key,
-          googleID: data.googleID,
+          googleID: key,
           educationLevel: data.educationLevel,
           year: data.yearOfStudy,
           gender: data.gender,
@@ -71,7 +69,6 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
           email: data.email,
           imageUrl: data.imageUrl
         });
-        console.log("RESARR" + resArr + data.name + data.email + data.imageUrl);
       }
     });
     
