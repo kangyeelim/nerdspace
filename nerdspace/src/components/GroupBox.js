@@ -1,40 +1,38 @@
 import React from "react";
 import { Card } from 'react-bootstrap';
+import { ListItem } from '@material-ui/core';
 import { MDBContainer } from "mdbreact";
 import { Link } from 'react-router-dom';
 import './GroupBox.css';
 
 class GroupBox extends React.Component {
 
-  render() {
-     return (
-      <MDBContainer className="ml-5 mr-5">
-          <Card text="white" border="light" style={{ width: '18rem', borderRadius: "5%", backgroundColor: "#A9A9A9", marginLeft: 0 }}>
-              <Card.Header style={styles.header}>
-                  <Card.Title>Study Groups</Card.Title>
-              </Card.Header>
-              <Card.Body>
-              <Card.Text>
-                {this.props.rooms.map(room => {
-                  return (<li
-                    key={room.key}
-                    onClick={()=> this.props.enterRoom(room.key, room.name, room.imageUrl)}
-                    >{room.name}
-                  </li>);
-                })}
-              </Card.Text>
-              </Card.Body>
-      </Card>
-    </MDBContainer>
-    );
-  }
+    render() {
+        return (
+            <Card text="black" border="light" style={styles.card}>
+                <Card.Body>
+                    <Card.Title>Study Groups</Card.Title>
+                <Card.Text>
+                    {this.props.rooms.map(room => {
+                        return (<ListItem
+                            key={room.key}
+                            onClick={()=> this.props.enterRoom(room.key, room.name, room.imageUrl)}
+                            >{room.name}
+                        </ListItem>);
+                    })}
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+        );
+    }
 }
 
 const styles = {
-  header: {
-      minHeight: "30px",
-      overflow: 'hidden',
-
-  }
+    card: {
+        width: "18rem",
+        borderRadius: "5%",
+        backgroundColor: "#a2d5f2",
+    }
 }
+
 export default GroupBox;

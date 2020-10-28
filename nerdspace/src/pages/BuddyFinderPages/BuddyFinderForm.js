@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../../components/NavBar';
 import '../General.css';
 import axios from 'axios';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -9,6 +8,7 @@ import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'rea
 import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Header from "../../components/NavigationComponents/Header";
 
 class BuddyFinderForm extends React.Component {
 
@@ -174,7 +174,7 @@ class BuddyFinderForm extends React.Component {
         }
         return (
             <div>
-                <NavBar history={this.props.history}/>
+                <Header history={this.props.history}/>
                 <Col>
                 <div style={styles.container}>
                     <div style={styles.header}>

@@ -5,7 +5,7 @@ import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
-import { FormControl, FormHelperText, Select, Avatar, Checkbox, Typography, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, TextField, Button } from "@material-ui/core";
+import { FormControl, FormHelperText, Select, Avatar, Checkbox, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, TextField, Button } from "@material-ui/core";
 import Header from "../components/NavigationComponents/Header";
 
 class Profile extends React.Component {
@@ -87,22 +87,22 @@ class Profile extends React.Component {
             return;
         }
 
-        if (this.state.educationLevel == "Secondary") {
+        if (this.state.educationLevel === "Secondary") {
             if (parseInt(this.state.yearOfStudy) > 5) {
                 alert("Year of study in Secondary cannot go beyond 5");
                 return;
             }
-        } else if (this.state.educationLevel == "Polytechnic") {
+        } else if (this.state.educationLevel === "Polytechnic") {
             if (parseInt(this.state.yearOfStudy) > 3) {
                 alert("Year of study in Polytechnic cannot go beyond 3");
                 return;
             }
-        } else if (this.state.educationLevel == "Junior College") {
+        } else if (this.state.educationLevel === "Junior College") {
             if (parseInt(this.state.yearOfStudy) > 2) {
                 alert("Year of study in Junior College cannot go beyond 2");
                 return;
             }
-        } else if (this.state.educationLevel == "University") {
+        } else if (this.state.educationLevel === "University") {
             if (parseInt(this.state.yearOfStudy) > 5) {
                 alert("Year of study in University cannot go beyond 5");
                 return;

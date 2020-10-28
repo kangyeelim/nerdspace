@@ -2,7 +2,7 @@
     height: auto;
     width: 100%;
     border: 1px rgb(145, 126, 126) solid;
-    max-width: rem
+    max-width: "27vw",
 }
 
 .fadeIn {
