@@ -57,8 +57,6 @@ class Profile extends React.Component {
             if (this.state.interests.includes(event.target.value)) {
                 this.state.interests.splice(this.state.interests.indexOf(event.target.value), 1);
                 this.setState({ interests: this.state.interests });
-            } else {
-                alert("Weird error??");
             }
         }
         console.log(this.state.interests);
