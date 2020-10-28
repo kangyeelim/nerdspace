@@ -9,7 +9,7 @@ class ProfileBox extends React.Component {
             <MDBContainer className="ml-5 mr-5">
                 <Card text="white" border="light" style={styles.card}>
                     <Card.Header style={styles.header}>
-                        <img src={this.props.profile[0].imageUrl} alt="Profile Picture" style={styles.img}/>
+                        <img src={this.props.profile[0].imageUrl} alt="" style={styles.img}/>
                         <Card.Title>{this.props.profile[0].name}</Card.Title>
                     </Card.Header>
                     <Card.Body>
@@ -28,23 +28,17 @@ const styles = {
   header: {
       minHeight: "100px",
       overflow: 'hidden',
-
   },
   img: {
     width: "10vw",
     margin: "10px",
-    outlineWidth: "1px",
-    //outlineStyle: "solid",
-    //outlineColor: "white",
     borderRadius: "50%",
     overflow: 'hidden',
-    // WebkitBorderRadius: "500px",
-    // MozBorderRadius: "500px",
   },
   card: {
     width: '18rem',
     height: "auto",
-    borderRadius: "10%",
+    borderRadius: "5%",
     backgroundColor: "#A9A9A9",
     marginLeft: 0
   }

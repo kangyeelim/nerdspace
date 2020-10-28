@@ -10,6 +10,7 @@ import { createNewPost, updateExistingPost } from '../../services/StudyRoomPostS
 import { enterRoom } from '../../navigators/StudyRoomNavigator';
 import { isRoomAccessibleToUser, isTokenAccepted } from '../../services/Auth';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Header from "../../components/NavigationComponents/Header";
 
 class CreatePostForm extends React.Component {
   constructor(props) {
@@ -130,7 +131,7 @@ class CreatePostForm extends React.Component {
     }
     return (
       <div>
-        <NavBar history={this.props.history}/>
+        <Header history={this.props.history}/>
         <Container>
         <Col>
         <h3>Post Details</h3>

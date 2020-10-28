@@ -62,7 +62,7 @@ class NavBar extends React.Component {
 
   render() {
     return (
-        <Navbar expand="lg" className="shadow" style={{ backgroundColor: "#D3D3D3" }}>
+        <Navbar expand="lg" className="shadow" style={{ backgroundColor: "skyblue" }}>
           <Navbar.Brand style={{fontFamily: "Georgia"}} href="#">
             Nerdspace
           </Navbar.Brand>
@@ -80,6 +80,7 @@ class NavBar extends React.Component {
                             <img className="thumbnail-image"
                                 src={this.state.profilePic}
                                 style={styles.thumbnail}
+                                alt=""
                             />
                             {this.props.profile[0].name}
                         </div>

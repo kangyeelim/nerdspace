@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import ProfileBox from '../components/ProfileBox';
 import GroupBox from '../components/GroupBox';
-import Postbar from '../components/Postbar';
-import NavBar from '../components/NavBar';
 import TodoBox from '../components/TodoComponents/TodoBox';
 import QuoteBox from '../components/QuoteComponents/QuoteBox';
 import './General.css';
@@ -13,6 +11,8 @@ import { enterRoom } from '../navigators/StudyRoomNavigator';
 import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Grid } from "@material-ui/core";
+import Header from "../components/NavigationComponents/Header";
 
 class UserHome extends React.Component {
   constructor() {
@@ -80,21 +80,25 @@ class UserHome extends React.Component {
     }
     return (
       <div>
-        <NavBar history={this.props.history} />
+        <Header history={this.props.history} />
         <div className="container">
-          <Row>
-            <Col md={6}>
-              <ProfileBox connections={this.state.connections}/>
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <ProfileBox connections={this.state.connections} />
+            </Grid>
+            <Grid item xs={6}>
+              <QuoteBox />
+            </Grid>
+            <Grid item xs={6}>
               <GroupBox
                 rooms={this.state.studyRooms}
-                enterRoom={this.enterRoom}/>
-            </Col>
-            <Col>
-              <QuoteBox />
-              <Postbar />
+                enterRoom={this.enterRoom}
+              />
+            </Grid>
+            <Grid item xs={6}>
               <TodoBox />
-            </Col>
-          </Row>
+            </Grid>
+          </Grid>
         </div>
       </div>
     );

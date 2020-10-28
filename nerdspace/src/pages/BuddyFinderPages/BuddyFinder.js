@@ -8,6 +8,7 @@ import BuddyFinderPostsSection from '../../components/BuddyFinderComponents/Budd
 import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Header from "../../components/NavigationComponents/Header";
 
 class BuddyFinder extends React.Component {
 
@@ -45,16 +46,16 @@ class BuddyFinder extends React.Component {
         return <Redirect to="/"/>
       }
         return (
-            <div>
-                <NavBar history={this.props.history}/>
-                <div style={styles.container}>
-                    <Col>
-                        <BuddyFinderHeader createBuddyForm={this.createBuddyForm} />
-                        <BuddyFinderPostsSection history={this.props.history}/>
-                    </Col>
-                </div>
+          <div>
+            <Header history={this.props.history} />
+            <div style={styles.container}>
+              <Col>
+                <BuddyFinderHeader createBuddyForm={this.createBuddyForm} />
+                <BuddyFinderPostsSection history={this.props.history} />
+              </Col>
             </div>
-        )
+          </div>
+        );
     }
 
 }

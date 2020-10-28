@@ -9,7 +9,7 @@ class GroupBox extends React.Component {
   render() {
      return (
       <MDBContainer className="ml-5 mr-5">
-          <Card text="white" border="light" style={{ width: '18rem', borderRadius: "10%", backgroundColor: "#A9A9A9", marginLeft: 0 }}>
+          <Card text="white" border="light" style={{ width: '18rem', borderRadius: "5%", backgroundColor: "#A9A9A9", marginLeft: 0 }}>
               <Card.Header style={styles.header}>
                   <Card.Title>Study Groups</Card.Title>
               </Card.Header>
