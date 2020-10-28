@@ -12,7 +12,7 @@ class GroupBox extends React.Component {
             <Card text="black" border="light" style={styles.card}>
                 <Card.Body>
                     <Card.Title>Study Groups</Card.Title>
-                <Card.Text>
+                <Card.Text style={styles.text}>
                     {this.props.rooms.map(room => {
                         return (<ListItem
                             key={room.key}
@@ -32,6 +32,11 @@ const styles = {
         width: "18rem",
         borderRadius: "5%",
         backgroundColor: "#a2d5f2",
+        color: "#0f4c75"
+    },
+    text: {
+        color: "#0f4c75",
+        textDecorationLine: 'underline'
     }
 }
 

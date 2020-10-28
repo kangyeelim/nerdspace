@@ -2,13 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import '../General.css';
 import axios from 'axios';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
+import { Col, Row, Form, Button, Container } from 'react-bootstrap';
 import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Header from "../../components/NavigationComponents/Header";
+import NavBar from "../../components/NavigationComponents/NavBar";
+import { RadioGroup, Radio, FormControlLabel, FormControl, FormHelperText, Select } from "@material-ui/core";
 
 class BuddyFinderForm extends React.Component {
 
@@ -174,7 +173,7 @@ class BuddyFinderForm extends React.Component {
         }
         return (
             <div>
-                <Header history={this.props.history}/>
+                <NavBar history={this.props.history}/>
                 <Col>
                 <div style={styles.container}>
                     <div style={styles.header}>
@@ -185,103 +184,150 @@ class BuddyFinderForm extends React.Component {
                         <Form style={styles.form}>
                             <fieldset>
                                 <Form.Group as={Row} onSubmit={this.findBuddy} style={{padding: "1rem"}}>
-                                    <Form.Label as="legend" column sm={2} style={{bottom: "1rem", fontWeight: "800", right: "1rem"}}>Gender</Form.Label>
-                                    <Col sm={10}>
-                                        <Form.Check
-                                        type="radio"
-                                        label="Male"
-                                        name="gender"
-                                        id="gender"
-                                        value="Male"
-                                        onChange={this.handleInputChange}
-                                        />
-                                        <Form.Check
-                                        type="radio"
-                                        label="Female"
-                                        name="gender"
-                                        id="gender"
-                                        value="Female"
-                                        onChange={this.handleInputChange}
-                                        />
-                                    </Col>
+                                    <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "800" }}>Gender</Form.Label>
+                                        <Col sm={7} style={{ left: "3rem" }}>
+                                        <RadioGroup>
+                                            <FormControlLabel
+                                                label="Female"
+                                                name="gender"
+                                                value="female"
+                                                control={<Radio />}
+                                                onChange={this.handleInputChange}
+                                            />
+                                            <FormControlLabel
+                                                label="Male"
+                                                name="gender"
+                                                value="male"
+                                                control={<Radio />}
+                                                onChange={this.handleInputChange}
+                                            />
+                                            <FormControlLabel
+                                                label="Other"
+                                                name="gender"
+                                                value="other"
+                                                control={<Radio />}
+                                                onChange={this.handleInputChange}
+                                            />
+                                        </RadioGroup>
+                                        </Col>
                                     <span style={{color: "red", right: "3rem"}}>{this.state.errors["gender"]}</span>
                                 </Form.Group>
                             </fieldset>
                             <Form.Group as={Row}>
-                                <Form.Label as="legend" column sm={2} style={{bottom: "1rem", fontWeight: "800"}}>Level of education</Form.Label>
-                                <Col sm={7} style={{left: "1.5rem"}}>
-                                    <Form.Control as="select" id="educationLevel" name="educationLevel" onChange={this.handleInputChange}>
-                                        <option>Primary</option>
-                                        <option>Secondary</option>
-                                        <option>Polytechnic</option>
-                                        <option>Junior College</option>
-                                        <option>University</option>
-                                    </Form.Control>
+                                <Form.Label as="legend" column sm={2} style={{ fontWeight: "800", bottom: "1.5rem"}}>Education</Form.Label>
+                                    <Col sm={7} style={{left: "1rem"}}>
+                                        <FormControl variant="outlined">
+                                            <Select
+                                                native
+                                                onChange={this.handleInputChange}
+                                                inputProps={{
+                                                    name: "educationLevel",
+                                                    id: "educationLevel",
+                                                }}
+                                            >
+                                                <option>Primary</option>
+                                                <option>Secondary</option>
+                                                <option>Polytechnic</option>
+                                                <option>Junior College</option>
+                                                <option>University</option>
+                                            </Select>
+                                        <FormHelperText>Level</FormHelperText>
+                                    </FormControl>
                                 </Col>
-                                <Col sm={3} style={{left: "1.5rem"}}>
-                                    <Form.Control required as="select" id="yearOfStudy" name="yearOfStudy" placeholder="Year of study" onChange={this.handleInputChange}>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                        <option>6</option>
-                                    </Form.Control>
+                                <Col sm={3}>
+                                    <FormControl variant="outlined">
+                                        <Select
+                                            native
+                                            onChange={this.handleInputChange}
+                                            inputProps={{
+                                                name: "yearOfStudy",
+                                                id: "yearOfStudy",
+                                            }}
+                                        >
+                                            <option value={1}>1</option>
+                                            <option value={2}>2</option>
+                                            <option value={3}>3</option>
+                                            <option value={4}>4</option>
+                                            <option value={5}>5</option>
+                                            <option value={6}>6</option>
+                                        </Select>
+                                        <FormHelperText>Year of study</FormHelperText>
+                                    </FormControl>
                                     <span style={{color: "red", left: "3rem"}}>{this.state.errors["yearOfStudy"]}</span>
                                 </Col>
                             </Form.Group>
                             <fieldset>
                                 <Form.Group as={Row} onChange={this.handleInputChange}>
-                                    <Form.Label as="legend" column sm={2} style={{bottom: "1rem", fontWeight: "800"}}>Interests</Form.Label>
-                                    <Col sm={10}>
-                                        <Form.Check 
-                                        type="radio"
-                                        id="interest"
-                                        name="interest"
-                                        value="Math"
-                                        label="Math"
-                                        disabled={this.state.interestField}
+                                    <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "800"}}>Interests</Form.Label>
+                                        <Col sm={7} style={{ left: "3rem" }}>
+                                            <RadioGroup>
+                                                <FormControlLabel
+                                                    control={
+                                                        <Radio
+                                                        id="interest"
+                                                    name="interest"
+                                                    value="Math"
+                                                    disabled={this.state.interestField}
+                                                />
+                                            }
+                                            label="Math"
                                         />
-                                        <Form.Check 
-                                        type="radio"
-                                        id="interest"
-                                        name="interest"
-                                        value="General Paper"
-                                        label="General Paper"
-                                        disabled={this.state.interestField}
+                                        <FormControlLabel
+                                            control={
+                                                <Radio
+                                                    id="interest"
+                                                    name="interest"
+                                                    value="General Paper"
+                                                    disabled={this.state.interestField}
+                                                />
+                                            }
+                                            label="General Paper"
                                         />
-                                        <Form.Check 
-                                        type="radio"
-                                        id="interest"
-                                        name="interest"
-                                        value="Chemistry"
-                                        label="Chemistry"
-                                        disabled={this.state.interestField}
+                                        <FormControlLabel
+                                            control={
+                                                <Radio
+                                                    id="interest"
+                                                    name="interest"
+                                                    value="Chemistry"
+                                                    disabled={this.state.interestField}
+                                                />
+                                            }
+                                            label="Chemistry"
                                         />
-                                        <Form.Check 
-                                        type="radio"
-                                        id="interest"
-                                        name="interest"
-                                        value="Physics"
-                                        label="Physics"
-                                        disabled={this.state.interestField}
+                                        <FormControlLabel
+                                            control={
+                                                <Radio
+                                                    id="interest"
+                                                    name="interest"
+                                                    value="Chemistry"
+                                                    disabled={this.state.interestField}
+                                                />
+                                            }
+                                            label="Chemistry"
                                         />
-                                        <Form.Check 
-                                        type="radio"
-                                        id="interest"
-                                        name="interest"
-                                        value="Computing"
-                                        label="Computing"
-                                        disabled={this.state.interestField}
+                                        <FormControlLabel
+                                            control={
+                                                <Radio
+                                                    id="interest"
+                                                    name="interest"
+                                                    value="Computing"
+                                                    disabled={this.state.interestField}
+                                                />
+                                            }
+                                            label="Computing"
                                         />
-                                        <Form.Check 
-                                        type="radio"
-                                        id="interest"
-                                        name="interest"
-                                        value="Economics"
-                                        label="Economics"
-                                        disabled={this.state.interestField}
+                                        <FormControlLabel
+                                            control={
+                                                <Radio
+                                                    id="interest"
+                                                    name="interest"
+                                                    value="Economics"
+                                                    disabled={this.state.interestField}
+                                                />
+                                            }
+                                            label="Economics"
                                         />
+                                        </RadioGroup>
                                         <Form.Control type="input" id="interest" name="this.state.name" placeholder="Others" onChange={this.handleInterestText}/>
                                         <span style={{color: "red"}}>{this.state.errors["interest"]}</span>
                                     </Col>

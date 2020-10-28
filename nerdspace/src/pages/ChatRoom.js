@@ -1,15 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../components/NavBar';
 import axios from 'axios';
 import './General.css';
-import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
+import { Col, Row, Container } from 'react-bootstrap';
 import ChatMessageSection from '../components/ChatMessagesSection';
 import ContactsSection from '../components/ContactsSection';
 import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Header from "../components/NavigationComponents/Header";
+import NavBar from "../components/NavigationComponents/NavBar";
 
 class ChatRoom extends React.Component {
     constructor(props) {
@@ -73,7 +72,7 @@ class ChatRoom extends React.Component {
       }
         return (
             <div>
-                <Header history={this.props.history} />
+                <NavBar history={this.props.history} />
                 <div className='container' style={{margin:"auto"}}>
                     <Col>
                         <Row>

@@ -1,14 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../../components/NavBar';
 import '../General.css';
-import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
+import { Col, Container } from 'react-bootstrap';
 import BuddyFinderHeader from '../../components/BuddyFinderComponents/BuddyFinderHeader';
 import BuddyFinderPostsSection from '../../components/BuddyFinderComponents/BuddyFinderPostsSection';
 import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Header from "../../components/NavigationComponents/Header";
+import NavBar from "../../components/NavigationComponents/NavBar";
 
 class BuddyFinder extends React.Component {
 
@@ -47,7 +46,7 @@ class BuddyFinder extends React.Component {
       }
         return (
           <div>
-            <Header history={this.props.history} />
+            <NavBar history={this.props.history} />
             <div style={styles.container}>
               <Col>
                 <BuddyFinderHeader createBuddyForm={this.createBuddyForm} />

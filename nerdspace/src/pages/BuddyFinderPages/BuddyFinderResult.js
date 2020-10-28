@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../../components/NavBar';
 import '../General.css';
-import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
+import { Button, Card, Container } from 'react-bootstrap';
 import CardDeck from 'react-bootstrap/CardDeck';
 import axios from 'axios';
 import BuddyResult from '../../components/BuddyFinderComponents/BuddyResult';
@@ -10,6 +9,7 @@ import { createBrowserHistory } from 'history';
 import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import NavBar from "../../components/NavigationComponents/NavBar";
 
 export const history = createBrowserHistory({ forceRefresh: true });
 

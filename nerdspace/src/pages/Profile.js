@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
 import { FormControl, FormHelperText, Select, Avatar, Checkbox, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, TextField, Button } from "@material-ui/core";
-import Header from "../components/NavigationComponents/Header";
+import NavBar from "../components/NavigationComponents/NavBar";
 
 class Profile extends React.Component {
 
@@ -154,7 +154,7 @@ class Profile extends React.Component {
       }
         return (
           <div>
-            <Header history={this.props.history} />
+            <NavBar history={this.props.history} />
             <div className="container">
               <Col>
                 <Avatar
@@ -203,8 +203,8 @@ class Profile extends React.Component {
                     <span style={{ color: "red", right: "3rem" }}>{}</span>
                   </div>
                   <div className="input-group" style={styles.bar}>
-                    <FormLabel component="legend">Education Level:</FormLabel>
-                    <FormControl style={{ padding: "10px" }}>
+                    <FormLabel component="legend">Education:</FormLabel>
+                    <FormControl variant="outlined" style={{ padding: "10px" }}>
                       <Select
                         native
                         onChange={this.handleInputChange}
@@ -213,16 +213,15 @@ class Profile extends React.Component {
                           id: "educationLevel",
                         }}
                       >
-                        <option aria-label="None" value="" />
                         <option>Primary</option>
                         <option>Secondary</option>
                         <option>Polytechnic</option>
                         <option>Junior College</option>
                         <option>University</option>
                       </Select>
-                      <FormHelperText>Education Level</FormHelperText>
+                      <FormHelperText>Level</FormHelperText>
                     </FormControl>
-                    <FormControl>
+                    <FormControl variant="outlined">
                       <Select
                         native
                         onChange={this.handleInputChange}
@@ -231,7 +230,6 @@ class Profile extends React.Component {
                           id: "yearOfStudy",
                         }}
                       >
-                        <option aria-label="None" value="" />
                         <option value={1}>1</option>
                         <option value={2}>2</option>
                         <option value={3}>3</option>
