@@ -29,10 +29,27 @@ router.route('/').post((req, res) => {
         let key;
 
         if (req.body.type == "dm") {
-            let ref = db.ref("contact").child(req.body.user1Id).child("dm").push();
-            key = ref.getKey();
+            let ref = db.ref("contact").child(req.body.user1Id).child("dm");
 
-            postDM(ref, req.body.user2Id)
+            let check = await ref.orderByChild("userId").equalTo(req.body.user2Id).once("value");
+            if (check.exists()) {
+                check.forEach((childSnapshot) => {
+                    key = childSnapshot.key;
+                });
+            } else {
+                key = ref.push().getKey();
+                let ref2 = db.ref("contact").child(req.body.user2Id).child("dm").child(key);
+
+                ref.set({
+                    userId: req.body.user2Id,
+                    name: await getName(req.body.user2Id)
+                });
+
+                ref2.set({
+                    userId: req.body.user1Id,
+                    name: await getName(req.body.user1Id)
+                });
+            }
         } else {
             let IDs = req.body.IDs;
             var id;
@@ -53,13 +70,6 @@ router.route('/').post((req, res) => {
         });
     })();
 });
-
-async function postDM(ref, id) {
-    ref.set({
-        userId: id,
-        name: await getName(id)
-    });
-}
 
 async function getDM(id) {
     var contacts = [];
@@ -109,7 +119,7 @@ async function getContacts(id) {
         dmSnapshot.forEach((childSnapshot) => {
             let obj = {
                 name: childSnapshot.val().name,
-                id: childSnapshot.val().userID
+                id: childSnapshot.key
             };
             contacts.push(obj);
         });
@@ -120,16 +130,12 @@ async function getContacts(id) {
 
 async function getName(id) {
     let name = '';
-
-    var snapshot = await db.ref('users')
-        .orderByChild("googleID")
-        .equalTo(id)
-        .once('value');
+    let snapshot = await db.ref('users')
+                            .child(id)
+                            .once('value');
 
     if (snapshot.exists()) {
-        snapshot.forEach((childSnapshot) => {
-            name = childSnapshot.val().name;
-        });
+        name = snapshot.child("name").val();
     } else {
         return "Not found";
     }

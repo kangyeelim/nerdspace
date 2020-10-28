@@ -58,8 +58,6 @@ class Profile extends React.Component {
             if (this.state.interests.includes(event.target.value)) {
                 this.state.interests.splice(this.state.interests.indexOf(event.target.value), 1);
                 this.setState({ interests: this.state.interests });
-            } else {
-                alert("Weird error??");
             }
         }
         console.log(this.state.interests);
@@ -167,16 +165,6 @@ class Profile extends React.Component {
                     </Row>
                     <Row>
                     <form className="form" onSubmit={this.onSubmit}>
-                        <div className="input-group" style={styles.bar}>
-                            <label style={styles.nameLabel} >Name: </label>
-                            <input
-                                type="input"
-                                className="form-control"
-                                name="name" 
-                                placeholder={this.props.profile[0].name}
-                                onChange={this.handleInputChange}
-                            />
-                        </div>
                         <div className="input-group" style={styles.bar}>
                             <label style={styles.nameLabel} >Gender: </label>
                                 <Row>
