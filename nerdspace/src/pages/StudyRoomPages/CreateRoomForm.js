@@ -10,7 +10,7 @@ import { enterRoom } from '../../navigators/StudyRoomNavigator';
 import { updateRoomDetails } from '../../services/StudyRoomService';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { isTokenAccepted } from '../../services/Auth';
-import Header from "../../components/NavigationComponents/Header";
+import NavBar from "../../components/NavigationComponents/NavBar";
 
 const DEFAULT_URL = "https://source.unsplash.com/aJnHSrgSWkk/1600x900";
 const dummy_contacts = [ {name: "michaela"}, {name: "evon"}, {name: "yenpeng"}];
@@ -180,7 +180,7 @@ class CreateRoomForm extends React.Component {
     }
     return (
       <div>
-        <Header history={this.props.history}/>
+        <NavBar history={this.props.history}/>
         <Container>
         <Col>
         <h3>Study Room Details</h3>

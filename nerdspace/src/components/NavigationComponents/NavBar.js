@@ -81,7 +81,7 @@ const Header = () => {
       <Toolbar id="back-to-top-anchor" />
 
       <BackToTop>
-        <Fab color="secondary" size="large" aria-label="scroll back to top">
+          <Fab color="primary" size="large" aria-label="scroll back to top">
           <KeyboardArrowUp />
         </Fab>
       </BackToTop>

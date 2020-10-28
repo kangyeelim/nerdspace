@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import '../General.css';
 import { Redirect } from 'react-router-dom';
-import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
-import RoomBox from '../../components/StudyRoomComponents/RoomBox';
+import { Col, Row, Container } from 'react-bootstrap';
 import TitleCard from '../../components/StudyRoomComponents/TitleCard';
 import RoomSideBar from '../../components/StudyRoomComponents/RoomSideBar';
 import RoomPostsSection from '../../components/StudyRoomComponents/RoomPostsSection';
@@ -13,7 +12,7 @@ import { goToCreateRoomForm } from '../../navigators/StudyRoomNavigator';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { isRoomAccessibleToUser, isTokenAccepted } from '../../services/Auth';
 import { getRoomDetails } from '../../services/StudyRoomService';
-import Header from "../../components/NavigationComponents/Header";
+import NavBar from "../../components/NavigationComponents/NavBar";
 
 class StudyRoom extends React.Component {
   constructor(props) {
@@ -96,7 +95,7 @@ class StudyRoom extends React.Component {
     }
     return (
       <div>
-        <Header history={this.props.history}/>
+        <NavBar history={this.props.history}/>
         <div className='container'>
           <Col>
             <TitleCard
@@ -129,9 +128,6 @@ class StudyRoom extends React.Component {
       </div>
     );
   }
-}
-
-const styles = {
 }
 
 const mapStateToProps = (state) => {

@@ -7,7 +7,7 @@ import TimeTableForm from '../../components/StudyRoomComponents/TimeTableForm';
 import TimeTableView from '../../components/StudyRoomComponents/TimeTableView';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { isRoomAccessibleToUser, isTokenAccepted } from '../../services/Auth';
-import Header from "../../components/NavigationComponents/Header";
+import NavBar from "../../components/NavigationComponents/NavBar";
 
 const dummyExistingRecord = [{day:"Mon", time: "8pm"}, {day:"Mon", time: "10.30am"},{day:"Mon", time: "9.30am"}, {day:"Mon", time: "9am"},{day:"Tue", time: "8.30pm"}, {day:"Tue", time: "8pm"}, {day:"Tue", time: "7.30pm"}];
 
@@ -142,7 +142,7 @@ class CommonTimes extends React.Component {
     }
     return (
       <div>
-        <Header history={this.props.history}/>
+        <NavBar history={this.props.history}/>
         <div className="container" style={styles.container}>
           <h2 style={styles.title}>Find Common Times</h2>
           <h6>Members that have submitted their timetable:</h6>

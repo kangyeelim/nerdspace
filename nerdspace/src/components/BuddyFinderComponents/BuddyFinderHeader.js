@@ -1,15 +1,14 @@
 import React from "react";
-import { Card } from 'react-bootstrap';
-import { MDBContainer } from "mdbreact";
 import { connect } from 'react-redux';
-import { Col, Row, Button, Image, FormControl } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { Typography } from '@material-ui/core';
 
 class BuddyFinderHeader extends React.Component {
     render() {
         return (
             <div>
                 <div style={styles.header}>
-                    <h1 style={styles.headerText}><strong>Find your ideal study buddy</strong></h1> 
+                    <Typography variant="h2">Find your ideal study buddy</Typography> 
                     <Button variant="primary" onClick={this.props.createBuddyForm}>Create a new form</Button>
                 </div>
             </div>
@@ -23,11 +22,6 @@ const styles = {
         justifyContent: "center",
         padding: "2rem",
     },
-    headerText: {
-        margin: "2.5rem",
-        fontSize: 40, 
-        fontWeight: 350
-    }
 }
 
 const mapStateToProps = (state) => {
