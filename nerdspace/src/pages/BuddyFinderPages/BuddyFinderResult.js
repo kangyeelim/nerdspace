@@ -104,7 +104,7 @@ class BuddyFinderResult extends React.Component {
                     {this.state.noResults ? (
                         <h1 style={{padding: "3rem"}}>No match found! ): </h1>
                     ) : (
-                        <Card style={{ display: "flex", flexDirection: "row" }}>
+                        <Card style={{ display: "flex", flexDirection: "column" }}>
 
                         {this.state.results.map((result) => {
                             return <BuddyResult

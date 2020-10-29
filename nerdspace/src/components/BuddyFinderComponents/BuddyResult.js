@@ -35,8 +35,8 @@ export default function BuddyResult(props) {
 
 const styles = {
   card: {
-    width:"25vw",
-    height: "44rem",
+    width:"50vw",
+    height: "55rem",
     display: 'flex',
     flexWrap: "wrap",
     flexDirection: 'column',
