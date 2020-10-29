@@ -131,7 +131,8 @@ class Profile extends React.Component {
             name: this.state.name,
             key: this.props.profile[0].googleId,
             bio: this.state.bio,
-            imageUrl: this.state.profilePic
+            imageUrl: this.state.profilePic,
+            originalName: this.props.profile[0].name
         })
         .catch(err => {
             console.error(err);
