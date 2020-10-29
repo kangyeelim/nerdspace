@@ -100,7 +100,7 @@ class BuddyFinderResult extends React.Component {
                         
                         <Button variant="primary" onClick={this.goToBuddyFinder}>Return to Buddy Finder main page</Button>
                     </div>
-                    <CardDeck style={{ display: "flex", flexDirection: "column" }}>
+                    <CardDeck style={{ display: "flex", flexDirection: "column", minWidth: "70vw" }}>
                     {this.state.noResults ? (
                         <h1 style={{padding: "3rem"}}>No match found! ): </h1>
                     ) : (
@@ -131,32 +131,16 @@ class BuddyFinderResult extends React.Component {
 
 }
 
-
-// <Card>
-// {/* !this.state.isLoading &&  */}
-// {!this.state.noResults && this.state.results.map((result) => {
-//     return <BuddyResult
-//     key={result.key}
-//     id={result.key}
-//     name={result.name}
-//     gender={result.gender}
-//     email={result.email}
-//     googleID={result.googleID}
-//     educationLevel={result.educationLevel}
-//     year={result.year}
-//     sendMessage={this.sendMessage}/>;
-// })}
-
-// </Card>
 const styles = {
     container: {
-        // display: "flex",
-        // flexDirection: "column",
+        // height: "auto",
+        display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        // // margin: "2rem",
+        // margin: "3rem 3rem",
         // padding: "3rem",
         textAlign: "center",
-        // justifyContent: "center",
+        justifyContent: "center",
     },
     header: {
         flexDirection: "column",
