@@ -24,7 +24,7 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
       var data = child.val();
       
       var interestArr = Object.values(data.interests); 
-      if ((interestArr.includes(interest) && data.googleID != googleID) && (data.yearOfStudy == year && data.gender == gender)) {
+      if ((interestArr.includes(interest) && key != googleID) && (data.yearOfStudy == year && data.gender == gender)) {
 
         // db.ref('users').orderByChild('googleID')
         //   .equalTo(data.googleID)
@@ -96,7 +96,6 @@ router.route('/updateProfile').post((req, res) => {
     const bio = req.body.bio;
     const pic = req.body.imageUrl;
     const email = req.body.email;
-    const original = req.body.originalName;
     db.ref('profiles').child(key).update({
         'name': name,
         'bio': bio,
@@ -120,74 +119,10 @@ router.route('/updateProfile').post((req, res) => {
     interests.forEach((item, i) => {
         profileRef.child('interests').push().set(item);
     });
-
-    if (name != original) {
-        changeNames(key, name);
-    }
     res.send({
         message: 'UPDATE success'
     });
 });
-
-async function changeNames(key, name) {
-    let contacts = [];
-    var i;
-
-    let snapshot = await db.ref("contact")
-        .child(key)
-        .child("dm")
-        .once("value");
-
-    if (snapshot.exists()) {
-        snapshot.forEach(childSnapshot => {
-            contacts.push(childSnapshot.val().userId);
-        });
-    }
-
-    for (i = 0; i < contacts.length; i++) {
-        db.ref('contact')
-            .child(contacts[i])
-            .child("dm")
-            .orderByChild("userId")
-            .equalTo(key)
-            .once("value", function (dmSnapshot) {
-                dmSnapshot.forEach(child => {
-                    console.log("U P D A T E : " + child.key);
-                    console.log("V A L U  E:" + child.val().name);
-                    child.update({
-                        name: name
-                    });
-                });
-            });
-    }
-
-    var groupSnapshot = await db.ref('contact')
-        .child(key)
-        .child('group')
-        .once('value');
-
-    if (groupSnapshot.exists()) {
-        groupSnapshot.forEach((groupChild) => {
-            console.log("K E Y : " + groupChild.key);
-
-            contacts.push(groupChild.key);
-        });
-    }
-
-    for (i = 0; i < contacts.length; i++) {
-        db.ref('messages')
-            .child(contacts[i])
-            .orderByChild('googleID')
-            .equalTo(key)
-            .once('value', function (messageSnapshot) {
-                messageSnapshot.forEach((messageChild) => {
-                    messageChild.update({
-                        name: name
-                    });
-                });
-            });
-    }
-}
 
 router.route('/:id').delete((req, res) => {
   const key = req.params.id;
