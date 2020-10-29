@@ -149,6 +149,33 @@ class BuddyFinderForm extends React.Component {
             }
         }
 
+        if (this.state.educationLevel == "Secondary") {
+            const re = /^[0-9\b]+$/;
+            if (!re.test(this.state.yearOfStudy)) {
+                this.state.errors["yearOfStudy"] = "YearOfStudy field must only have numbers";
+                formIsValid = false;
+            } else {
+                if (parseInt(this.state.yearOfStudy) > 5) {
+                    this.state.errors["yearOfStudy"] = "Year of study for secondary must be below 5";
+                    formIsValid = false;
+                }
+            }
+        }
+
+        if (this.state.educationLevel == "University") {
+            const re = /^[0-9\b]+$/;
+            if (!re.test(this.state.yearOfStudy)) {
+                this.state.errors["yearOfStudy"] = "YearOfStudy field must only have numbers";
+                formIsValid = false;
+            } else {
+                if (parseInt(this.state.yearOfStudy) > 5) {
+                    this.state.errors["yearOfStudy"] = "Year of study for university must be below 5";
+                    formIsValid = false;
+                }
+            }
+        }
+
+
 
         if (this.state.interest == null) {
             this.state.errors["interest"] = "Interest field cannot be empty";
