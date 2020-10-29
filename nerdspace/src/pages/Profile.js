@@ -141,7 +141,7 @@ class Profile extends React.Component {
             console.log(response.data);
         });
 
-        alert('Your information has been successfully updated ' + this.state.name + this.state.bio + this.state.email + "Education: " + this.state.educationLevel + this.state.yearOfStudy + "Gender: " + this.state.gender);
+        alert('Your information has been successfully updated ');
     };
 
     render() {
