@@ -38,7 +38,7 @@ const styles = {
     width:"25vw",
     display: 'flex',
     flexWrap: "wrap",
-    flexDirection: 'row',
+    flexDirection: 'column',
     // alignSelf: "left",
     // alignItems: "flexStart",
     // alignContent: "flexStart",

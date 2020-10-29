@@ -194,21 +194,21 @@ class Profile extends React.Component {
                       <FormControlLabel
                         label="Female"
                         name="gender"
-                        value="female"
+                        value="Female"
                         control={<Radio />}
                         onChange={this.handleInputChange}
                       />
                       <FormControlLabel
                         label="Male"
                         name="gender"
-                        value="male"
+                        value="Male"
                         control={<Radio />}
                         onChange={this.handleInputChange}
                       />
                       <FormControlLabel
                         label="Other"
                         name="gender"
-                        value="other"
+                        value="Other"
                         control={<Radio />}
                         onChange={this.handleInputChange}
                       />
