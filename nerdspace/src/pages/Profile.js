@@ -351,6 +351,7 @@ const styles = {
         alignItems: 'center',
         display: 'flex',
         flexDirection: 'row',
+        margin: "auto",
     },
 }
 
