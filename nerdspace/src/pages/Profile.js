@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row, Card } from 'react-bootstrap';
 import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -27,7 +27,9 @@ class Profile extends React.Component {
             // key: null,
             isAuthenticating: true,
             isLoggedIn: false,
-            interestsList: ARRAY_OF_DEFAULT_INTERESTS
+            interestsList: ARRAY_OF_DEFAULT_INTERESTS,
+            isExistingProfileFound: false,
+            existingProfile:null
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -39,6 +41,17 @@ class Profile extends React.Component {
 
     componentDidMount = async () => {
       var isLoggedIn = await isTokenAccepted(this.props.token);
+      try {
+        var res = await axios.get(`http://localhost:5000/profiles/${this.props.profile[0].googleId}`);
+        if ((await res).data.message == 'GET success') {
+          this.setState({isExistingProfileFound:true, existingProfile: res.data.data,
+            name: res.data.data.name,
+            bio: res.data.data.bio});
+        }
+        console.log("here")
+      } catch(err) {
+        this.setState({isExistingProfileFound:false});
+      }
       this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
     }
 
@@ -167,7 +180,27 @@ class Profile extends React.Component {
                   src={this.state.profilePic}
                   alt="Profile"
                 />
+                {this.state.isExistingProfileFound && (
+                  <Card style={styles.card}>
+                    <Card.Title> {this.state.existingProfile.name}</Card.Title>
+                    <Card.Body>
+                    <Col>
+                      <div>Bio: {this.state.existingProfile.bio}</div>
+                      <div>Gender: {this.state.existingProfile.gender}</div>
+                      <div>
+                      <ul style={styles.card}>
+                      My Interests:
+                      {Object.values(this.state.existingProfile.interest).map((interest) => {
+                        return <li>{interest}</li>
+                      })}
+                      </ul>
+                      </div>
+                      </Col>
+                    </Card.Body>
+                  </Card>
+                )}
                 <form className="form" onSubmit={this.onSubmit}>
+                {this.state.isExistingProfileFound && (<h4 style={styles.heading}>Update your profile</h4>)}
                   <div className="input-group" style={styles.bar}>
                     <TextField
                       label="Name"
@@ -309,6 +342,14 @@ const styles = {
         flexDirection: 'row',
         margin: "auto",
     },
+    card: {
+      marginTop: "30px",
+      padding: "20px",
+    },
+    heading: {
+      marginTop: "30px",
+      marginLeft: "20px"
+    }
 }
 
 const mapStateToProps = (state) => {
