@@ -23,9 +23,13 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
       var key = child.key;
       var data = child.val();
       
-      var interestArr = Object.values(data.interests); 
-      if ((interestArr.includes(interest) && key != googleID) && (data.yearOfStudy == year && data.gender == gender)) {
-
+      var interestArr = Object.values(data.interests);
+      interestArr = interestArr.map(function (a) {
+        a = a.toLowerCase();
+          console.log(a);
+        return a;
+      });
+      if ((interestArr.includes(interest.toLowerCase()) && key != googleID) && (data.yearOfStudy == year && data.gender == gender)) {
         // db.ref('users').orderByChild('googleID')
         //   .equalTo(data.googleID)
         //   .once('value', function (snapshot) {
