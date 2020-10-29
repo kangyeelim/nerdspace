@@ -111,6 +111,9 @@ class BuddyFinderResult extends React.Component {
         }).then(response => {
             this.props.history.push('/chat/' + response.data.chatID);
         })
+        console.log("CHATID: " + this.state.chatID);
+
+        this.props.history.push('/chat/' + this.state.chatID);
     }
 
     // async getUserData() {
@@ -205,9 +208,9 @@ const styles = {
         // flexDirection: "column",
         alignItems: "center",
         // // margin: "2rem",
-        padding: "3rem",
+        // padding: "3rem",
         textAlign: "center",
-        justifyContent: "center",
+        // justifyContent: "center",
     },
     header: {
         flexDirection: "column",
