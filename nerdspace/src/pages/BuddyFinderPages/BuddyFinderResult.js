@@ -42,7 +42,6 @@ class BuddyFinderResult extends React.Component {
     async getSearchResults() {
         await axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
         .then(res => {
-            console.log("RESU:TSS: " + res);
             if (res.length != 0) {
                 this.setState({results: res.data.data});
                 this.setState({noResults: false});
@@ -73,7 +72,6 @@ class BuddyFinderResult extends React.Component {
         }).then(response => {
             this.props.history.push('/chat/' + response.data.chatID);
         })
-        console.log("CHATID: " + this.state.chatID);
 
         this.props.history.push('/chat/' + this.state.chatID);
     }

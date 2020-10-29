@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Image, Row, Col } from 'react-bootstrap';
+import { Card, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardFooter, MDBCardGroup, MDBContainer } from "mdbreact";
@@ -20,9 +20,9 @@ export default function BuddyResult(props) {
             <MDBCardFooter muted>
               <Row style={{marginLeft: 10, marginRight:10, alignSelf:'right'}}>
                 <Col md="auto">
-                  <a onClick={() => props.sendMessage(props.googleID)}>
+                  <button type="button" onClick={() => props.sendMessage(props.googleID)}>
                     <FontAwesomeIcon className="icon" icon={faEnvelope} style={{alignSelf:'right'}}/>
-                  </a>
+                  </button>
                 </Col>
               </Row>
             </MDBCardFooter>
@@ -49,6 +49,5 @@ const styles = {
     width: "100px",
     height: "100px",
     borderRadius: "50%",
-    // marginLeft: "20px"
   }
 }
