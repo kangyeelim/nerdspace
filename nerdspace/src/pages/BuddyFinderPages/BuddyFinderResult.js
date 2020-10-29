@@ -28,7 +28,6 @@ class BuddyFinderResult extends React.Component {
         this.goToBuddyFinder = this.goToBuddyFinder.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         this.getSearchResults = this.getSearchResults.bind(this);
-        // this.getUserData = this.getUserData.bind(this);
     }
 
     async componentDidMount() {
@@ -39,8 +38,6 @@ class BuddyFinderResult extends React.Component {
         this.setState({isLoggedIn: false, isAuthenticating:false});
       }
     }
-
-    // async componentDidMount() {
 
     async getSearchResults() {
         await axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
