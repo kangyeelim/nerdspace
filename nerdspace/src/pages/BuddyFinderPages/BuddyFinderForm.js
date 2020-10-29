@@ -201,8 +201,9 @@ class BuddyFinderForm extends React.Component {
                                                 value="Female"
                                                 onChange={this.handleInputChange}
                                             />
+                                            <span style={{ color: "red", right: "3rem" }}>{this.state.errors["gender"]}</span>
                                         </Col>
-                                        <span style={{ color: "red", right: "3rem" }}>{this.state.errors["gender"]}</span>
+                                        
                                     </Form.Group>
                                 </fieldset>
                                 <Form.Group as={Row}>
@@ -325,7 +326,7 @@ const styles = {
         flexDirection: "column",
         alignItems: "center",
         margin: "2rem",
-        padding: "3rem",
+        // padding: "3rem",
         textAlign: "center",
         justifyContent: "center",
     },
