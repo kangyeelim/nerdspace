@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Col, Container } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
 import { FormControl, FormHelperText, Select, Avatar, Checkbox, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, TextField, Button, Typography } from "@material-ui/core";
 import NavBar from "../components/NavigationComponents/NavBar";
+
+const ARRAY_OF_DEFAULT_INTERESTS = ["Math", "GP", "Chemistry", "Physics", "Computing", "Economics"];
 
 class Profile extends React.Component {
 
@@ -24,13 +26,15 @@ class Profile extends React.Component {
             yearOfStudy: null,
             // key: null,
             isAuthenticating: true,
-            isLoggedIn: false
+            isLoggedIn: false,
+            interestsList: ARRAY_OF_DEFAULT_INTERESTS
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.onSubmit.bind(this);
         this.handleInterest = this.handleInterest.bind(this);
         this.handleInterestText = this.handleInterestText.bind(this);
+        this.addToInterestList = this.addToInterestList.bind(this);
     }
 
     componentDidMount = async () => {
@@ -65,6 +69,11 @@ class Profile extends React.Component {
     handleInterestText(event) {
         this.setState({ interestsText: event.target.value.trim() });
         console.log(`Input text interest. Input value ${event.target.value.trim()}.`);
+    }
+
+    addToInterestList() {
+      this.state.interestsList.push(this.state.interestsText);
+      this.setState({interestsList: this.state.interestsList});
     }
 
     onSubmit = event => {
@@ -112,16 +121,8 @@ class Profile extends React.Component {
             return;
         }
 
-        var intArray = this.state.interestsText.split(",");
-        var i;
-        for (i of intArray) {
-            if (i.trim().length > 0) {
-                this.state.interests.push(i.trim());
-            }
-        }
-
         this.setState({interests: this.state.interests});
-        
+
         axios.post('http://localhost:5000/profiles/updateProfile', {
             educationLevel: this.state.educationLevel,
             yearOfStudy: this.state.yearOfStudy,
@@ -256,72 +257,27 @@ class Profile extends React.Component {
                   <div className="input-group" style={styles.bar}>
                     <FormLabel component="legend">Interests</FormLabel>
                     <FormGroup column>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={this.handleInterest}
-                            id="Math"
-                            value="Math"
+                      {this.state.interestsList.map((interest) => {
+                          return <FormControlLabel
+                            control={
+                              <Checkbox
+                                onChange={this.handleInterest}
+                                id={interest}
+                                value={interest}
+                              />
+                            }
+                            label={interest}
                           />
-                        }
-                        label="Math"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={this.handleInterest}
-                            id="General Paper"
-                            value="General Paper"
-                          />
-                        }
-                        label="General Paper"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={this.handleInterest}
-                            id="Chemistry"
-                            value="Chemistry"
-                          />
-                        }
-                        label="Chemistry"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={this.handleInterest}
-                            id="Physics"
-                            value="Physics"
-                          />
-                        }
-                        label="Physics"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={this.handleInterest}
-                            id="Computing"
-                            value="Computing"
-                          />
-                        }
-                        label="Computing"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={this.handleInterest}
-                            id="Economics"
-                            value="Economics"
-                          />
-                        }
-                        label="Economics"
-                      />
+                      })}
+                      <Row>
                       <TextField
                         id="interest"
                         name="interests"
                         placeholder="Others"
                         onChange={this.handleInterestText}
                       />
+                      <Button onClick={this.addToInterestList}>Add as option</Button>
+                      </Row>
                     </FormGroup>
                     <div className="input-group" style={styles.bar}>
                       <Button
