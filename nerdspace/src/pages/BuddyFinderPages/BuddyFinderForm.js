@@ -7,7 +7,6 @@ import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NavBar from "../../components/NavigationComponents/NavBar";
-import { RadioGroup, Radio, FormControlLabel, FormControl, FormHelperText, Select, Typography } from "@material-ui/core";
 
 class BuddyFinderForm extends React.Component {
 
@@ -30,10 +29,10 @@ class BuddyFinderForm extends React.Component {
         this.submitForm = this.submitForm.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
     }
-    
+
     async componentDidMount() {
         var isLoggedIn = await isTokenAccepted(this.props.token);
-        this.setState({isLoggedIn: await isLoggedIn, isAuthenticating:false});
+        this.setState({ isLoggedIn: await isLoggedIn, isAuthenticating: false });
     }
 
     // componentDidMount() {
@@ -44,7 +43,7 @@ class BuddyFinderForm extends React.Component {
     submitForm(event) {
         event.preventDefault();
 
-        if(this.handleValidation()){
+        if (this.handleValidation()) {
             axios.post('http://localhost:5000/buddyfinderposts', {
                 educationLevel: this.state.educationLevel,
                 yearOfStudy: this.state.yearOfStudy,
@@ -52,12 +51,12 @@ class BuddyFinderForm extends React.Component {
                 gender: this.state.gender,
                 googleID: this.props.profile[0].googleId
             })
-            .catch(err => {
-                console.error(err);
-            });
+                .catch(err => {
+                    console.error(err);
+                });
 
             this.props.history.push({
-                pathname:'/buddy-finder-result',
+                pathname: '/buddy-finder-result',
                 state: {
                     educationLevel: this.state.educationLevel,
                     yearOfStudy: this.state.yearOfStudy,
@@ -68,7 +67,7 @@ class BuddyFinderForm extends React.Component {
             });
         } else {
             this.handleValidation();
-           // alert("Invalid Form. Please fill in all fields with valid inputs.")
+            // alert("Invalid Form. Please fill in all fields with valid inputs.")
         }
 
     }
@@ -100,8 +99,8 @@ class BuddyFinderForm extends React.Component {
     }
 
     handleInterestText(event) {
-        this.setState({interestField: event.target.value.trim()});
-        this.setState({interest: event.target.value.trim()});
+        this.setState({ interestField: event.target.value.trim() });
+        this.setState({ interest: event.target.value.trim() });
         console.log(`Input text interest. Input value ${event.target.value.trim()}.`);
     }
 
@@ -112,7 +111,7 @@ class BuddyFinderForm extends React.Component {
         if (this.state.gender == null) {
             this.state.errors["gender"] = "Gender field cannot be empty";
             formIsValid = false;
-        } 
+        }
         // if (this.state.gender != null) {
         //     if(!this.state.gender.match(/^[a-zA-Z]+$/)){
         //         formIsValid = false;
@@ -150,12 +149,12 @@ class BuddyFinderForm extends React.Component {
             }
         }
 
-        
+
         if (this.state.interest == null) {
             this.state.errors["interest"] = "Interest field cannot be empty";
             formIsValid = false;
-        } 
-        
+        }
+
         this.forceUpdate();
         return formIsValid;
     }
@@ -165,181 +164,133 @@ class BuddyFinderForm extends React.Component {
     render() {
         if (this.state.isAuthenticating) {
             return <Container>
-              <CircularProgress/>
+                <CircularProgress />
             </Container>
         }
         if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
-        return <Redirect to="/"/>
+            return <Redirect to="/" />
         }
         return (
             <div>
-                <NavBar history={this.props.history}/>
+                <NavBar history={this.props.history} />
                 <Col>
-                <div style={styles.container}>
-                    <div style={styles.header}>
-                        <Typography variant="h3">Find your ideal study buddy</Typography> 
-                        <Typography variant="h6">Fill in the desired attributes in your study buddy</Typography>
-                    </div>
-                    <div>
-                        <Form style={styles.form}>
-                            <fieldset>
-                                <Form.Group as={Row} onSubmit={this.findBuddy} style={{padding: "1rem"}}>
-                                    <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "800", right: "1rem" }}>Gender</Form.Label>
-                                        <Col sm={7} style={{ left: "3rem" }}>
-                                        <RadioGroup>
-                                            <FormControlLabel
-                                                label="Female"
-                                                name="gender"
-                                                value="female"
-                                                control={<Radio />}
-                                                onChange={this.handleInputChange}
-                                            />
-                                            <FormControlLabel
+                    <div style={styles.container}>
+                        <div style={styles.header}>
+                            <h1><strong>Find your ideal study buddy</strong></h1>
+                            <h6>Fill in the desired attributes in your study buddy</h6>
+                        </div>
+                        <div>
+                            <Form style={styles.form}>
+                                <fieldset>
+                                    <Form.Group as={Row} onSubmit={this.findBuddy} style={{ padding: "1rem" }}>
+                                        <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "800", right: "1rem" }}>Gender</Form.Label>
+                                        <Col sm={10}>
+                                            <Form.Check
+                                                type="radio"
                                                 label="Male"
                                                 name="gender"
-                                                value="male"
-                                                control={<Radio />}
+                                                id="gender"
+                                                value="Male"
                                                 onChange={this.handleInputChange}
                                             />
-                                            <FormControlLabel
-                                                label="Other"
+                                            <Form.Check
+                                                type="radio"
+                                                label="Female"
                                                 name="gender"
-                                                value="other"
-                                                control={<Radio />}
+                                                id="gender"
+                                                value="Female"
                                                 onChange={this.handleInputChange}
                                             />
-                                        </RadioGroup>
                                         </Col>
-                                    <span style={{color: "red", right: "3rem"}}>{this.state.errors["gender"]}</span>
-                                </Form.Group>
-                            </fieldset>
-                            <Form.Group as={Row}>
-                                <Form.Label as="legend" column sm={2} style={{ fontWeight: "800", bottom: "1.5rem"}}>Education</Form.Label>
-                                    <Col sm={7} style={{left: "1rem"}}>
-                                        <FormControl variant="outlined">
-                                            <Select
-                                                native
-                                                onChange={this.handleInputChange}
-                                                inputProps={{
-                                                    name: "educationLevel",
-                                                    id: "educationLevel",
-                                                }}
-                                            >
-                                                <option>Primary</option>
-                                                <option>Secondary</option>
-                                                <option>Polytechnic</option>
-                                                <option>Junior College</option>
-                                                <option>University</option>
-                                            </Select>
-                                        <FormHelperText>Level</FormHelperText>
-                                    </FormControl>
-                                </Col>
-                                <Col sm={3}>
-                                    <FormControl variant="outlined">
-                                        <Select
-                                            native
-                                            onChange={this.handleInputChange}
-                                            inputProps={{
-                                                name: "yearOfStudy",
-                                                id: "yearOfStudy",
-                                            }}
-                                        >
-                                            <option value={1}>1</option>
-                                            <option value={2}>2</option>
-                                            <option value={3}>3</option>
-                                            <option value={4}>4</option>
-                                            <option value={5}>5</option>
-                                            <option value={6}>6</option>
-                                        </Select>
-                                        <FormHelperText>Year of study</FormHelperText>
-                                    </FormControl>
-                                    <span style={{color: "red", left: "3rem"}}>{this.state.errors["yearOfStudy"]}</span>
-                                </Col>
-                            </Form.Group>
-                            <fieldset>
-                                <Form.Group as={Row} onChange={this.handleInputChange}>
-                                    <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "800"}}>Interests</Form.Label>
-                                        <Col sm={7} style={{ left: "3rem" }}>
-                                            <RadioGroup>
-                                                <FormControlLabel
-                                                    control={
-                                                        <Radio
-                                                        id="interest"
-                                                    name="interest"
-                                                    value="Math"
-                                                    disabled={this.state.interestField}
-                                                />
-                                            }
-                                            label="Math"
-                                        />
-                                        <FormControlLabel
-                                            control={
-                                                <Radio
-                                                    id="interest"
-                                                    name="interest"
-                                                    value="General Paper"
-                                                    disabled={this.state.interestField}
-                                                />
-                                            }
-                                            label="General Paper"
-                                        />
-                                        <FormControlLabel
-                                            control={
-                                                <Radio
-                                                    id="interest"
-                                                    name="interest"
-                                                    value="Chemistry"
-                                                    disabled={this.state.interestField}
-                                                />
-                                            }
-                                            label="Chemistry"
-                                        />
-                                        <FormControlLabel
-                                            control={
-                                                <Radio
-                                                    id="interest"
-                                                    name="interest"
-                                                    value="Chemistry"
-                                                    disabled={this.state.interestField}
-                                                />
-                                            }
-                                            label="Chemistry"
-                                        />
-                                        <FormControlLabel
-                                            control={
-                                                <Radio
-                                                    id="interest"
-                                                    name="interest"
-                                                    value="Computing"
-                                                    disabled={this.state.interestField}
-                                                />
-                                            }
-                                            label="Computing"
-                                        />
-                                        <FormControlLabel
-                                            control={
-                                                <Radio
-                                                    id="interest"
-                                                    name="interest"
-                                                    value="Economics"
-                                                    disabled={this.state.interestField}
-                                                />
-                                            }
-                                            label="Economics"
-                                        />
-                                        </RadioGroup>
-                                        <Form.Control type="input" id="interest" name="this.state.name" placeholder="Others" onChange={this.handleInterestText}/>
-                                        <span style={{color: "red"}}>{this.state.errors["interest"]}</span>
+                                        <span style={{ color: "red", right: "3rem" }}>{this.state.errors["gender"]}</span>
+                                    </Form.Group>
+                                </fieldset>
+                                <Form.Group as={Row}>
+                                    <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "800" }}>Level of education</Form.Label>
+                                    <Col sm={7} style={{ left: "1.5rem" }}>
+                                        <Form.Control as="select" id="educationLevel" name="educationLevel" onChange={this.handleInputChange}>
+                                            <option>Primary</option>
+                                            <option>Secondary</option>
+                                            <option>Polytechnic</option>
+                                            <option>Junior College</option>
+                                            <option>University</option>
+                                        </Form.Control>
+                                    </Col>
+                                    <Col sm={3} style={{ left: "1.5rem" }}>
+                                        <Form.Control required as="select" id="yearOfStudy" name="yearOfStudy" placeholder="Year of study" onChange={this.handleInputChange}>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                            <option>6</option>
+                                        </Form.Control>
+                                        <span style={{ color: "red", left: "3rem" }}>{this.state.errors["yearOfStudy"]}</span>
                                     </Col>
                                 </Form.Group>
-                            </fieldset>
-                            {/* <Form.Group as={Row} controlId="formHorizontalEmail">
+                                <fieldset>
+                                    <Form.Group as={Row} onChange={this.handleInputChange}>
+                                        <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "800" }}>Interests</Form.Label>
+                                        <Col sm={10}>
+                                            <Form.Check
+                                                type="radio"
+                                                id="interest"
+                                                name="interest"
+                                                value="Math"
+                                                label="Math"
+                                                disabled={this.state.interestField}
+                                            />
+                                            <Form.Check
+                                                type="radio"
+                                                id="interest"
+                                                name="interest"
+                                                value="General Paper"
+                                                label="General Paper"
+                                                disabled={this.state.interestField}
+                                            />
+                                            <Form.Check
+                                                type="radio"
+                                                id="interest"
+                                                name="interest"
+                                                value="Chemistry"
+                                                label="Chemistry"
+                                                disabled={this.state.interestField}
+                                            />
+                                            <Form.Check
+                                                type="radio"
+                                                id="interest"
+                                                name="interest"
+                                                value="Physics"
+                                                label="Physics"
+                                                disabled={this.state.interestField}
+                                            />
+                                            <Form.Check
+                                                type="radio"
+                                                id="interest"
+                                                name="interest"
+                                                value="Computing"
+                                                label="Computing"
+                                                disabled={this.state.interestField}
+                                            />
+                                            <Form.Check
+                                                type="radio"
+                                                id="interest"
+                                                name="interest"
+                                                value="Economics"
+                                                label="Economics"
+                                                disabled={this.state.interestField}
+                                            />
+                                            <Form.Control type="input" id="interest" name="this.state.name" placeholder="Others" onChange={this.handleInterestText} />
+                                            <span style={{ color: "red" }}>{this.state.errors["interest"]}</span>
+                                        </Col>
+                                    </Form.Group>
+                                </fieldset>
+                                {/* <Form.Group as={Row} controlId="formHorizontalEmail">
                                 <Form.Label column sm={2}>Email</Form.Label>
                                 <Col sm={10}>
                                     <Form.Control type="email" placeholder="Email" />
                                 </Col>
                             </Form.Group>
-
                             <Form.Group as={Row} controlId="formHorizontalPassword">
                                 <Form.Label column sm={2}>Password</Form.Label>
                                 <Col sm={10}>
@@ -353,19 +304,19 @@ class BuddyFinderForm extends React.Component {
                                 </Col>
                             </Form.Group> */}
 
-                            <Form.Group as={Row}>
-                                <Col sm={{ span: 10, offset: 2 }}>
-                                <Button onClick={this.submitForm} type="submit">Submit</Button>
-                                </Col>
-                            </Form.Group>
-                        </Form>
+                                <Form.Group as={Row}>
+                                    <Col sm={{ span: 10, offset: 2 }}>
+                                        <Button onClick={this.submitForm} type="submit">Submit</Button>
+                                    </Col>
+                                </Form.Group>
+                            </Form>
+                        </div>
                     </div>
-                </div>
                 </Col>
             </div>
         )
     }
-    
+
 }
 
 const styles = {
@@ -395,4 +346,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {}) (BuddyFinderForm);
+export default connect(mapStateToProps, {})(BuddyFinderForm);
