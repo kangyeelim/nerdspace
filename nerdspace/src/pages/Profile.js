@@ -91,7 +91,7 @@ class Profile extends React.Component {
 
     addToInterestList() {
       this.state.interestsList.push(this.state.interestsText);
-      this.setState({interestsList: this.state.interestsList});
+      this.setState({interestsList: this.state.interestsList, interestsText:""});
     }
 
     onSubmit = async event => {
@@ -134,7 +134,7 @@ class Profile extends React.Component {
             }
         }
 
-        if (this.state.interests.length < 1 && this.state.interestsText.length < 1) {
+        if (this.state.interests.length < 1) {
             alert("Please add an interest");
             return;
         }
@@ -313,6 +313,7 @@ class Profile extends React.Component {
                         id="interest"
                         name="interests"
                         placeholder="Others"
+                        value={this.state.interestsText}
                         onChange={this.handleInterestText}
                       />
                       <Button onClick={this.addToInterestList}>Add as option</Button>
