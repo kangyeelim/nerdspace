@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'react-bootstrap';
-import ProfileBox from '../components/ProfileBox';
-import GroupBox from '../components/GroupBox';
+import ProfileBox from '../components/HomeComponents/ProfileBox';
+import GroupBox from '../components/HomeComponents/GroupBox';
 import TodoBox from '../components/TodoComponents/TodoBox';
 import QuoteBox from '../components/QuoteComponents/QuoteBox';
 import './General.css';

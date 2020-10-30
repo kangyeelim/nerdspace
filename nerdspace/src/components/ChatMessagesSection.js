@@ -1,5 +1,4 @@
 import React from "react";
-import { Card, Button, Row, Col, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ChatMessage from './ChatMessage';
 import "./Chat.css";
@@ -10,7 +9,6 @@ class ChatMessagesSection extends React.Component {
     constructor(props) {
         super(props);
         const ID = props.id;
-
         this.state = {
             messages: [],
             room: ID,

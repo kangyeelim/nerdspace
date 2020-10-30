@@ -1,10 +1,13 @@
 .message {
-    border-radius: 25px;
-    background-color: lightblue;
+    border-radius: 10px;
+    background-color: white;
     padding: 5px;
-    display: inline-flex;
+    margin-top: 5px;
     max-width: 40vw;
+    color: #0f4c75;
 }
+
+
 
 .text {
     justify-content: flex-end;
@@ -15,39 +18,38 @@
 
 .time {
     font-size: 10px;
+    display: flex;
+    justify-content: flex-end;
+    color: #65aadb;
 }
 
 .name {
     position: absolute;
     left: 5px;
     top: -5px;
-    font-size: 10px;
+    font-size: 12px;
+    color: #65aadb;
 }
 
 .chat {
+    border-radius: 10px;
     list-style: none;
-    background: none;
-    margin: 0;
-    padding: 0 0 50px 0;
-    margin-top: 60px;
-    margin-bottom: 10px;
+    background: #e1f2fb;
+    color: #0f4c75;
+    padding: 20px;
     height: 50vh;
     overflow: scroll;
     overflow: auto;
 }
 
 .contacts {
-    border-style: solid;
-    border-width: medium;
     list-style: none;
     background: none;
-    margin: 0;
-    padding: 0 0 50px 0;
-    margin-top: 60px;
-    margin-bottom: 10px;
+    padding: 0 0 0 0;
     height: 50vh;
     overflow: scroll;
-    overflow: hidden;
+    overflow: auto;
+    margin: 0;
 }
 
 

@@ -28,7 +28,7 @@ class Contacts extends React.Component {
 
     render() {
         return (
-            <Button className="button" onClick={this.routeChange}>
+            <Button variant="light" style={styles.button} onClick={this.routeChange}>
                 {this.state.title}
             </Button>
         );
@@ -36,12 +36,12 @@ class Contacts extends React.Component {
 }
 
 const styles = {
-    card: {
-        width: '18rem',
+    button: {
+        width: '10rem',
         height: "auto",
-        borderRadius: "10%",
-        backgroundColor: "#A9A9A9",
-        marginLeft: 0
+        margin: "10px",
+        backgroundColor: "#e1f2fb",
+        color: "#3282b8"
     }
 }
 

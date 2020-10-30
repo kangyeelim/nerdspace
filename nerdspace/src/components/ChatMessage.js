@@ -1,5 +1,4 @@
 import React from 'react';
-import { Card, Image, Row, Col } from 'react-bootstrap';
 import "./Chat.css";
 
 
