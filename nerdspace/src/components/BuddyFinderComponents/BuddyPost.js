@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, Image, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardFooter, MDBCardGroup, MDBContainer } from "mdbreact";
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardFooter, MDBCardGroup, MDBContainer } from "mdbreact";
 
 export default function BuddyPost(props) {
 
@@ -22,14 +22,14 @@ export default function BuddyPost(props) {
           <MDBCardFooter small muted>
             <Row style={{marginLeft: 10, marginRight:10, alignSelf:'center'}}>
               <Col md="auto">
-                <a onClick={() => props.deletePost(props.id)}>
+                <button type="button"  onClick={() => props.deletePost(props.id)}>
                   <FontAwesomeIcon className="icon" icon={faTrashAlt} style={{alignSelf:'right'}}/>
-                </a>
+                </button>
               </Col>
               <Col md="auto">
-                <a onClick={() => props.submitPost(props.id, props.gender, props.educationLevel, props.yearOfStudy, props.interest)}>
+                <button type="button"  onClick={() => props.submitPost(props.id, props.gender, props.educationLevel, props.yearOfStudy, props.interest)}>
                   <FontAwesomeIcon icon={faPaperPlane} style={{alignSelf:'right'}}/>
-                </a>
+                </button>
               </Col>
             </Row>
           </MDBCardFooter>
@@ -37,24 +37,4 @@ export default function BuddyPost(props) {
       </MDBCardGroup>
     </MDBContainer>
   );
-}
-
-const styles = {
-//   card: {
-//     width:"57vw",
-//     justifyContent:'center',
-//     alignText: 'center',
-//     alignItems: 'center',
-//     display: 'flex',
-//     flexDirection: 'row',
-//     marginTop: "10px"
-//   },
-
-  // card: {
-  //   width: '18rem',
-  //   height: "auto",
-  //   borderRadius: "10%",
-  //   backgroundColor: "#A9A9A9",
-  //   marginLeft: 0
-  // }
 }

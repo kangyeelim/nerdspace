@@ -1,8 +1,6 @@
 import React from "react";
-import { Card } from 'react-bootstrap';
-import { MDBContainer } from "mdbreact";
 import { connect } from 'react-redux';
-import { Col, Row, Button, Image, FormControl } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 class BuddyFinderHeader extends React.Component {
     render() {
@@ -23,11 +21,6 @@ const styles = {
         justifyContent: "center",
         padding: "2rem",
     },
-    headerText: {
-        margin: "2.5rem",
-        fontSize: 40, 
-        fontWeight: 350
-    }
 }
 
 const mapStateToProps = (state) => {

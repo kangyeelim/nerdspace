@@ -138,7 +138,7 @@ class Login extends React.Component {
       <div>
         <div style={styles.screen}>
           <div style={styles.loginPanel}>
-            <h3>Welcome to Nerdspace!</h3>
+            <h3>Welcome!</h3>
             <p>Login to get started.</p>
             <div style={{ marginTop: 30 }}>
               <GoogleButton

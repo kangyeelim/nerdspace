@@ -17,7 +17,7 @@ import CreatePostForm from './pages/StudyRoomPages/CreatePostForm';
 import CreateRoomForm from './pages/StudyRoomPages/CreateRoomForm';
 import ChatRoom from './pages/ChatRoom';
 import CommonTimes from './pages/StudyRoomPages/CommonTimes';
-import Logout from './components/Logout';
+import Logout from './pages/Logout';
 
 function App() {
   return (

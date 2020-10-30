@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'react-bootstrap';
-import ProfileBox from '../components/ProfileBox';
-import GroupBox from '../components/GroupBox';
+import ProfileBox from '../components/HomeComponents/ProfileBox';
+import GroupBox from '../components/HomeComponents/GroupBox';
 import TodoBox from '../components/TodoComponents/TodoBox';
 import QuoteBox from '../components/QuoteComponents/QuoteBox';
 import './General.css';
@@ -12,7 +12,7 @@ import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Grid } from "@material-ui/core";
-import Header from "../components/NavigationComponents/Header";
+import NavBar from "../components/NavigationComponents/NavBar";
 
 class UserHome extends React.Component {
   constructor() {
@@ -80,8 +80,8 @@ class UserHome extends React.Component {
     }
     return (
       <div>
-        <Header history={this.props.history} />
-        <div className="container">
+        <NavBar history={this.props.history} />
+        <div className="container" style={{ margin: "auto" }}>
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <ProfileBox connections={this.state.connections} />

@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Col, Container } from 'react-bootstrap';
+import { Col, Container, Row, Card } from 'react-bootstrap';
 import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
-import { FormControl, FormHelperText, Select, Avatar, Checkbox, Typography, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, TextField, Button } from "@material-ui/core";
-import Header from "../components/NavigationComponents/Header";
+import { FormControl, FormHelperText, Select, Avatar, Checkbox, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, TextField, Button, Typography } from "@material-ui/core";
+import NavBar from "../components/NavigationComponents/NavBar";
+
+const ARRAY_OF_DEFAULT_INTERESTS = ["Math", "GP", "Chemistry", "Physics", "Computing", "Economics"];
 
 class Profile extends React.Component {
 
@@ -24,18 +26,38 @@ class Profile extends React.Component {
             yearOfStudy: null,
             // key: null,
             isAuthenticating: true,
-            isLoggedIn: false
+            isLoggedIn: false,
+            interestsList: ARRAY_OF_DEFAULT_INTERESTS,
+            isExistingProfileFound: false,
+            existingProfile:null
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.onSubmit.bind(this);
         this.handleInterest = this.handleInterest.bind(this);
         this.handleInterestText = this.handleInterestText.bind(this);
+        this.addToInterestList = this.addToInterestList.bind(this);
+        this.loadProfileInformation = this.loadProfileInformation.bind(this);
     }
 
     componentDidMount = async () => {
       var isLoggedIn = await isTokenAccepted(this.props.token);
+      await this.loadProfileInformation();
       this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
+    }
+
+    async loadProfileInformation() {
+      try {
+        var res = await axios.get(`http://localhost:5000/profiles/${this.props.profile[0].googleId}`);
+        if ((await res).data.message == 'GET success') {
+          this.setState({isExistingProfileFound:true, existingProfile: res.data.data,
+            name: res.data.data.name,
+            bio: res.data.data.bio});
+        }
+        console.log("here")
+      } catch(err) {
+        this.setState({isExistingProfileFound:false});
+      }
     }
 
     handleInputChange(event) {
@@ -67,7 +89,12 @@ class Profile extends React.Component {
         console.log(`Input text interest. Input value ${event.target.value.trim()}.`);
     }
 
-    onSubmit = event => {
+    addToInterestList() {
+      this.state.interestsList.push(this.state.interestsText);
+      this.setState({interestsList: this.state.interestsList});
+    }
+
+    onSubmit = async event => {
         event.preventDefault();
 
         if (this.state.gender == null) {
@@ -112,16 +139,8 @@ class Profile extends React.Component {
             return;
         }
 
-        var intArray = this.state.interestsText.split(",");
-        var i;
-        for (i of intArray) {
-            if (i.trim().length > 0) {
-                this.state.interests.push(i.trim());
-            }
-        }
-
         this.setState({interests: this.state.interests});
-        
+
         axios.post('http://localhost:5000/profiles/updateProfile', {
             educationLevel: this.state.educationLevel,
             yearOfStudy: this.state.yearOfStudy,
@@ -136,11 +155,12 @@ class Profile extends React.Component {
         .catch(err => {
             console.error(err);
         })
-        .then((response) => {
+        .then(async (response) => {
+            await this.loadProfileInformation();
             console.log(response.data);
         });
 
-        alert('Your information has been successfully updated ' + this.state.name + this.state.bio + this.state.email + "Education: " + this.state.educationLevel + this.state.yearOfStudy + "Gender: " + this.state.gender);
+        alert('Your information has been successfully updated ');
     };
 
     render() {
@@ -154,18 +174,39 @@ class Profile extends React.Component {
       }
         return (
           <div>
-            <Header history={this.props.history} />
-            <div className="container">
-              <Col>
+            <NavBar history={this.props.history} />
+              <div className="container" style={{ margin: "auto" }}>
+                <Col>
                 <Avatar
                   style={{
                     width: "150px",
                     height: "150px",
+                    margin: "auto"
                   }}
                   src={this.state.profilePic}
                   alt="Profile"
                 />
+                {this.state.isExistingProfileFound && (
+                  <Card style={styles.card}>
+                    <Card.Title> {this.state.existingProfile.name}</Card.Title>
+                    <Card.Body>
+                    <Col>
+                      <div>Bio: {this.state.existingProfile.bio}</div>
+                      <div>Gender: {this.state.existingProfile.gender}</div>
+                      <div>
+                      <ul style={styles.card}>
+                      My Interests:
+                      {Object.values(this.state.existingProfile.interest).map((interest) => {
+                        return <li>{interest}</li>
+                      })}
+                      </ul>
+                      </div>
+                      </Col>
+                    </Card.Body>
+                  </Card>
+                )}
                 <form className="form" onSubmit={this.onSubmit}>
+                {this.state.isExistingProfileFound && (<h4 style={styles.heading}>Update your profile</h4>)}
                   <div className="input-group" style={styles.bar}>
                     <TextField
                       label="Name"
@@ -174,73 +215,6 @@ class Profile extends React.Component {
                       placeholder={this.props.profile[0].name}
                       onChange={this.handleInputChange}
                     />
-                  </div>
-                  <div className="input-group" style={styles.bar}>
-                    <FormLabel component="legend">Gender:</FormLabel>
-                    <RadioGroup>
-                      <FormControlLabel
-                        label="Female"
-                        name="gender"
-                        value="female"
-                        control={<Radio />}
-                        onChange={this.handleInputChange}
-                      />
-                      <FormControlLabel
-                        label="Male"
-                        name="gender"
-                        value="male"
-                        control={<Radio />}
-                        onChange={this.handleInputChange}
-                      />
-                      <FormControlLabel
-                        label="Other"
-                        name="gender"
-                        value="other"
-                        control={<Radio />}
-                        onChange={this.handleInputChange}
-                      />
-                    </RadioGroup>
-                    <span style={{ color: "red", right: "3rem" }}>{}</span>
-                  </div>
-                  <div className="input-group" style={styles.bar}>
-                    <FormLabel component="legend">Education Level:</FormLabel>
-                    <FormControl style={{ padding: "10px" }}>
-                      <Select
-                        native
-                        onChange={this.handleInputChange}
-                        inputProps={{
-                          name: "educationLevel",
-                          id: "educationLevel",
-                        }}
-                      >
-                        <option aria-label="None" value="" />
-                        <option>Primary</option>
-                        <option>Secondary</option>
-                        <option>Polytechnic</option>
-                        <option>Junior College</option>
-                        <option>University</option>
-                      </Select>
-                      <FormHelperText>Education Level</FormHelperText>
-                    </FormControl>
-                    <FormControl>
-                      <Select
-                        native
-                        onChange={this.handleInputChange}
-                        inputProps={{
-                          name: "yearOfStudy",
-                          id: "yearOfStudy",
-                        }}
-                      >
-                        <option aria-label="None" value="" />
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
-                        <option value={6}>6</option>
-                      </Select>
-                      <FormHelperText>Year of study</FormHelperText>
-                    </FormControl>
                   </div>
                   <div className="input-group" style={styles.bar}>
                     <TextField
@@ -255,74 +229,94 @@ class Profile extends React.Component {
                     />
                   </div>
                   <div className="input-group" style={styles.bar}>
-                    <FormLabel component="legend">Interests:</FormLabel>
+                    <FormLabel component="legend">Gender</FormLabel>
+                    <RadioGroup>
+                      <FormControlLabel
+                        label="Female"
+                        name="gender"
+                        value="Female"
+                        control={<Radio />}
+                        onChange={this.handleInputChange}
+                      />
+                      <FormControlLabel
+                        label="Male"
+                        name="gender"
+                        value="Male"
+                        control={<Radio />}
+                        onChange={this.handleInputChange}
+                      />
+                      <FormControlLabel
+                        label="Other"
+                        name="gender"
+                        value="Other"
+                        control={<Radio />}
+                        onChange={this.handleInputChange}
+                      />
+                    </RadioGroup>
+                    <span style={{ color: "red", right: "3rem" }}>{}</span>
+                  </div>
+                  <div className="input-group" style={styles.bar}>
+                    <FormLabel component="legend">Education</FormLabel>
+                    <FormControl variant="outlined" style={{ padding: "10px" }}>
+                      <Select
+                        native
+                        onChange={this.handleInputChange}
+                        inputProps={{
+                          name: "educationLevel",
+                          id: "educationLevel",
+                        }}
+                      >
+                        <option>Primary</option>
+                        <option>Secondary</option>
+                        <option>Polytechnic</option>
+                        <option>Junior College</option>
+                        <option>University</option>
+                      </Select>
+                      <FormHelperText>Level</FormHelperText>
+                    </FormControl>
+                    <FormControl variant="outlined">
+                      <Select
+                        native
+                        onChange={this.handleInputChange}
+                        inputProps={{
+                          name: "yearOfStudy",
+                          id: "yearOfStudy",
+                        }}
+                      >
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                        <option value={4}>4</option>
+                        <option value={5}>5</option>
+                        <option value={6}>6</option>
+                      </Select>
+                      <FormHelperText>Year of study</FormHelperText>
+                    </FormControl>
+                  </div>
+                  <div className="input-group" style={styles.bar}>
+                    <FormLabel component="legend">Interests</FormLabel>
                     <FormGroup column>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={this.handleInterest}
-                            id="Math"
-                            value="Math"
+                      {this.state.interestsList.map((interest) => {
+                          return <FormControlLabel
+                            control={
+                              <Checkbox
+                                onChange={this.handleInterest}
+                                id={interest}
+                                value={interest}
+                              />
+                            }
+                            label={interest}
                           />
-                        }
-                        label="Math"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={this.handleInterest}
-                            id="General Paper"
-                            value="General Paper"
-                          />
-                        }
-                        label="General Paper"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={this.handleInterest}
-                            id="Chemistry"
-                            value="Chemistry"
-                          />
-                        }
-                        label="Chemistry"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={this.handleInterest}
-                            id="Physics"
-                            value="Physics"
-                          />
-                        }
-                        label="Physics"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={this.handleInterest}
-                            id="Computing"
-                            value="Computing"
-                          />
-                        }
-                        label="Computing"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={this.handleInterest}
-                            id="Economics"
-                            value="Economics"
-                          />
-                        }
-                        label="Economics"
-                      />
+                      })}
+                      <Row>
                       <TextField
                         id="interest"
                         name="interests"
                         placeholder="Others"
                         onChange={this.handleInterestText}
                       />
+                      <Button onClick={this.addToInterestList}>Add as option</Button>
+                      </Row>
                     </FormGroup>
                     <div className="input-group" style={styles.bar}>
                       <Button
@@ -352,6 +346,15 @@ const styles = {
         alignItems: 'center',
         display: 'flex',
         flexDirection: 'row',
+        margin: "auto",
+    },
+    card: {
+      marginTop: "30px",
+      padding: "20px",
+    },
+    heading: {
+      marginTop: "30px",
+      marginLeft: "20px"
     }
 }
 

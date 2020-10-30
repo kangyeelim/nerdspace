@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../../components/NavBar';
 import '../General.css';
-import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
+import { Button, Card, Container } from 'react-bootstrap';
 import CardDeck from 'react-bootstrap/CardDeck';
 import axios from 'axios';
 import BuddyResult from '../../components/BuddyFinderComponents/BuddyResult';
@@ -10,6 +9,7 @@ import { createBrowserHistory } from 'history';
 import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import NavBar from "../../components/NavigationComponents/NavBar";
 
 export const history = createBrowserHistory({ forceRefresh: true });
 
@@ -28,7 +28,6 @@ class BuddyFinderResult extends React.Component {
         this.goToBuddyFinder = this.goToBuddyFinder.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         this.getSearchResults = this.getSearchResults.bind(this);
-        // this.getUserData = this.getUserData.bind(this);
     }
 
     async componentDidMount() {
@@ -40,12 +39,9 @@ class BuddyFinderResult extends React.Component {
       }
     }
 
-    // async componentDidMount() {
-
     async getSearchResults() {
         await axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
         .then(res => {
-            console.log("RESU:TSS: " + res);
             if (res.length != 0) {
                 this.setState({results: res.data.data});
                 this.setState({noResults: false});
@@ -62,41 +58,6 @@ class BuddyFinderResult extends React.Component {
         }
     }
 
-    // async componentDidMount() {
-    //     var matchingRes = [];
-    //     // var results = [];
-    //     axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
-    //     .then(res => {
-    //         console.log(res);
-    //         matchingRes = res.data.data;
-    //         matchingRes.forEach(matchRes => {
-    //             var googleID = matchRes.googleID;
-    //             var name = "";
-    //             var email = "";
-    //             axios.get(`http://localhost:5000/users/byGoogleID/${googleID}`)
-    //               .then(profileRes => {
-    //                 matchRes.name = profileRes.name;
-    //                 matchRes.email  = profileRes.email;
-    //                   })
-    //                 //   matchRes.name = name;
-    //                 //   matchRes.email = email;
-    //               })
-                  
-                  
-    //             //axios to get the the user obj from db using googleID
-    //             //add the name and email to the res obj
-    //             //add res to the results array
-    //           })
-              
-    //         this.setState({results: matchingRes});
-    //         this.setState({isLoading: false});
-    //         //this.setState({results: res.data.data});
-    //         // this.setState({results: res.docs.data});
-    //     //   });
-    //     //   this.setState({isLoading: true});
-    //     // this.getUserData();
-    // }
-
     goToBuddyFinder() {
         history.push('/buddy-finder');
     }
@@ -111,26 +72,9 @@ class BuddyFinderResult extends React.Component {
         }).then(response => {
             this.props.history.push('/chat/' + response.data.chatID);
         })
-    }
 
-    // async getUserData() {
-    //     this.state.results.forEach(matchRes => {
-    //         var googleID = matchRes.googleID;
-    //         axios.get(`http://localhost:5000/users/byGoogleID/${googleID}/`)
-    //           .then(profileRes => {
-    //               matchRes.push({
-    //                   name: profileRes.name,
-    //                   email: profileRes.email
-    //               })
-    //           })
-              
-    //         //axios to get the the user obj from db using googleID
-    //         //add the name and email to the res obj
-    //         //add res to the results array
-    //       })
-    //       this.setState({isLoading: false});
-    //       console.log("DONEE");
-    // }
+        this.props.history.push('/chat/' + this.state.chatID);
+    }
 
     render() {
         if (this.state.isAuthenticating) {
@@ -151,11 +95,11 @@ class BuddyFinderResult extends React.Component {
                         
                         <Button variant="primary" onClick={this.goToBuddyFinder}>Return to Buddy Finder main page</Button>
                     </div>
-                    <CardDeck style={{ display: "flex", flexDirection: "column" }}>
+                    <CardDeck style={{ display: "flex", flexDirection: "column", minWidth: "70vw" }}>
                     {this.state.noResults ? (
                         <h1 style={{padding: "3rem"}}>No match found! ): </h1>
                     ) : (
-                        <Card style={{ display: "flex", flexDirection: "row" }}>
+                        <Card style={{ display: "flex", flexDirection: "column" }}>
 
                         {this.state.results.map((result) => {
                             return <BuddyResult
@@ -182,30 +126,14 @@ class BuddyFinderResult extends React.Component {
 
 }
 
-
-// <Card>
-// {/* !this.state.isLoading &&  */}
-// {!this.state.noResults && this.state.results.map((result) => {
-//     return <BuddyResult
-//     key={result.key}
-//     id={result.key}
-//     name={result.name}
-//     gender={result.gender}
-//     email={result.email}
-//     googleID={result.googleID}
-//     educationLevel={result.educationLevel}
-//     year={result.year}
-//     sendMessage={this.sendMessage}/>;
-// })}
-
-// </Card>
 const styles = {
     container: {
-        // display: "flex",
-        // flexDirection: "column",
+        // height: "auto",
+        display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        // // margin: "2rem",
-        padding: "3rem",
+        // margin: "3rem 3rem",
+        // padding: "3rem",
         textAlign: "center",
         justifyContent: "center",
     },

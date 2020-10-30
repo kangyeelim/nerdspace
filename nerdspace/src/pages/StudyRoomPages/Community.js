@@ -1,15 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../../components/NavBar';
 import '../General.css';
-import { Col, Row, Form, Button, FormControl, Container } from 'react-bootstrap';
+import { Col, Form, Button, FormControl, Container } from 'react-bootstrap';
 import RoomBox from '../../components/StudyRoomComponents/RoomBox';
 import axios from 'axios';
 import { enterRoom } from '../../navigators/StudyRoomNavigator';
 import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Header from "../../components/NavigationComponents/Header";
+import NavBar from '../../components/NavigationComponents/NavBar';
 
 const stub = [ {id:1, name:"GP resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
 {id:2, name:"A Maths resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
@@ -150,7 +149,7 @@ class Community extends React.Component {
     }
     return (
       <div>
-        <Header history={this.props.history} />
+        <NavBar history={this.props.history} />
         <div className="container">
           <Col style={{ width: "100vw" }}>
             <h2 style={styles.heading}>Community of Study Groups</h2>

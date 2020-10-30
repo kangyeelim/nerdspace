@@ -1,11 +1,10 @@
 import React from "react";
-import { withRouter } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import { Card, Button, Row, Col, FormControl } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import "./Chat.css";
 
-const db = require('../services/firebase').db;
+const db = require('../../services/firebase').db;
 
 export const history = createBrowserHistory({ forceRefresh: true });
 
@@ -28,7 +27,7 @@ class Contacts extends React.Component {
 
     render() {
         return (
-            <Button className="button" onClick={this.routeChange}>
+            <Button variant="light" style={styles.button} onClick={this.routeChange}>
                 {this.state.title}
             </Button>
         );
@@ -36,12 +35,12 @@ class Contacts extends React.Component {
 }
 
 const styles = {
-    card: {
-        width: '18rem',
+    button: {
+        width: '10rem',
         height: "auto",
-        borderRadius: "10%",
-        backgroundColor: "#A9A9A9",
-        marginLeft: 0
+        margin: "10px",
+        backgroundColor: "#e1f2fb",
+        color: "#3282b8"
     }
 }
 

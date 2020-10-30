@@ -1,13 +1,13 @@
 import React from "react";
 import axios from 'axios';
-
-import { Card, Button, Row, Col, FormControl } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Contacts from './Contacts';
 import "./Chat.css";
+import { Typography } from "@material-ui/core";
 
 
-const db = require('../services/firebase').db;
+const db = require('../../services/firebase').db;
 
 class ContactsSection extends React.Component {
     constructor(props) {
@@ -33,7 +33,9 @@ class ContactsSection extends React.Component {
 
     render() {
         return (
-            <div>
+            <Card border="light" style={styles.card}>
+                <Card.Body>
+                <Typography variant="h5">Contacts</Typography>
                 <ul className="contacts">
                     {this.state.contacts.map((contact) => {
                         return <Contacts
@@ -42,8 +44,24 @@ class ContactsSection extends React.Component {
                             title={contact.name}/>;
                     })}
                 </ul>
-            </div>
+                </Card.Body>
+            </Card>
         );
+    }
+}
+
+const styles = {
+    card: {
+        width: "15rem",
+        borderRadius: "10px",
+        backgroundColor: "#a2d5f2",
+        color: "#0f4c75",
+        height: "auto",
+        marginBottom: "20px",
+    },
+    text: {
+        color: "#0f4c75",
+        textDecorationLine: 'underline'
     }
 }
 

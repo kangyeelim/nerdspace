@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavBar from '../components/NavBar';
 import axios from 'axios';
 import './General.css';
-import { Col, Row, Form, Button, Image, Card, FormControl, Container } from 'react-bootstrap';
-import ChatMessageSection from '../components/ChatMessagesSection';
-import ContactsSection from '../components/ContactsSection';
+import { Col, Row, Container } from 'react-bootstrap';
+import ChatMessageSection from '../components/ChatComponents/ChatMessagesSection';
+import ContactsSection from '../components/ChatComponents/ContactsSection';
 import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Header from "../components/NavigationComponents/Header";
+import NavBar from "../components/NavigationComponents/NavBar";
+import { Typography } from "@material-ui/core";
 
 class ChatRoom extends React.Component {
     constructor(props) {
@@ -73,24 +73,24 @@ class ChatRoom extends React.Component {
       }
         return (
             <div>
-                <Header history={this.props.history} />
-                <div className='container' style={{margin:"auto"}}>
+                <NavBar history={this.props.history} />
+                <div className='container' style={styles.container}>
                     <Col>
                         <Row>
-                            <Col xs={2}>
+                            <Col xs={3}>
                                 <ContactsSection />
                             </Col>
                             {this.state.id === undefined ? (
-                                <Col md={8} style={{ display: "flex", alignItems: "center", justifyContent: "center"}}>
-                                       <p> Click on a contact to get started! </p>
-                                    </Col>
-                                    ) : (
-                                    <Col md={8}>
-                                        <ChatMessageSection id={this.state.id}/>
-                                        <input name="chatInput" placeholder="send a message" onChange={this.handleMsgChange} onKeyDown={this.handleKeyDown}
-                                            value={this.msg} style={{ borderRadius: "12px", width: "50vw" }} /><br />
-                                    </Col>
-                                )}
+                                <Col md={8} style={styles.heading}>
+                                    <Typography variant="h6"> Click on a contact to get started!</Typography>
+                                </Col>
+                                ) : (
+                                <Col md={8}>
+                                    <ChatMessageSection id={this.state.id}/>
+                                    <input name="chatInput" placeholder="send a message" onChange={this.handleMsgChange} onKeyDown={this.handleKeyDown}
+                                        value={this.msg} style={styles.input} /><br />
+                                </Col>
+                            )}
                         </Row>
                     </Col>
                 </div>
@@ -100,10 +100,18 @@ class ChatRoom extends React.Component {
 }
 
 const styles = {
-    /*#messageBar: {
-        border: "2px",
-        borderRadius: "12px"
-    }*/
+    container: {
+        margin:"auto"
+    },
+    heading: {
+        display: "flex", alignItems: "center", justifyContent: "center", color: "#0f4c75" 
+    },
+    input: {
+        borderRadius: "20px", 
+        borderColor: "#a2d5f2", 
+        width: "40vw", padding: "5px", 
+        outline: "none"
+    }
 }
 
 const mapStateToProps = (state) => {
