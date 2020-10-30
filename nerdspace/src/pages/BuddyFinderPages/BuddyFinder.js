@@ -30,11 +30,6 @@ class BuddyFinder extends React.Component {
         this.props.history.push('/createBuddyForm');
     }
 
-    // handleGenderInput(event) {
-    //     this.setState({gender:event.currentTarget.value});
-    //     console.log(event.currentTarget.value);
-    // }
-
     render() {
       if (this.state.isAuthenticating) {
         return <Container>
@@ -64,9 +59,6 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        textAlign: "center",
-        // margin: "2rem",
-        // padding: "3rem",
         textAlign: "center",
         justifyContent: "center",
 

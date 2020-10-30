@@ -22,10 +22,9 @@ class BuddyFinderForm extends React.Component {
             isAuthenticating: true,
             isLoggedIn: false
         }
-        // this.handleYearStudyInput = this.handleYearStudyInput.bind(this);
+
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleInterestText = this.handleInterestText.bind(this);
-        // this.goResults = this.goResults.bind(this);
         this.submitForm = this.submitForm.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
     }
@@ -34,11 +33,6 @@ class BuddyFinderForm extends React.Component {
         var isLoggedIn = await isTokenAccepted(this.props.token);
         this.setState({ isLoggedIn: await isLoggedIn, isAuthenticating: false });
     }
-
-    // componentDidMount() {
-    //     this.handleValidation();
-    //     console.log("ERR " + this.state.errors["yearOfStudy"]);
-    // }
 
     submitForm(event) {
         event.preventDefault();
@@ -67,23 +61,10 @@ class BuddyFinderForm extends React.Component {
             });
         } else {
             this.handleValidation();
-            // alert("Invalid Form. Please fill in all fields with valid inputs.")
         }
 
     }
 
-    // goResults() {
-    //     this.props.history.push({
-    //         pathname:'/buddy-finder-result',
-    //         state: {
-    //             educationLevel: this.state.educationLevel,
-    //             yearOfStudy: this.state.yearOfStudy,
-    //             interest: this.state.interest,
-    //             gender: this.state.gender,
-    //             googleID: this.props.profile[0].googleId
-    //         }
-    //     });
-    // }
 
     handleInputChange(event) {
         const target = event.target;
@@ -94,8 +75,6 @@ class BuddyFinderForm extends React.Component {
             [name]: value
         });
         console.log(`Input name ${name}. Input value ${value}.`);
-
-        // this.handleValidation();
     }
 
     handleInterestText(event) {
@@ -105,24 +84,12 @@ class BuddyFinderForm extends React.Component {
     }
 
     handleValidation() {
-        // let errors = {};
         let formIsValid = true;
 
         if (this.state.gender == null) {
             this.state.errors["gender"] = "Gender field cannot be empty";
             formIsValid = false;
         }
-        // if (this.state.gender != null) {
-        //     if(!this.state.gender.match(/^[a-zA-Z]+$/)){
-        //         formIsValid = false;
-        //         this.state.errors["gender"] = "Gender field cannot be empty";
-        //      } 
-        // }
-
-        // if (this.state.yearOfStudy == null) {
-        //     this.state.errors["yearOfStudy"] = "YearOfStudy field cannot be empty";
-        //     formIsValid = false;
-        // }
 
         if (this.state.educationLevel == "Junior College") {
             const re = /^[0-9\b]+$/;
@@ -149,6 +116,31 @@ class BuddyFinderForm extends React.Component {
             }
         }
 
+        if (this.state.educationLevel == "Secondary") {
+            const re = /^[0-9\b]+$/;
+            if (!re.test(this.state.yearOfStudy)) {
+                this.state.errors["yearOfStudy"] = "YearOfStudy field must only have numbers";
+                formIsValid = false;
+            } else {
+                if (parseInt(this.state.yearOfStudy) > 5) {
+                    this.state.errors["yearOfStudy"] = "Year of study for secondary must be below 5";
+                    formIsValid = false;
+                }
+            }
+        }
+
+        if (this.state.educationLevel == "University") {
+            const re = /^[0-9\b]+$/;
+            if (!re.test(this.state.yearOfStudy)) {
+                this.state.errors["yearOfStudy"] = "YearOfStudy field must only have numbers";
+                formIsValid = false;
+            } else {
+                if (parseInt(this.state.yearOfStudy) > 5) {
+                    this.state.errors["yearOfStudy"] = "Year of study for university must be below 5";
+                    formIsValid = false;
+                }
+            }
+        }
 
         if (this.state.interest == null) {
             this.state.errors["interest"] = "Interest field cannot be empty";
@@ -158,8 +150,6 @@ class BuddyFinderForm extends React.Component {
         this.forceUpdate();
         return formIsValid;
     }
-
-
 
     render() {
         if (this.state.isAuthenticating) {
@@ -201,8 +191,9 @@ class BuddyFinderForm extends React.Component {
                                                 value="Female"
                                                 onChange={this.handleInputChange}
                                             />
+                                            <span style={{ color: "red", right: "3rem" }}>{this.state.errors["gender"]}</span>
                                         </Col>
-                                        <span style={{ color: "red", right: "3rem" }}>{this.state.errors["gender"]}</span>
+                                        
                                     </Form.Group>
                                 </fieldset>
                                 <Form.Group as={Row}>
@@ -285,24 +276,6 @@ class BuddyFinderForm extends React.Component {
                                         </Col>
                                     </Form.Group>
                                 </fieldset>
-                                {/* <Form.Group as={Row} controlId="formHorizontalEmail">
-                                <Form.Label column sm={2}>Email</Form.Label>
-                                <Col sm={10}>
-                                    <Form.Control type="email" placeholder="Email" />
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row} controlId="formHorizontalPassword">
-                                <Form.Label column sm={2}>Password</Form.Label>
-                                <Col sm={10}>
-                                <Form.Control type="password" placeholder="Password" />
-                                </Col>
-                            </Form.Group>
-                            
-                            <Form.Group as={Row} controlId="formHorizontalCheck">
-                                <Col sm={{ span: 10, offset: 2 }}>
-                                <Form.Check label="Remember my options" />
-                                </Col>
-                            </Form.Group> */}
 
                                 <Form.Group as={Row}>
                                     <Col sm={{ span: 10, offset: 2 }}>
@@ -325,7 +298,7 @@ const styles = {
         flexDirection: "column",
         alignItems: "center",
         margin: "2rem",
-        padding: "3rem",
+        // padding: "3rem",
         textAlign: "center",
         justifyContent: "center",
     },
