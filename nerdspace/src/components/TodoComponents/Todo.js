@@ -18,7 +18,7 @@ function Todo({ todo, toggleComplete, removeTodo }) {
 
     return (
         <ListItem style={styles.listItem}>
-            <Checkbox checked={todo.completed} onClick={handleCheckboxClick} />
+            <Checkbox color='primary' checked={todo.completed} onClick={handleCheckboxClick} />
             <Typography
                 variant="body1"
                 style={{

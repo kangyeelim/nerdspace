@@ -1,8 +1,8 @@
 .quoteBox {
     height: auto;
     width: 100%;
-    border: 1px rgb(145, 126, 126) solid;
-    max-width: "27vw",
+    border: 0 rgb(145, 126, 126) solid;
+    max-width: "30vw",
 }
 
 .fadeIn {
