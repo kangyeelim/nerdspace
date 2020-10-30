@@ -10,7 +10,7 @@ export default function BuddyResult(props) {
         <MDBCardGroup deck style={styles.card}>
           <MDBCard>
             <MDBCardBody>
-              <Card.Img variant="top" style={{width: "8", height: "8", padding: "1.5rem"}} src={props.imageUrl} />
+              <Card.Img variant="top" style={{width: "50rem", height: "40rem", padding: "1.5rem", overflow: "hidden"}} src={props.imageUrl} />
               <MDBCardTitle tag="h5" style={{fontSize: 25, fontWeight: 650}}>{props.name}</MDBCardTitle>
                 <p style={{fontSize: 20, fontWeight: 600}}>Gender: {props.gender}</p>
                 <p style={{fontSize: 20, fontWeight: 600}}>Email: {props.email}</p>
