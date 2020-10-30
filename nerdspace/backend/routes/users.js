@@ -62,6 +62,7 @@ router.route('/').post((req, res) => {
   const imageUrl = req.body.imageUrl;
   const ref = db.ref('users').push();
   const key = ref.key;
+  console.log(key)
   ref.set({
     'name': name,
     'imageUrl': imageUrl,

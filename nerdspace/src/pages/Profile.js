@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row, Card } from 'react-bootstrap';
 import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -27,7 +27,9 @@ class Profile extends React.Component {
             // key: null,
             isAuthenticating: true,
             isLoggedIn: false,
-            interestsList: ARRAY_OF_DEFAULT_INTERESTS
+            interestsList: ARRAY_OF_DEFAULT_INTERESTS,
+            isExistingProfileFound: false,
+            existingProfile:null
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -35,11 +37,27 @@ class Profile extends React.Component {
         this.handleInterest = this.handleInterest.bind(this);
         this.handleInterestText = this.handleInterestText.bind(this);
         this.addToInterestList = this.addToInterestList.bind(this);
+        this.loadProfileInformation = this.loadProfileInformation.bind(this);
     }
 
     componentDidMount = async () => {
       var isLoggedIn = await isTokenAccepted(this.props.token);
+      await this.loadProfileInformation();
       this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
+    }
+
+    async loadProfileInformation() {
+      try {
+        var res = await axios.get(`http://localhost:5000/profiles/${this.props.profile[0].googleId}`);
+        if ((await res).data.message == 'GET success') {
+          this.setState({isExistingProfileFound:true, existingProfile: res.data.data,
+            name: res.data.data.name,
+            bio: res.data.data.bio});
+        }
+        console.log("here")
+      } catch(err) {
+        this.setState({isExistingProfileFound:false});
+      }
     }
 
     handleInputChange(event) {
@@ -76,7 +94,7 @@ class Profile extends React.Component {
       this.setState({interestsList: this.state.interestsList});
     }
 
-    onSubmit = event => {
+    onSubmit = async event => {
         event.preventDefault();
 
         if (this.state.gender == null) {
@@ -137,7 +155,8 @@ class Profile extends React.Component {
         .catch(err => {
             console.error(err);
         })
-        .then((response) => {
+        .then(async (response) => {
+            await this.loadProfileInformation();
             console.log(response.data);
         });
 
@@ -167,7 +186,27 @@ class Profile extends React.Component {
                   src={this.state.profilePic}
                   alt="Profile"
                 />
+                {this.state.isExistingProfileFound && (
+                  <Card style={styles.card}>
+                    <Card.Title> {this.state.existingProfile.name}</Card.Title>
+                    <Card.Body>
+                    <Col>
+                      <div>Bio: {this.state.existingProfile.bio}</div>
+                      <div>Gender: {this.state.existingProfile.gender}</div>
+                      <div>
+                      <ul style={styles.card}>
+                      My Interests:
+                      {Object.values(this.state.existingProfile.interest).map((interest) => {
+                        return <li>{interest}</li>
+                      })}
+                      </ul>
+                      </div>
+                      </Col>
+                    </Card.Body>
+                  </Card>
+                )}
                 <form className="form" onSubmit={this.onSubmit}>
+                {this.state.isExistingProfileFound && (<h4 style={styles.heading}>Update your profile</h4>)}
                   <div className="input-group" style={styles.bar}>
                     <TextField
                       label="Name"
@@ -311,6 +350,14 @@ const styles = {
         display: 'flex',
         flexDirection: 'row',
         margin: "auto",
+    },
+    card: {
+      marginTop: "30px",
+      padding: "20px",
+    },
+    heading: {
+      marginTop: "30px",
+      marginLeft: "20px"
     },
     button: {
         margin: "50px"
