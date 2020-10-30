@@ -1,9 +1,8 @@
 import React from "react";
 import { Card } from 'react-bootstrap';
-import { MDBContainer } from "mdbreact";
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { Col, Row, Button, Image, FormControl } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import BuddyPost from "./BuddyPost";
 
 class BuddyFinderPostsSection extends React.Component {

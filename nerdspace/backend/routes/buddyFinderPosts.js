@@ -78,12 +78,6 @@ router.route('/').post((req, res) => {
     }
     });
 
-    // interests.forEach((item, i) => {
-    //     buddyFinderRef.child('interests').push().set(item);
-    // });
-    // res.send({
-    //     message: 'POST success'
-    // });
 })
 
 router.route('/:id').delete((req, res) => {

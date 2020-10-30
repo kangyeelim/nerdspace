@@ -19,6 +19,7 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
 
       var interestArr = Object.values(data.interests);
       if ((interestArr.includes(interest) && key != googleID) && (data.yearOfStudy == year && data.gender == gender) && (data.educationLevel == educationLevel)) {
+<<<<<<< HEAD
         // db.ref('users').orderByChild('googleID')
         //   .equalTo(data.googleID)
         //   .once('value', function (snapshot) {
@@ -51,6 +52,8 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
           // userName = userArr.filter(el => el != null );
           // userEmail = userArr.filter(el => el != null );
           // console.log("THISsss" +userName + userEmail);
+=======
+>>>>>>> upstream/master
         resArr.unshift({
           key: key,
           googleID: key,
@@ -64,6 +67,7 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
         });
       }
     });
+<<<<<<< HEAD
 
     // var results = resArr.filter((obj) => {
     //   return (obj.googleID != googleID) && (obj.year == year) && (obj.gender == gender)
@@ -72,6 +76,11 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
 
     res.send({
       data: resArr,    //docData, //results,
+=======
+
+    res.send({
+      data: resArr,  
+>>>>>>> upstream/master
       message: 'GET success'
     });
   }, function (error) {
