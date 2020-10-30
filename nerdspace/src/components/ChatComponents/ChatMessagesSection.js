@@ -1,16 +1,14 @@
 import React from "react";
-import { Card, Button, Row, Col, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ChatMessage from './ChatMessage';
 import "./Chat.css";
 
-const db = require('../services/firebase').db;
+const db = require('../../services/firebase').db;
 
 class ChatMessagesSection extends React.Component {
     constructor(props) {
         super(props);
         const ID = props.id;
-
         this.state = {
             messages: [],
             room: ID,
