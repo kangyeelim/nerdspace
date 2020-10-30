@@ -19,41 +19,6 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
 
       var interestArr = Object.values(data.interests);
       if ((interestArr.includes(interest) && key != googleID) && (data.yearOfStudy == year && data.gender == gender) && (data.educationLevel == educationLevel)) {
-<<<<<<< HEAD
-        // db.ref('users').orderByChild('googleID')
-        //   .equalTo(data.googleID)
-        //   .once('value', function (snapshot) {
-
-        //     snapshot.forEach(function (child, error) {
-        //       userKey = child.key;
-        //       userData = child.val();
-
-        //       userName = userData.name;
-        //       userEmail = userData.email;
-        //       userArr.unshift({
-        //         name: userData.name,
-        //         email: userData.name
-        //       })
-        //       // resArr.unshift({
-        //       //   key: key,
-        //       //   googleID: data.googleID,
-        //       //   educationLevel: data.educationLevel,
-        //       //   year: data.year,
-        //       //   gender: data.gender,
-        //       //   interest: data.interests,
-        //       //   name: userData.name,
-        //       //   email: userData.email
-        //       // });
-        //       console.log("THIS" +userData.name + userData.email);
-        //     });
-        //   })
-
-
-          // userName = userArr.filter(el => el != null );
-          // userEmail = userArr.filter(el => el != null );
-          // console.log("THISsss" +userName + userEmail);
-=======
->>>>>>> upstream/master
         resArr.unshift({
           key: key,
           googleID: key,
@@ -67,20 +32,9 @@ router.route('/getBuddy/:id/:gender/:educationlevel/:year/:interest').get((req, 
         });
       }
     });
-<<<<<<< HEAD
-
-    // var results = resArr.filter((obj) => {
-    //   return (obj.googleID != googleID) && (obj.year == year) && (obj.gender == gender)
-    // }) //(obj.interest.includes(interest)) &&
-    // console.log(results);
-
-    res.send({
-      data: resArr,    //docData, //results,
-=======
 
     res.send({
       data: resArr,  
->>>>>>> upstream/master
       message: 'GET success'
     });
   }, function (error) {

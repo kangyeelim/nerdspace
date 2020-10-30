@@ -37,10 +37,16 @@ class Profile extends React.Component {
         this.handleInterest = this.handleInterest.bind(this);
         this.handleInterestText = this.handleInterestText.bind(this);
         this.addToInterestList = this.addToInterestList.bind(this);
+        this.loadProfileInformation = this.loadProfileInformation.bind(this);
     }
 
     componentDidMount = async () => {
       var isLoggedIn = await isTokenAccepted(this.props.token);
+      await this.loadProfileInformation();
+      this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
+    }
+
+    async loadProfileInformation() {
       try {
         var res = await axios.get(`http://localhost:5000/profiles/${this.props.profile[0].googleId}`);
         if ((await res).data.message == 'GET success') {
@@ -52,7 +58,6 @@ class Profile extends React.Component {
       } catch(err) {
         this.setState({isExistingProfileFound:false});
       }
-      this.setState({isLoggedIn: isLoggedIn, isAuthenticating:false});
     }
 
     handleInputChange(event) {
@@ -89,7 +94,7 @@ class Profile extends React.Component {
       this.setState({interestsList: this.state.interestsList});
     }
 
-    onSubmit = event => {
+    onSubmit = async event => {
         event.preventDefault();
 
         if (this.state.gender == null) {
@@ -150,7 +155,8 @@ class Profile extends React.Component {
         .catch(err => {
             console.error(err);
         })
-        .then((response) => {
+        .then(async (response) => {
+            await this.loadProfileInformation();
             console.log(response.data);
         });
 
