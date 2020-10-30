@@ -1,13 +1,13 @@
 import React from "react";
 import axios from 'axios';
-import { Card, Button, Row, Col, FormControl } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Contacts from './Contacts';
 import "./Chat.css";
 import { Typography } from "@material-ui/core";
 
 
-const db = require('../services/firebase').db;
+const db = require('../../services/firebase').db;
 
 class ContactsSection extends React.Component {
     constructor(props) {

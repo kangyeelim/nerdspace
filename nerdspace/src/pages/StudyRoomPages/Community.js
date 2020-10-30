@@ -9,7 +9,6 @@ import { isTokenAccepted } from '../../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NavBar from '../../components/NavigationComponents/NavBar';
-import { Typography } from "@material-ui/core";
 
 const stub = [ {id:1, name:"GP resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},
 {id:2, name:"A Maths resources sharing group", url:"https://source.unsplash.com/aJnHSrgSWkk/1600x900", hasAccess: true},

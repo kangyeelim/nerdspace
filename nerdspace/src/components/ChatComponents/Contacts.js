@@ -1,11 +1,10 @@
 import React from "react";
-import { withRouter } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import { Card, Button, Row, Col, FormControl } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import "./Chat.css";
 
-const db = require('../services/firebase').db;
+const db = require('../../services/firebase').db;
 
 export const history = createBrowserHistory({ forceRefresh: true });
 
