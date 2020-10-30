@@ -39,6 +39,7 @@ class Login extends React.Component {
         }, () => {
             alert("Login failed. Please try again.")
         });
+        console.log(profile.googleId);
         this.props.updateProfile(profile);
     })();
     this.props.updateToken(token);
@@ -47,24 +48,15 @@ class Login extends React.Component {
 
   async addUserOnFirstLogin(profile, _callback, _callback2) {
     var key;
-      await axios.get(`http://localhost:5000/users/byEmail`, {
+      var first = false;
+     await axios.get(`http://localhost:5000/users/byEmail`, {
           params: {
               email: profile.email
           }
       })
     .then((response) => {
       if (response.data.message == 'User does not exist.') {
-        axios.post('http://localhost:5000/users', {
-          name: profile.name,
-          imageUrl: profile.imageUrl,
-          email: profile.email,
-        })
-        .catch(err => {
-            _callback2();
-        })
-        .then((response) => {
-            key = response.data.data;
-        });
+          first = true;
       } else {
           key = response.data.data;
       }
@@ -75,6 +67,19 @@ class Login extends React.Component {
     .catch(err => {
       _callback2();
     })
+      if (first) {
+          await axios.post('http://localhost:5000/users', {
+              name: profile.name,
+              imageUrl: profile.imageUrl,
+              email: profile.email,
+          })
+              .catch(err => {
+                  _callback2();
+              })
+              .then((newResponse) => {
+                  key = newResponse.data.data;
+              });
+      }
     return key;
   }
 
