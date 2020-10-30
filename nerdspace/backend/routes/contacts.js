@@ -31,13 +31,13 @@ router.route('/').post((req, res) => {
         if (req.body.type == "dm") {
             let ref = db.ref("contact").child(req.body.user1Id).child("dm");
 
-            let check = await ref.orderByChild("userId").equalTo(req.body.user2Id).once("value");
+            let check = await ref.orderByChild("userId").equalTo(req.body.user2Id).once("value").push();
             if (check.exists()) {
                 check.forEach((childSnapshot) => {
                     key = childSnapshot.key;
                 });
             } else {
-                key = ref.push().getKey();
+                key = ref.getKey();
                 let ref2 = db.ref("contact").child(req.body.user2Id).child("dm").child(key);
 
                 ref.set({
@@ -81,6 +81,7 @@ async function getDM(id) {
 
     if (dmSnapshot.exists()) {
         dmSnapshot.forEach((childSnapshot) => {
+            console.log(childSnapshot.key)
             let obj = {
                 name: childSnapshot.val().name,
                 id: childSnapshot.val().userID
