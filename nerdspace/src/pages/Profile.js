@@ -112,6 +112,11 @@ class Profile extends React.Component {
             return;
         }
 
+        if (this.state.bio == null) {
+            alert("Please include a bio");
+            return;
+        }
+
         if (this.state.educationLevel == "Secondary") {
             if (parseInt(this.state.yearOfStudy) > 5) {
                 alert("Year of study in Secondary cannot go beyond 5");
