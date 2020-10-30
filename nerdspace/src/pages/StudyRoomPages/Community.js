@@ -150,9 +150,9 @@ class Community extends React.Component {
     return (
       <div>
         <NavBar history={this.props.history} />
-        <div className="container">
-          <Col style={{ width: "100vw" }}>
-            <h2 style={styles.heading}>Community of Study Groups</h2>
+        <div className="container" style={{margin: "auto"}}>
+          <Col>
+            <h2>Community of Study Groups</h2>
             <Form className="ml-auto">
               <div style={styles.form}>
                 <FormControl
@@ -204,10 +204,6 @@ const styles = {
     justifyContent:'center',
     minWidth: "120px"
   },
-  heading: {
-    marginRight: "-30%",
-    marginBottom: "40px"
-  }
 }
 
 const mapStateToProps = (state) => {

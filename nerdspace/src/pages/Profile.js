@@ -175,7 +175,7 @@ class Profile extends React.Component {
         return (
           <div>
             <NavBar history={this.props.history} />
-              <div className="container" style={{ margin: "auto" }}>
+              <div style={styles.container}>
                 <Col>
                 <Avatar
                   style={{
@@ -242,13 +242,6 @@ class Profile extends React.Component {
                         label="Male"
                         name="gender"
                         value="Male"
-                        control={<Radio />}
-                        onChange={this.handleInputChange}
-                      />
-                      <FormControlLabel
-                        label="Other"
-                        name="gender"
-                        value="Other"
                         control={<Radio />}
                         onChange={this.handleInputChange}
                       />
@@ -341,6 +334,14 @@ class Profile extends React.Component {
 }
 
 const styles = {
+    container: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        margin: "2rem",
+        textAlign: "center",
+        justifyContent: "center",
+    },
     bar: {
         width: '70vw',
         padding: "20px",
