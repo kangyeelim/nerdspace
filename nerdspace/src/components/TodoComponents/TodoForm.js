@@ -27,23 +27,34 @@ function TodoForm({ addTodo }) {
     }
 
     return (
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Task"
-          name="task"
-          type="text"
-          value={todo.task}
-          onChange={handleTaskInputChange}
-        />
-        <Button 
-         type="submit" 
-         size="medium" 
-         color="primary"
-        >
-          Add
-        </Button>
-      </form>
+        <form onSubmit={handleSubmit}>
+            <TextField style={styles.textinput}
+                label="Task"
+                name="task"
+                type="text"
+                value={todo.task}
+                onChange={handleTaskInputChange}
+            />
+            <Button 
+                type="submit" 
+                size="medium" 
+                color="primary"
+                variant="contained"
+            >
+                Add
+            </Button>
+        </form>
     );
+}
+
+const styles = {
+    textinput: {
+        width: '30vw',
+        maxWidth: '30vw',
+        height: "auto",
+        margin: "10px",
+        color: "#3282b8"
+    }
 }
 
 export default TodoForm;

@@ -227,6 +227,7 @@ class Profile extends React.Component {
                           id: "educationLevel",
                         }}
                       >
+                        <option aria-label="None" value="" />
                         <option>Primary</option>
                         <option>Secondary</option>
                         <option>Polytechnic</option>
@@ -244,6 +245,7 @@ class Profile extends React.Component {
                           id: "yearOfStudy",
                         }}
                       >
+                        <option aria-label="None" value="" />
                         <option value={1}>1</option>
                         <option value={2}>2</option>
                         <option value={3}>3</option>
@@ -281,6 +283,7 @@ class Profile extends React.Component {
                     </FormGroup>
                     <div className="input-group" style={styles.bar}>
                       <Button
+                        style={styles.button}
                         type="submit"
                         size="medium"
                         color="primary"
@@ -301,7 +304,7 @@ class Profile extends React.Component {
 const styles = {
     bar: {
         width: '70vw',
-        padding: "10px",
+        padding: "20px",
         justifyContent:'center',
         alignText: 'center',
         alignItems: 'center',
@@ -309,6 +312,9 @@ const styles = {
         flexDirection: 'row',
         margin: "auto",
     },
+    button: {
+        margin: "50px"
+    }
 }
 
 const mapStateToProps = (state) => {
