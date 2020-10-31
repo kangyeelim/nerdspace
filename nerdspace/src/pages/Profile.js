@@ -193,14 +193,16 @@ class Profile extends React.Component {
                 />
                 {this.state.isExistingProfileFound && (
                   <Card style={styles.card}>
-                    <Card.Title> {this.state.existingProfile.name}</Card.Title>
+                    <Card.Title> <strong>{this.state.existingProfile.name} </strong></Card.Title>
                     <Card.Body>
                     <Col>
-                      <div>Bio: {this.state.existingProfile.bio}</div>
-                      <div>Gender: {this.state.existingProfile.gender}</div>
+                      <div><strong>Bio:</strong> {this.state.existingProfile.bio}</div>
+                      <div><strong>Gender:</strong> {this.state.existingProfile.gender}</div>
+                      <div><strong>Education Level:</strong> {this.state.existingProfile.educationLevel}</div>
+                      <div><strong>Year of study:</strong> {this.state.existingProfile.year}</div>
                       <div>
                       <ul style={styles.card}>
-                      My Interests:
+                      <strong>My Interests:</strong>
                       {Object.values(this.state.existingProfile.interest).map((interest) => {
                         return <li>{interest}</li>
                       })}
