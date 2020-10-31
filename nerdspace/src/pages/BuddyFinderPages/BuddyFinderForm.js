@@ -89,55 +89,77 @@ class BuddyFinderForm extends React.Component {
         if (this.state.gender == null) {
             this.state.errors["gender"] = "Gender field cannot be empty";
             formIsValid = false;
+        } else {
+            this.state.errors["gender"] = "";
         }
 
-        if (this.state.educationLevel == "Junior College") {
+        if (this.state.educationLevel === "Junior College") {
             const re = /^[0-9\b]+$/;
             if (!re.test(this.state.yearOfStudy)) {
-                this.state.errors["yearOfStudy"] = "YearOfStudy field must only have numbers";
+                const newErrMsg = { ...this.state.errors, yearOfStudy: "YearOfStudy field must only have numbers"};
+                this.setState({errors: newErrMsg});
                 formIsValid = false;
             } else {
                 if (parseInt(this.state.yearOfStudy) > 2) {
-                    this.state.errors["yearOfStudy"] = "Year of study for junior college must be below 3";
+                    const newErrMsg = { ...this.state.errors, yearOfStudy: "Year of study for junior college must be below 3"};
+                    this.setState({errors: newErrMsg});
                     formIsValid = false;
+                } else {
+                    const newErrMsg = { ...this.state.errors, yearOfStudy: ""};
+                    this.setState({errors: newErrMsg});
                 }
             }
         }
-        if (this.state.educationLevel == "Polytechnic") {
+        if (this.state.educationLevel === "Polytechnic") {
             const re = /^[0-9\b]+$/;
             if (!re.test(this.state.yearOfStudy)) {
-                this.state.errors["yearOfStudy"] = "YearOfStudy field must only have numbers";
+                const newErrMsg = { ...this.state.errors, yearOfStudy: "YearOfStudy field must only have numbers"};
+                this.setState({errors: newErrMsg});
                 formIsValid = false;
             } else {
                 if (parseInt(this.state.yearOfStudy) > 3) {
-                    this.state.errors["yearOfStudy"] = "Year of study for polytechnic must be below 4";
+                    const newErrMsg = { ...this.state.errors, yearOfStudy: "Year of study for polytechnic must be below 4"};
+                    this.setState({errors: newErrMsg});
                     formIsValid = false;
+                } else {
+                    const newErrMsg = { ...this.state.errors, yearOfStudy: ""};
+                    this.setState({errors: newErrMsg});
                 }
             }
         }
 
-        if (this.state.educationLevel == "Secondary") {
+        if (this.state.educationLevel === "Secondary") {
             const re = /^[0-9\b]+$/;
             if (!re.test(this.state.yearOfStudy)) {
-                this.state.errors["yearOfStudy"] = "YearOfStudy field must only have numbers";
+                const newErrMsg = { ...this.state.errors, yearOfStudy: "YearOfStudy field must only have numbers"};
+                this.setState({errors: newErrMsg});
                 formIsValid = false;
             } else {
                 if (parseInt(this.state.yearOfStudy) > 5) {
-                    this.state.errors["yearOfStudy"] = "Year of study for secondary must be below 5";
+                    const newErrMsg = { ...this.state.errors, yearOfStudy: "Year of study for secondary must be below 5"};
+                    this.setState({errors: newErrMsg});
                     formIsValid = false;
+                } else {
+                    const newErrMsg = { ...this.state.errors, yearOfStudy: ""};
+                    this.setState({errors: newErrMsg});
                 }
             }
         }
 
-        if (this.state.educationLevel == "University") {
+        if (this.state.educationLevel === "University") {
             const re = /^[0-9\b]+$/;
             if (!re.test(this.state.yearOfStudy)) {
-                this.state.errors["yearOfStudy"] = "YearOfStudy field must only have numbers";
+                const newErrMsg = { ...this.state.errors, yearOfStudy: "YearOfStudy field must only have numbers"};
+                this.setState({errors: newErrMsg});
                 formIsValid = false;
             } else {
                 if (parseInt(this.state.yearOfStudy) > 5) {
-                    this.state.errors["yearOfStudy"] = "Year of study for university must be below 5";
+                    const newErrMsg = { ...this.state.errors, yearOfStudy: "Year of study for university must be below 5"};
+                    this.setState({errors: newErrMsg});
                     formIsValid = false;
+                } else {
+                    const newErrMsg = { ...this.state.errors, yearOfStudy: ""};
+                    this.setState({errors: newErrMsg});
                 }
             }
         }
@@ -145,6 +167,8 @@ class BuddyFinderForm extends React.Component {
         if (this.state.interest == null) {
             this.state.errors["interest"] = "Interest field cannot be empty";
             formIsValid = false;
+        }  else {
+            this.state.errors["interest"] = "";
         }
 
         this.forceUpdate();
@@ -308,7 +332,6 @@ const styles = {
     form: {
         justifyContent: "space-between",
         padding: "1.4rem",
-        justifyContent: "left",
     }
 }
 
