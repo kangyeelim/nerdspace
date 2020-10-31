@@ -72,8 +72,6 @@ class BuddyFinderResult extends React.Component {
         }).then(response => {
             this.props.history.push('/chat/' + response.data.chatID);
         })
-
-        this.props.history.push('/chat/' + this.state.chatID);
     }
 
     render() {
