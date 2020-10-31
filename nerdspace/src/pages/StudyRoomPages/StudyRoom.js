@@ -96,7 +96,7 @@ class StudyRoom extends React.Component {
     return (
       <div>
         <NavBar history={this.props.history}/>
-        <div className='container'>
+        <div className="container">
           <Col>
             <TitleCard
               imageUrl={this.state.imageUrl}

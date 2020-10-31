@@ -181,8 +181,7 @@ class CreateRoomForm extends React.Component {
     return (
       <div>
         <NavBar history={this.props.history}/>
-        <Container>
-        <Col>
+        <div style={styles.container}>
         <h3>Study Room Details</h3>
               <div className="input-group" style={styles.bar}>
                   <label style={styles.title} htmlFor="name">Study Room Name: </label>
@@ -211,38 +210,48 @@ class CreateRoomForm extends React.Component {
                 })}
                 </Form>
               </div>}
+                <div>
+                <label style={styles.title} htmlFor="name">Profile picture: </label>
                 <Upload
                   handleImages={this.handleImages}
                   images={this.state.images}
                 />
+                </div>
               </div>
-            <button onClick={this.onSubmit} className="btn btn-primary">Create</button>
-          </Col>
-        </Container>
+            <button onClick={this.onSubmit} className="btn btn-primary">Submit</button>
+        </div>
       </div>
     );
   }
 }
 
 const styles = {
-    bar: {
-        width: '70vw',
-        margin: '40px',
-        justifyContent:'center',
+  container: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      textAlign: "center",
+      justifyContent: "center",
+
+  },
+  bar: {
+      width: '70vw',
+      margin: '40px',
+      justifyContent:'center',
         alignText: 'center',
-        alignItems: 'center',
-        display: 'flex',
-        flexDirection: 'row'
-    },
-    title: {
-        marginRight: '10px',
-        fontWeight: 'bold',
-        marginLeft: "25px"
-    },
-    content: {
-        marginRight: '10px',
-        fontWeight: 'bold',
-    },
+      alignItems: 'center',
+      display: 'flex',
+      flexDirection: 'row'
+  },
+  title: {
+      marginRight: '10px',
+      fontWeight: 'bold',
+      marginLeft: "25px"
+  },
+  content: {
+      marginRight: '10px',
+      fontWeight: 'bold',
+  },
 }
 
 const mapStateToProps = (state) => {

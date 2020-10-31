@@ -151,7 +151,6 @@ class Community extends React.Component {
       <div>
         <NavBar history={this.props.history} />
         <div style={styles.container}>
-
             <h2 style={{marginBottom:'40px'}}>Community of Study Groups</h2>
             <Form >
               <div style={styles.form}>
@@ -185,7 +184,6 @@ class Community extends React.Component {
                   />
                 );
               })}
-
         </div>
       </div>
     );

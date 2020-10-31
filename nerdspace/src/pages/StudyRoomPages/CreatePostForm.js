@@ -131,8 +131,7 @@ class CreatePostForm extends React.Component {
     return (
       <div>
         <NavBar history={this.props.history}/>
-        <Container>
-        <Col>
+        <div style={styles.container}>
         <h3>Post Details</h3>
           <form className="form">
               <div className="input-group" style={styles.bar}>
@@ -167,16 +166,23 @@ class CreatePostForm extends React.Component {
                     })
                 )}
               </div>
-            <button onClick={this.onSubmit} className="btn btn-primary">Post</button>
+            <button onClick={this.onSubmit} className="btn btn-primary">Submit</button>
           </form>
-          </Col>
-        </Container>
+        </div>
       </div>
     );
   }
 }
 
 const styles = {
+  container: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      textAlign: "center",
+      justifyContent: "center",
+
+  },
     bar: {
         width: '70vw',
         margin: '40px',
