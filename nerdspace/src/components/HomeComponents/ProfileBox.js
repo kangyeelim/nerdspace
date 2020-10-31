@@ -1,6 +1,5 @@
 import React from "react";
 import { Card } from 'react-bootstrap';
-import { MDBContainer } from "mdbreact";
 import { connect } from 'react-redux';
 
 class ProfileBox extends React.Component {

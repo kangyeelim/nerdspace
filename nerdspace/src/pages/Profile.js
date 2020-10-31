@@ -110,6 +110,11 @@ class Profile extends React.Component {
             return;
         }
 
+        if (this.state.bio == null) {
+            alert("Please include a bio");
+            return;
+        }
+
         if (this.state.educationLevel == "Secondary") {
             if (parseInt(this.state.yearOfStudy) > 5) {
                 alert("Year of study in Secondary cannot go beyond 5");
@@ -173,7 +178,7 @@ class Profile extends React.Component {
         return (
           <div>
             <NavBar history={this.props.history} />
-              <div className="container" style={{ margin: "auto" }}>
+              <div style={styles.container}>
                 <Col>
                 <Avatar
                   style={{
@@ -184,26 +189,25 @@ class Profile extends React.Component {
                   src={this.state.profilePic}
                   alt="Profile"
                 />
-
-                <Card style={styles.card}>
+                <form className="form" onSubmit={this.onSubmit}>
+                <Col>
+                <Card style={styles.card} >
                   <Card.Title> {this.props.profile[0].name}</Card.Title>
                   {this.state.isExistingProfileFound && (<Card.Body>
                   <Col>
                     <div><strong>Bio:</strong> {this.state.existingProfile.bio}</div>
                     <div><strong>Gender:</strong> {this.state.existingProfile.gender}</div>
                     <div>
-                    <ol style={styles.card}>
+                    <div style={styles.card}>
                     <strong>My Interests:</strong>
                     {Object.values(this.state.existingProfile.interest).map((interest) => {
                       return <li>{interest}</li>
                     })}
-                    </ol>
+                    </div>
                     </div>
                     </Col>
                   </Card.Body>)}
                   </Card>
-                <form className="form" onSubmit={this.onSubmit}>
-                <Col>
                 {this.state.isExistingProfileFound && (<div style={styles.bar}><h4 style={styles.heading}>Update your profile</h4></div>)}
                 {!this.state.isExistingProfileFound && (<div style={styles.bar}><h4 style={styles.heading}>Add profile information</h4></div>)}
                   <div className="input-group" style={styles.bar}>
@@ -236,13 +240,6 @@ class Profile extends React.Component {
                         control={<Radio />}
                         onChange={this.handleInputChange}
                       />
-                      <FormControlLabel
-                        label="Other"
-                        name="gender"
-                        value="Other"
-                        control={<Radio />}
-                        onChange={this.handleInputChange}
-                      />
                     </RadioGroup>
                     <span style={{ color: "red", right: "3rem" }}>{}</span>
                   </div>
@@ -257,6 +254,7 @@ class Profile extends React.Component {
                           id: "educationLevel",
                         }}
                       >
+                        <option aria-label="None" value="" />
                         <option>Primary</option>
                         <option>Secondary</option>
                         <option>Polytechnic</option>
@@ -274,6 +272,7 @@ class Profile extends React.Component {
                           id: "yearOfStudy",
                         }}
                       >
+                        <option aria-label="None" value="" />
                         <option value={1}>1</option>
                         <option value={2}>2</option>
                         <option value={3}>3</option>
@@ -332,8 +331,16 @@ class Profile extends React.Component {
 }
 
 const styles = {
+    container: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        margin: "2rem",
+        textAlign: "center",
+        justifyContent: "center",
+    },
     bar: {
-        padding: "10px",
+        padding: "20px",
         justifyContent:'center',
         alignText: 'center',
         alignItems: 'center',
@@ -343,14 +350,11 @@ const styles = {
     },
     card: {
       marginTop: "30px",
-      padding: "20px",
+      padding: "20px"
     },
     heading: {
       marginTop: "30px",
       marginLeft: "20px"
-    },
-    form: {
-      alignItems: 'center'
     }
 }
 
