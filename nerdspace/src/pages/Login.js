@@ -29,58 +29,50 @@ class Login extends React.Component {
     this.setState({isAuthenticating:false});
   }
 
-  responseGoogleSuccess(response) {
+  async responseGoogleSuccess(response) {
     const profile = response.profileObj;
     const token = response.tokenObj;
     //adds user in database on first login
-    (async () => {
-        profile.googleId = await this.addUserOnFirstLogin(profile, () => {
-            this.setState({ isLoggedIn: true })
-        }, () => {
-            alert("Login failed. Please try again.")
-        });
-        console.log(profile.googleId);
-        this.props.updateProfile(profile);
-    })();
+
+    profile.googleId = await this.addUserOnFirstLogin(profile);
+
+    console.log(await profile.googleId);
+    this.props.updateProfile(await profile);
     this.props.updateToken(token);
     this.addToken(token, profile.name);
+    this.setState({ isLoggedIn: true })
   }
 
-  async addUserOnFirstLogin(profile, _callback, _callback2) {
+
+
+
+  async addUserOnFirstLogin(profile) {
     var key;
-      var first = false;
-     await axios.get(`http://localhost:5000/users/byEmail`, {
-          params: {
-              email: profile.email
-          }
-      })
-    .then((response) => {
-      if (response.data.message == 'User does not exist.') {
-          first = true;
+    try {
+      var response = await axios.get(`http://localhost:5000/users/byEmail`, {
+            params: {
+                email: profile.email
+            }
+        });
+      if ((await response).data.message == 'User does not exist.') {
+        try {
+          var res = await axios.post('http://localhost:5000/users', {
+                name: profile.name,
+                imageUrl: profile.imageUrl,
+                email: profile.email,
+            });
+          return (await res).data.data;
+        } catch (err) {
+          alert('Login failed. Please try again.');
+          console.error(err);
+        }
       } else {
-          key = response.data.data;
+        return response.data.data;
       }
-    })
-    .then(() => {
-      _callback();
-    })
-    .catch(err => {
-      _callback2();
-    })
-      if (first) {
-          await axios.post('http://localhost:5000/users', {
-              name: profile.name,
-              imageUrl: profile.imageUrl,
-              email: profile.email,
-          })
-              .catch(err => {
-                  _callback2();
-              })
-              .then((newResponse) => {
-                  key = newResponse.data.data;
-              });
-      }
-    return key;
+    } catch (err) {
+      alert('Login failed. Please try again.');
+      console.error(err);
+    }
   }
 
   addToken(token, name) {
