@@ -31,7 +31,8 @@ router.route('/').post((req, res) => {
         if (req.body.type == "dm") {
             let ref = db.ref("contact").child(req.body.user1Id).child("dm");
 
-            let check = await ref.orderByChild("userId").equalTo(req.body.user2Id).once("value").push();
+            let check = await ref.orderByChild("userId").equalTo(req.body.user2Id).once("value");
+            ref = ref.push();
             if (check.exists()) {
                 check.forEach((childSnapshot) => {
                     key = childSnapshot.key;
