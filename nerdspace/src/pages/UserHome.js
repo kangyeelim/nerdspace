@@ -74,9 +74,9 @@ class UserHome extends React.Component {
       return <Redirect to="/"/>
     }
     if (this.state.isAuthenticating) {
-      return <Container>
+      return <div className="container" style={{margin:"auto"}}>
         <CircularProgress/>
-      </Container>
+      </div>
     }
     return (
       <div>

@@ -86,9 +86,9 @@ class StudyRoom extends React.Component {
 
   render() {
     if (this.state.isAuthenticating) {
-      return <Container>
+      return <div className="container" style={styles.container}>
         <CircularProgress/>
-      </Container>
+      </div>
     }
     if (!this.state.isAuthenticated) {
       return <Redirect to="/community"/>;
@@ -96,7 +96,7 @@ class StudyRoom extends React.Component {
     return (
       <div>
         <NavBar history={this.props.history}/>
-        <div className='container'>
+        <div className="container">
           <Col>
             <TitleCard
               imageUrl={this.state.imageUrl}

@@ -168,9 +168,9 @@ class Profile extends React.Component {
 
     render() {
       if (this.state.isAuthenticating) {
-        return <Container>
+        return <div style={styles.container}>
           <CircularProgress/>
-        </Container>
+        </div>
       }
       if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
         return <Redirect to="/"/>
