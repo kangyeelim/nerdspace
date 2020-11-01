@@ -171,9 +171,9 @@ class CreateRoomForm extends React.Component {
 
   render() {
     if (!this.state.isLoaded) {
-      return <Container>
+      return <div className="container" style={styles.container}>
         <CircularProgress/>
-      </Container>
+      </div>
     }
     if (this.state.isLoaded && !this.state.isAuthenticated) {
         return <Redirect to="/"/>;

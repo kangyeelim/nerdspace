@@ -64,9 +64,9 @@ class ChatRoom extends React.Component {
 
     render() {
       if (this.state.isAuthenticating) {
-        return <Container>
+        return <div className="container" style={styles.container}>
           <CircularProgress/>
-        </Container>
+        </div>
       }
       if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
         return <Redirect to="/"/>
@@ -104,12 +104,12 @@ const styles = {
         margin:"auto"
     },
     heading: {
-        display: "flex", alignItems: "center", justifyContent: "center", color: "#0f4c75" 
+        display: "flex", alignItems: "center", justifyContent: "center", color: "#0f4c75"
     },
     input: {
-        borderRadius: "20px", 
-        borderColor: "#a2d5f2", 
-        width: "40vw", padding: "5px", 
+        borderRadius: "20px",
+        borderColor: "#a2d5f2",
+        width: "40vw", padding: "5px",
         outline: "none"
     }
 }

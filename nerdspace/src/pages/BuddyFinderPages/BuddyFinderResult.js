@@ -48,7 +48,7 @@ class BuddyFinderResult extends React.Component {
             } else {
                 this.setState({noResults: true});
             }
-            
+
         }).catch(err => {
             console.error(err);
         })
@@ -78,9 +78,9 @@ class BuddyFinderResult extends React.Component {
 
     render() {
         if (this.state.isAuthenticating) {
-            return <Container>
+            return <div style={styles.container}>
               <CircularProgress/>
-            </Container>
+            </div>
         }
         if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
         return <Redirect to="/"/>
@@ -92,7 +92,7 @@ class BuddyFinderResult extends React.Component {
                 <div style={styles.container}>
                     <div style={styles.header}>
                         <h1 style={styles.headerText}><strong>Results</strong></h1>
-                        
+
                         <Button variant="primary" onClick={this.goToBuddyFinder}>Return to Buddy Finder main page</Button>
                     </div>
                     <CardDeck style={{ display: "flex", flexDirection: "column", minWidth: "70vw" }}>
@@ -114,7 +114,7 @@ class BuddyFinderResult extends React.Component {
                             year={result.year}
                             sendMessage={this.sendMessage}/>;
                         })}
-                        
+
                         </Card>
                     )}
 
@@ -144,7 +144,7 @@ const styles = {
     },
     headerText: {
         margin: "0.5rem",
-        fontSize: 40, 
+        fontSize: 40,
         fontWeight: 350
     }
 
