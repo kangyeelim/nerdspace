@@ -130,6 +130,17 @@ class StudyRoom extends React.Component {
   }
 }
 
+const styles = {
+  container: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      textAlign: "center",
+      justifyContent: "center",
+
+  }
+}
+
 const mapStateToProps = (state) => {
     return {
       profile: state.profile,
