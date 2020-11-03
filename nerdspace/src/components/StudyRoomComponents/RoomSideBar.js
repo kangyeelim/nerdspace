@@ -103,17 +103,34 @@ class RoomSideBar extends React.Component {
   }
 
   acceptRequest(id, googleID) {
-    axios.delete(`http://localhost:5000/studyroomrequests`, {
-      key: id
-    })
-    .then((response) => {
-      this.addMemberInRoom(googleID);
-    })
-    .then(() => {
-      this.addRoomIdToUser(id, googleID);
+    axios.post(`http://localhost:5000/studyrooms/addMembers`, {
+        key: this.props.id,
+        googleID: googleID
     })
     .catch(err => {
-      console.error(err);
+        console.error(err);
+    })
+
+    axios.post('http://localhost:5000/users/addRoomID', {
+        roomID: this.props.id,
+        googleID: googleID
+    })
+    .catch((err) => {
+        console.error(err);
+    });
+
+    axios.post(`http://localhost:5000/contacts/${id}`, {
+        roomID: this.props.id,
+        googleID: googleID,
+        name: this.props.roomName
+    })
+    .catch((err) => {
+        console.error(err);
+    });
+
+    axios.delete(`http://localhost:5000/studyroomrequests/${id}`)
+    .catch(err => {
+        console.error(err);
     })
   }
 
@@ -169,12 +186,12 @@ class RoomSideBar extends React.Component {
           <Card.Body>
             <Card.Title>Requests</Card.Title>
               {this.state.isLoading && (<CircularProgress/>)}
-              {this.state.userRequestInfo.map(req => {
+                  {this.state.userRequestInfo.map(req => {
                 return <RequestNotification
                   key={req.reqID}
                   name={req.name}
                   imageUrl={req.imageUrl}
-                  acceptRequest={() => this.acceptRequest(req.reqID, req.googleID)}
+                  acceptRequest={() => this.acceptRequest(req.reqID, req.key)}
                   rejectRequest={()=> this.rejectRequest(req.reqID)}
                   />
               })}
