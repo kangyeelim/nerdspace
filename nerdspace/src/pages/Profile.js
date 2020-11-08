@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Col, Container, Row, Card } from 'react-bootstrap';
+import { Col, Row, Card } from 'react-bootstrap';
 import { isTokenAccepted } from '../services/Auth';
 import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
-import { FormControl, FormHelperText, Select, Avatar, Checkbox, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, TextField, Button, Typography } from "@material-ui/core";
+import { FormControl, FormHelperText, Select, Avatar, Checkbox, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, TextField, Button, List } from "@material-ui/core";
 import NavBar from "../components/NavigationComponents/NavBar";
 
 const ARRAY_OF_DEFAULT_INTERESTS = ["Math", "GP", "Chemistry", "Physics", "Computing", "Economics"];
@@ -180,18 +180,18 @@ class Profile extends React.Component {
             <NavBar history={this.props.history} />
               <div style={styles.container}>
                 <Col>
-                <Avatar
-                  style={{
-                    width: "150px",
-                    height: "150px",
-                    margin: "auto"
-                  }}
-                  src={this.state.profilePic}
-                  alt="Profile"
-                />
                 <form className="form" onSubmit={this.onSubmit}>
                 <Col>
                 <Card style={styles.card} >
+                  <Avatar
+                    style={{
+                      width: "150px",
+                      height: "150px",
+                      margin: "auto"
+                    }}
+                    src={this.state.profilePic}
+                    alt="Profile"
+                  />
                   <Card.Title> {this.props.profile[0].name}</Card.Title>
                   {this.state.isExistingProfileFound && (<Card.Body>
                   <Col>
@@ -201,7 +201,7 @@ class Profile extends React.Component {
                     <div style={styles.card}>
                     <strong>My Interests:</strong>
                     {Object.values(this.state.existingProfile.interest).map((interest) => {
-                      return <li>{interest}</li>
+                      return <List>{interest}</List>
                     })}
                     </div>
                     </div>
@@ -350,7 +350,10 @@ const styles = {
     },
     card: {
       marginTop: "30px",
-      padding: "20px"
+      paddingTop: "20px",
+      backgroundColor: "#e1f2fb",
+      color: "#3282b8",
+      border: "none",
     },
     heading: {
       marginTop: "30px",
