@@ -5,6 +5,7 @@ import axios from 'axios';
 import RequestNotification from './RequestNotification';
 import UserCard from './UserCard';
 import { goToCommonTimesPage } from '../../navigators/StudyRoomNavigator';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const db = require('../../services/firebase').db;
 
@@ -14,7 +15,8 @@ class RoomSideBar extends React.Component {
     this.state ={
       requests: [],
       userRequestInfo: [],
-      members:[]
+      members:[],
+      isLoading: false
     }
     this.retrieveUserInfo = this.retrieveUserInfo.bind(this);
     this.retrieveUserInfoForMembers = this.retrieveUserInfoForMembers.bind(this);
@@ -34,27 +36,13 @@ class RoomSideBar extends React.Component {
 
   //must switch this to become realtime viewing of requests
   async getAllRoomRequests() {
-    /*axios.get(`http://localhost:5000/studyroomrequests/byRoomID/${this.props.id}`)
-      .then((response) => {
-        var requests = response.data.data;
-        if (requests.length > 0) {
-          var userInfo = requests.map((req) => {
-            return this.retrieveUserInfo(req.googleID, req.key);
-          })
-        } else {
-          this.setState({userRequestInfo: []});
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      })*/
-      var resArr = [];
       try {
-        db.ref('studyRoomRequests')
+        await db.ref('studyRoomRequests')
         .orderByChild('roomID')
         .equalTo(this.props.id)
-        .on("value", function (snapshot) {
-          snapshot.forEach(function (child) {
+        .on("value", async (snapshot) => {
+          var resArr = [];
+          snapshot.forEach((child) => {
             var key = child.key;
             var data = child.val();
             resArr.push({
@@ -63,14 +51,11 @@ class RoomSideBar extends React.Component {
               googleID: data.googleID
             });
           });
-        });
-        if (resArr.length > 0) {
-          var userInfo = resArr.map((req) => {
-            return this.retrieveUserInfo(req.googleID, req.key);
+          this.setState({userRequestInfo:[]})
+          resArr.forEach(async (req) => {
+            await this.retrieveUserInfo(req.googleID, req.key);
           })
-        } else {
-          this.setState({userRequestInfo: []});
-        }
+        });
       } catch(error) {
         console.error(error);
       }
@@ -103,33 +88,49 @@ class RoomSideBar extends React.Component {
       })
   }
 
-  retrieveUserInfo(googleID, reqID) {
+  async retrieveUserInfo(googleID, reqID) {
     var userObj = {};
-    axios.get(`http://localhost:5000/users/byGoogleID/${googleID}`)
-      .then((response) => {
-        userObj = response.data.data[0];
-        userObj.reqID = reqID;
-        var currArr = this.state.userRequestInfo;
-        currArr.push(userObj);
-        this.setState({userRequestInfo: currArr});
-      })
-      .catch(err => {
-        console.error(err);
-      })
+    this.setState({isLoading:true});
+    try {
+      var res = await axios.get(`http://localhost:5000/users/byGoogleID/${googleID}`);
+      userObj = (await res).data.data[0];
+      userObj.reqID = reqID;
+      this.state.userRequestInfo.push(userObj);
+      this.setState({userRequestInfo:this.state.userRequestInfo, isLoading:false});
+    } catch(err) {
+      console.error(err);
+    }
   }
 
   acceptRequest(id, googleID) {
-    axios.delete(`http://localhost:5000/studyroomrequests`, {
-      key: id
-    })
-    .then((response) => {
-      this.addMemberInRoom(googleID);
-    })
-    .then(() => {
-      this.addRoomIdToUser(id, googleID);
+    axios.post(`http://localhost:5000/studyrooms/addMembers`, {
+        key: this.props.id,
+        googleID: googleID
     })
     .catch(err => {
-      console.error(err);
+        console.error(err);
+    })
+
+    axios.post('http://localhost:5000/users/addRoomID', {
+        roomID: this.props.id,
+        googleID: googleID
+    })
+    .catch((err) => {
+        console.error(err);
+    });
+
+    axios.post(`http://localhost:5000/contacts/${id}`, {
+        roomID: this.props.id,
+        googleID: googleID,
+        name: this.props.roomName
+    })
+    .catch((err) => {
+        console.error(err);
+    });
+
+    axios.delete(`http://localhost:5000/studyroomrequests/${id}`)
+    .catch(err => {
+        console.error(err);
     })
   }
 
@@ -148,9 +149,6 @@ class RoomSideBar extends React.Component {
       roomID: this.props.id,
       googleID: googleID
     })
-    .then((response) => {
-      this.getAllRoomRequests();
-    })
     .catch((err) => {
       console.error(err);
     })
@@ -158,11 +156,6 @@ class RoomSideBar extends React.Component {
 
   rejectRequest(id) {
     axios.delete(`http://localhost:5000/studyroomrequests/${id}`)
-      .then((response) => {
-        if (response.data.message == 'DELETE success') {
-          this.getAllRoomRequests();
-        }
-      })
       .catch(err => {
         console.error(err);
       })
@@ -192,12 +185,13 @@ class RoomSideBar extends React.Component {
           </Card.Body>
           <Card.Body>
             <Card.Title>Requests</Card.Title>
-              {this.state.userRequestInfo.map(req => {
+              {this.state.isLoading && (<CircularProgress/>)}
+                  {this.state.userRequestInfo.map(req => {
                 return <RequestNotification
                   key={req.reqID}
                   name={req.name}
                   imageUrl={req.imageUrl}
-                  acceptRequest={() => this.acceptRequest(req.reqID, req.googleID)}
+                  acceptRequest={() => this.acceptRequest(req.reqID, req.key)}
                   rejectRequest={()=> this.rejectRequest(req.reqID)}
                   />
               })}

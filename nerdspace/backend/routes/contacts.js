@@ -24,6 +24,22 @@ router.route('/').get((req, res) => {
     }
 });
 
+router.route('/:id').post((req, res) => {
+    const id = req.body.googleID;
+    const room = req.body.roomID;
+    db.ref("contact")
+        .child(id)
+        .child("group")
+        .child(room)
+        .set({
+            name: req.body.name
+        });
+
+    res.send({
+        message: "POST success"
+    });
+});
+
 router.route('/').post((req, res) => {
     (async () => {
         let key;
@@ -31,7 +47,8 @@ router.route('/').post((req, res) => {
         if (req.body.type == "dm") {
             let ref = db.ref("contact").child(req.body.user1Id).child("dm");
 
-            let check = await ref.orderByChild("userId").equalTo(req.body.user2Id).once("value").push();
+            let check = await ref.orderByChild("userId").equalTo(req.body.user2Id).once("value");
+            ref = ref.push();
             if (check.exists()) {
                 check.forEach((childSnapshot) => {
                     key = childSnapshot.key;
@@ -84,7 +101,7 @@ async function getDM(id) {
             console.log(childSnapshot.key)
             let obj = {
                 name: childSnapshot.val().name,
-                id: childSnapshot.val().userID
+                id: childSnapshot.val().userId
             };
             contacts.push(obj);
         });

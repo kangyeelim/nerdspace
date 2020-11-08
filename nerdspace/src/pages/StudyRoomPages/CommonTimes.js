@@ -133,9 +133,9 @@ class CommonTimes extends React.Component {
 
   render() {
     if (this.state.isAuthenticating) {
-      return <Container>
+      return <div className="container" style={styles.container}>
         <CircularProgress/>
-      </Container>
+      </div>
     }
     if (!this.state.isAuthenticated) {
       return <Redirect to="/community"/>;

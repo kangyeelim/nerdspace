@@ -16,7 +16,6 @@ class Profile extends React.Component {
         super(props);
         this.state = {
             profilePic : this.props.profile[0].imageUrl,
-            name: this.props.profile[0].name,
             email: this.props.profile[0].email,
             bio: null,
             interests: [],
@@ -51,7 +50,6 @@ class Profile extends React.Component {
         var res = await axios.get(`http://localhost:5000/profiles/${this.props.profile[0].googleId}`);
         if ((await res).data.message == 'GET success') {
           this.setState({isExistingProfileFound:true, existingProfile: res.data.data,
-            name: res.data.data.name,
             bio: res.data.data.bio});
         }
         console.log("here")
@@ -112,6 +110,11 @@ class Profile extends React.Component {
             return;
         }
 
+        if (this.state.bio == null) {
+            alert("Please include a bio");
+            return;
+        }
+
         if (this.state.educationLevel == "Secondary") {
             if (parseInt(this.state.yearOfStudy) > 5) {
                 alert("Year of study in Secondary cannot go beyond 5");
@@ -147,7 +150,7 @@ class Profile extends React.Component {
             interests: this.state.interests,
             gender: this.state.gender,
             email: this.props.profile[0].email,
-            name: this.state.name,
+            name: this.props.profile[0].name,
             key: this.props.profile[0].googleId,
             bio: this.state.bio,
             imageUrl: this.state.profilePic
@@ -165,9 +168,9 @@ class Profile extends React.Component {
 
     render() {
       if (this.state.isAuthenticating) {
-        return <Container>
+        return <div style={styles.container}>
           <CircularProgress/>
-        </Container>
+        </div>
       }
       if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
         return <Redirect to="/"/>
@@ -186,36 +189,27 @@ class Profile extends React.Component {
                   src={this.state.profilePic}
                   alt="Profile"
                 />
-                {this.state.isExistingProfileFound && (
-                  <Card style={styles.card}>
-                    <Card.Title> {this.state.existingProfile.name}</Card.Title>
-                    <Card.Body>
-                    <Col>
-                      <div>Bio: {this.state.existingProfile.bio}</div>
-                      <div>Gender: {this.state.existingProfile.gender}</div>
-                      <div>
-                      <ul style={styles.card}>
-                      My Interests:
-                      {Object.values(this.state.existingProfile.interest).map((interest) => {
-                        return <li>{interest}</li>
-                      })}
-                      </ul>
-                      </div>
-                      </Col>
-                    </Card.Body>
-                  </Card>
-                )}
                 <form className="form" onSubmit={this.onSubmit}>
-                {this.state.isExistingProfileFound && (<h4 style={styles.heading}>Update your profile</h4>)}
-                  <div className="input-group" style={styles.bar}>
-                    <TextField
-                      label="Name"
-                      id="name"
-                      name="name"
-                      placeholder={this.props.profile[0].name}
-                      onChange={this.handleInputChange}
-                    />
-                  </div>
+                <Col>
+                <Card style={styles.card} >
+                  <Card.Title> {this.props.profile[0].name}</Card.Title>
+                  {this.state.isExistingProfileFound && (<Card.Body>
+                  <Col>
+                    <div><strong>Bio:</strong> {this.state.existingProfile.bio}</div>
+                    <div><strong>Gender:</strong> {this.state.existingProfile.gender}</div>
+                    <div>
+                    <div style={styles.card}>
+                    <strong>My Interests:</strong>
+                    {Object.values(this.state.existingProfile.interest).map((interest) => {
+                      return <li>{interest}</li>
+                    })}
+                    </div>
+                    </div>
+                    </Col>
+                  </Card.Body>)}
+                  </Card>
+                {this.state.isExistingProfileFound && (<div style={styles.bar}><h4 style={styles.heading}>Update your profile</h4></div>)}
+                {!this.state.isExistingProfileFound && (<div style={styles.bar}><h4 style={styles.heading}>Add profile information</h4></div>)}
                   <div className="input-group" style={styles.bar}>
                     <TextField
                       variant="outlined"
@@ -223,9 +217,10 @@ class Profile extends React.Component {
                       id="bio"
                       name="bio"
                       multiline
-                      rows={5}
+                      rows={4}
                       rowsMax={10}
                       onChange={this.handleInputChange}
+                      style={{width:"40vw"}}
                     />
                   </div>
                   <div className="input-group" style={styles.bar}>
@@ -316,7 +311,7 @@ class Profile extends React.Component {
                     </FormGroup>
                     <div className="input-group" style={styles.bar}>
                       <Button
-                        style={styles.button}
+                        style={{marginTop: "20px"}}
                         type="submit"
                         size="medium"
                         color="primary"
@@ -326,6 +321,7 @@ class Profile extends React.Component {
                       </Button>
                     </div>
                   </div>
+                  </Col>
                 </form>
               </Col>
             </div>
@@ -344,7 +340,6 @@ const styles = {
         justifyContent: "center",
     },
     bar: {
-        width: '70vw',
         padding: "20px",
         justifyContent:'center',
         alignText: 'center',
@@ -355,14 +350,11 @@ const styles = {
     },
     card: {
       marginTop: "30px",
-      padding: "20px",
+      padding: "20px"
     },
     heading: {
       marginTop: "30px",
       marginLeft: "20px"
-    },
-    button: {
-        margin: "50px"
     }
 }
 

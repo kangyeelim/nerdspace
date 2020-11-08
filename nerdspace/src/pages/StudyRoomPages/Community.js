@@ -140,9 +140,9 @@ class Community extends React.Component {
 
   render() {
     if (this.state.isAuthenticating) {
-      return <Container>
+      return <div className="container" style={styles.container}>
         <CircularProgress/>
-      </Container>
+      </div>
     }
     if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
       return <Redirect to="/"/>
@@ -150,10 +150,9 @@ class Community extends React.Component {
     return (
       <div>
         <NavBar history={this.props.history} />
-        <div className="container" style={{margin: "auto"}}>
-          <Col>
-            <h2>Community of Study Groups</h2>
-            <Form className="ml-auto">
+        <div style={styles.container}>
+            <h2 style={{marginBottom:'40px'}}>Community of Study Groups</h2>
+            <Form >
               <div style={styles.form}>
                 <FormControl
                   type="text"
@@ -185,7 +184,6 @@ class Community extends React.Component {
                   />
                 );
               })}
-          </Col>
         </div>
       </div>
     );
@@ -193,6 +191,14 @@ class Community extends React.Component {
 }
 
 const styles = {
+  container: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      textAlign: "center",
+      justifyContent: "center",
+
+  },
   form: {
     display: "flex",
     width: '80vw',

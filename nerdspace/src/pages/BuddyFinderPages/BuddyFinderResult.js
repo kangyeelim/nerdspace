@@ -42,18 +42,18 @@ class BuddyFinderResult extends React.Component {
     async getSearchResults() {
         await axios.get(`http://localhost:5000/profiles/getBuddy/${this.props.profile[0].googleId}/${this.props.location.state.gender}/${this.props.location.state.educationLevel}/${this.props.location.state.yearOfStudy}/${this.props.location.state.interest}`)
         .then(res => {
-            if (res.length != 0) {
+            if (res.length !== 0) {
                 this.setState({results: res.data.data});
                 this.setState({noResults: false});
             } else {
                 this.setState({noResults: true});
             }
-            
+
         }).catch(err => {
             console.error(err);
         })
 
-        if (this.state.results.length == 0) {
+        if (this.state.results.length === 0) {
             this.setState({noResults: true});
         }
     }
@@ -72,15 +72,13 @@ class BuddyFinderResult extends React.Component {
         }).then(response => {
             this.props.history.push('/chat/' + response.data.chatID);
         })
-
-        this.props.history.push('/chat/' + this.state.chatID);
     }
 
     render() {
         if (this.state.isAuthenticating) {
-            return <Container>
+            return <div style={styles.container}>
               <CircularProgress/>
-            </Container>
+            </div>
         }
         if (!this.state.isAuthenticating && !this.state.isLoggedIn) {
         return <Redirect to="/"/>
@@ -92,7 +90,7 @@ class BuddyFinderResult extends React.Component {
                 <div style={styles.container}>
                     <div style={styles.header}>
                         <h1 style={styles.headerText}><strong>Results</strong></h1>
-                        
+
                         <Button variant="primary" onClick={this.goToBuddyFinder}>Return to Buddy Finder main page</Button>
                     </div>
                     <CardDeck style={{ display: "flex", flexDirection: "column", minWidth: "70vw" }}>
@@ -114,7 +112,7 @@ class BuddyFinderResult extends React.Component {
                             year={result.year}
                             sendMessage={this.sendMessage}/>;
                         })}
-                        
+
                         </Card>
                     )}
 
@@ -144,7 +142,7 @@ const styles = {
     },
     headerText: {
         margin: "0.5rem",
-        fontSize: 40, 
+        fontSize: 40,
         fontWeight: 350
     }
 
