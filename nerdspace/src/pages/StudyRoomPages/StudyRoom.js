@@ -106,7 +106,7 @@ class StudyRoom extends React.Component {
               editRoom={this.editRoom}
             />
             <Row>
-              <Col md={11}>
+              <Col md={10}>
                 <RoomPostsSection
                   imageUrl={this.state.imageUrl}
                   roomName={this.state.roomName}
