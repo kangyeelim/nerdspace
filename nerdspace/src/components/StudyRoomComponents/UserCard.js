@@ -15,15 +15,20 @@ const styles = {
     alignText: 'center',
     alignItems: 'center',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'flex-start',
+    padding: "10px",
+    paddingLeft: "10%",
   },
   image: {
-    width: "20%",
-    height: "20%",
+    width: "30%",
+    height: "30%",
     borderRadius: "50%",
   },
   name: {
+    display: 'flex',
+    alignContents: "center",
+    justifyContent: 'flex-start',
     marginTop: "5%",
-    marginLeft: "10px"
+    marginLeft: "5%"
   }
 }

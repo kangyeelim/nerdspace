@@ -6,8 +6,6 @@ import Lightbox from "react-awesome-lightbox";
 import "react-awesome-lightbox/build/style.css";
 import './Post.css';
 
-
-
 class Post extends React.Component {
   constructor() {
     super();
@@ -27,8 +25,8 @@ class Post extends React.Component {
 
   render() {
     return (
-      <Card className="shadow-sm p-3 mb-5 bg-white rounded" style={styles.card}>
-        <Card.Body>
+      <Card style={styles.card}>
+            <Card.Body style={styles.text}>
           <Card.Title>{this.props.title}</Card.Title>
           {this.props.content}
           {this.props.images.map(url => {
@@ -61,18 +59,15 @@ class Post extends React.Component {
 
 const styles = {
   card: {
-    width:"57vw",
-    justifyContent:'center',
-    alignText: 'center',
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: "10px"
+    margin: "10px",
+  },
+  text: {
+    color: "#3282b8",
   },
   image: {
-    width: "55vw",
+    width: "80%",
+    maxWidth: "100%",
     height: "auto",
-    marginTop: "30px"
   }
 }
 
