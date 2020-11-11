@@ -203,14 +203,9 @@ class RoomSideBar extends React.Component {
 
 const styles = {
   card: {
-    marginTop: '40px',
-    justifyContent:'center',
-    alignText: 'center',
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    width: "20vw",
-    minWidth: "280px",
+    margin: "auto",
+    marginTop: "10px",
+    backgroundColor: "#a2d5f2",
   }
 }
 

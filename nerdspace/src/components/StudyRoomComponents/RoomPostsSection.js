@@ -1,11 +1,10 @@
 import React from "react";
-import { Card, Button, Row, Col, FormControl } from 'react-bootstrap';
+import { Card, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Post from './Post';
-import { Redirect } from 'react-router-dom';
-import axios from 'axios';
 import { deleteStudyRoomPost, findPostsByString, getAllRoomPosts } from '../../services/StudyRoomPostService';
 import { goToCreatePostForm, goToEditPostForm } from '../../navigators/StudyRoomNavigator';
+import { Button } from "@material-ui/core";
 
 class RoomPostsSection extends React.Component {
   constructor() {
@@ -74,17 +73,15 @@ class RoomPostsSection extends React.Component {
   }
 
   render() {
-      return (
-      <div>
-        <div style={{display: "flex", marginTop: "30px"}}>
-          <FormControl onChange={this.handleSearchInput} type="text" placeholder="Search for posts" className="mr-sm-2" style={{maxWidth: "44vw"}}/>
-          <Button  variant="outline-primary"onClick={this.search} style={{marginRight: "20px"}}>Search</Button>
-          <Button variant="primary" onClick={this.createPost} style={{marginRight: "30px"}}>Create post</Button>
+    return (
+      <div style={styles.container}>
+        <div style={styles.search}>
+          <FormControl onChange={this.handleSearchInput} type="text" placeholder="Search for posts"/>
+            <Button type="submit" size="medium" color="primary" variant="outlined" onClick={this.search} style={styles.buttonText}>Search</Button>
+            <Button type="submit" size="medium" color="primary" variant="contained" onClick={this.createPost} style={styles.buttonText}>Create post</Button>
         </div>
           <Card style={styles.card}>
             <Card.Body>
-              <Row>
-              <Col>
               <Card.Title>Posts</Card.Title>
               {this.state.posts.map((post) => {
                 return <div key={post.key}>
@@ -99,8 +96,6 @@ class RoomPostsSection extends React.Component {
                 />
                 </div>
               })}
-              </Col>
-              </Row>
             </Card.Body>
           </Card>
         </div>
@@ -109,15 +104,23 @@ class RoomPostsSection extends React.Component {
 }
 
 const styles = {
+  container: {
+    margin: "auto",
+  },
+  search: {
+    display: "flex",
+    flexDirection: "row",
+    paddingTop: "10px",
+    paddingBottom: "10px",
+  },
+  buttonText: {
+    flexWrap: "nowrap",
+    width: "20vw",
+    marginLeft: "10px",
+  },
   card: {
-    marginTop: '40px',
-    justifyContent:'center',
-    alignText: 'center',
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    minWidth: "475px",
-    width: "58vw"
+    margin: "auto",
+    backgroundColor: "#e1f2fb",
   }
 }
 

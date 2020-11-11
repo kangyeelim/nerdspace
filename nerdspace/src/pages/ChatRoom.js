@@ -64,7 +64,7 @@ class ChatRoom extends React.Component {
 
     render() {
       if (this.state.isAuthenticating) {
-        return <div className="container" style={styles.container}>
+        return <div style={styles.container}>
           <CircularProgress/>
         </div>
       }

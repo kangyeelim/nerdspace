@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import '../General.css';
 import { Redirect } from 'react-router-dom';
-import { Col, Row, Container } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import TitleCard from '../../components/StudyRoomComponents/TitleCard';
 import RoomSideBar from '../../components/StudyRoomComponents/RoomSideBar';
 import RoomPostsSection from '../../components/StudyRoomComponents/RoomPostsSection';
@@ -110,8 +110,9 @@ class StudyRoom extends React.Component {
     return (
       <div>
         <NavBar history={this.props.history}/>
-        <div className="container">
-          <Col>
+          <div className='container' style={styles.container}>
+            <Col>
+            <Row>
             <TitleCard
               imageUrl={this.state.imageUrl}
               roomName={this.state.roomName}
@@ -119,8 +120,9 @@ class StudyRoom extends React.Component {
               leaveRoom={this.leaveRoom}
               editRoom={this.editRoom}
             />
+            </Row>
             <Row>
-              <Col md={11}>
+              <Col xs={9}>
                 <RoomPostsSection
                   imageUrl={this.state.imageUrl}
                   roomName={this.state.roomName}
@@ -128,7 +130,7 @@ class StudyRoom extends React.Component {
                   history={this.props.history}
                 />
               </Col>
-              <Col xs={1}>
+              <Col xs={3}>
                 <RoomSideBar
                   imageUrl={this.state.imageUrl}
                   roomName={this.state.roomName}
@@ -137,7 +139,7 @@ class StudyRoom extends React.Component {
                 />
               </Col>
             </Row>
-          </Col>
+            </Col>
         </div>
       </div>
     );
@@ -146,13 +148,8 @@ class StudyRoom extends React.Component {
 
 const styles = {
   container: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      textAlign: "center",
-      justifyContent: "center",
-
-  }
+    margin: "auto"
+  },
 }
 
 const mapStateToProps = (state) => {

@@ -143,7 +143,7 @@ class CommonTimes extends React.Component {
     return (
       <div>
         <NavBar history={this.props.history}/>
-        <div className="container" style={styles.container}>
+        <div style={styles.container}>
           <h2 style={styles.title}>Find Common Times</h2>
           <h6>Members that have submitted their timetable:</h6>
           <ol style={styles.subHeader}>
@@ -164,7 +164,7 @@ class CommonTimes extends React.Component {
               existingRecord={this.state.commonTimes}
               isEditingDisabled={true}/>
             </div>}
-          {this.state.isExistingRecord && !this.state.isEditingMode && <div>
+          {this.state.isExistingRecord && !this.state.isEditingMode && <div style={styles.container}>
             <h4 style={styles.heading}>Your Submitted Timetable Entry</h4>
             <p style={styles.subHeader}>This is your previously submitted available time slots which is used to find common study times</p>
               <TimeTableView roomId={this.state.roomId}
