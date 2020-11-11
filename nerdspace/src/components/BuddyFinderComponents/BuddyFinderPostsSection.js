@@ -24,7 +24,7 @@ class BuddyFinderPostsSection extends React.Component {
             this.setState({ forms: res.data.data });
           });
     }
-    
+
     async submitPost(id, gender, educationLevel, yearOfStudy, interest) {
         this.props.history.push({
             pathname:'/buddy-finder-result',
@@ -55,39 +55,36 @@ class BuddyFinderPostsSection extends React.Component {
         let count = 1;
 
         return (
-            <Card style={styles.card}>
-                <Card.Body>
-                    <Row>
-                        <Col>
-                            <Card.Title style={{fontSize: 40, fontWeight: 500}}>Saved Forms</Card.Title>
+            <div style={styles.card}>
+
+                          <h2>Saved Forms</h2>
                             {this.state.forms.map((form) => {
-                                return <BuddyPost
-                                key={form.key}
-                                id={form.key}
-                                index={count++}
-                                gender={form.gender}
-                                educationLevel={form.educationLevel}
-                                yearOfStudy={form.yearOfStudy}
-                                interest={form.interest}
-                                submitPost={this.submitPost}
-                                deletePost={this.deletePost}/>;
+                                return (
+                                  <BuddyPost
+                                  key={form.key}
+                                  id={form.key}
+                                  index={count++}
+                                  gender={form.gender}
+                                  educationLevel={form.educationLevel}
+                                  yearOfStudy={form.yearOfStudy}
+                                  interest={form.interest}
+                                  submitPost={this.submitPost}
+                                  deletePost={this.deletePost}/>
+                                );
                             })}
-                        </Col>
-                    </Row>
-                </Card.Body>
-            </Card>
+            </div>
         );
     }
 }
 
 const styles = {
     card: {
-        minWidth: "70vw",
-        display: "inline-block",
-        verticalAlign: "middle",
+        display: "flex",
         flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
         justifyContent: "center",
-    }
+    },
 }
 
 const mapStateToProps = (state) => {

@@ -89,16 +89,15 @@ class BuddyFinderResult extends React.Component {
                 <NavBar history={this.props.history}/>
                 <div style={styles.container}>
                     <div style={styles.header}>
-                        <h1 style={styles.headerText}><strong>Results</strong></h1>
-
-                        <Button variant="primary" onClick={this.goToBuddyFinder}>Return to Buddy Finder main page</Button>
+                        <h2 style={{marginBottom: "20px"}}>Results</h2>
+                        <Button variant="primary" onClick={this.goToBuddyFinder}>Return to Buddy Finder Page</Button>
                     </div>
                     <CardDeck style={{ display: "flex", flexDirection: "column", minWidth: "70vw" }}>
                     {this.state.noResults ? (
                         <h1 style={{padding: "3rem"}}>No match found! ): </h1>
                     ) : (
-                        <Card style={{ display: "flex", flexDirection: "column" }}>
 
+                      <div>
                         {this.state.results.map((result) => {
                             return <BuddyResult
                             key={result.key}
@@ -112,8 +111,7 @@ class BuddyFinderResult extends React.Component {
                             year={result.year}
                             sendMessage={this.sendMessage}/>;
                         })}
-
-                        </Card>
+                        </div>
                     )}
 
                     </CardDeck>
@@ -138,7 +136,7 @@ const styles = {
     header: {
         flexDirection: "column",
         justifyContent: "center",
-        padding: "2rem",
+        paddingBottom: "2rem",
     },
     headerText: {
         margin: "0.5rem",
