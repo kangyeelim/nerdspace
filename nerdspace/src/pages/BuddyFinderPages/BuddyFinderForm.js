@@ -303,7 +303,7 @@ class BuddyFinderForm extends React.Component {
 
                                 <Form.Group as={Row}>
                                     <Col sm={{ span: 10, offset: 2 }}>
-                                        <Button onClick={this.submitForm} type="submit">Submit</Button>
+                                        <Button style={{marginTop:"20px"}} onClick={this.submitForm} type="submit">Submit</Button>
                                     </Col>
                                 </Form.Group>
                             </Form>
