@@ -1,6 +1,5 @@
 import React from 'react';
-import { Row, Image } from 'react-bootstrap';
-import { connect } from 'react-redux';
+import { Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faUserSlash } from '@fortawesome/free-solid-svg-icons';
 import './RequestNotification.css';
@@ -9,32 +8,39 @@ import UserCard from './UserCard';
 export default function RequestNotification(props) {
   return (
     <div>
-      <div className="d-flex justify-content-center align-middle"
-      style={styles.row}>
+      <Card style={styles.card}>
         <UserCard name={props.name} imageUrl={props.imageUrl}/>
+        <div style={styles.row}>
         <FontAwesomeIcon id="acceptIcon" icon={faUserPlus} style={styles.icon}
         onClick={props.acceptRequest}/>
         <FontAwesomeIcon id="deleteIcon" icon={faUserSlash} style={styles.deleteIcon}
         onClick={props.rejectRequest}/>
-      </div>
+        </div>
+      </Card>
     </div>
   );
 }
 
 const styles = {
+  container: {
+    margin: "auto",
+    backgroundColor: "white",
+    borderRadius: "30%",
+  },
+  card: {
+    padding: "10px",
+  },
   row: {
-    alignItems: 'center',
-    display: 'flex',
-    alignText: 'center'
+    display: "flex",
   },
   icon: {
     width: '20px',
     color: "green",
-    marginLeft: "30px",
+    margin: "auto",
   },
   deleteIcon: {
     width: '20px',
     color: "red",
-    marginLeft: "15px",
+    margin: "auto",
   }
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, Image, Button } from 'react-bootstrap';
-import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import Lightbox from "react-awesome-lightbox";
@@ -43,12 +42,14 @@ class TitleCard extends React.Component {
 
 const styles = {
   card: {
-    width: '83vw',
-    justifyContent:'center',
+    width: "100%",
     alignText: 'center',
     alignItems: 'center',
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor: "#a2d5f2",
+    marginLeft: "15px",
+    marginRight: "15px",
   },
   image: {
     width: "100px",
