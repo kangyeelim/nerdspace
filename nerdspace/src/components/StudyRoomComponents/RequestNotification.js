@@ -29,6 +29,8 @@ const styles = {
   },
   card: {
     padding: "10px",
+    marginTop: "15px",
+    marginBottom: "15px",
   },
   row: {
     display: "flex",

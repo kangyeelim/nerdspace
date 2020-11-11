@@ -47,7 +47,6 @@ const styles = {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: "#a2d5f2",
     marginLeft: "15px",
     marginRight: "15px",
   },
