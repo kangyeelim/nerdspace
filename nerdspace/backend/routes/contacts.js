@@ -161,4 +161,21 @@ async function getName(id) {
     return name;
 }
 
+router.route('/:key/:googleID').delete((req, res) => {
+    const key = req.params.key;
+    const memberID = req.params.googleID;
+    db.ref('contact')
+        .child(memberID)
+        .child('group')
+        .child(key).remove(function (error) {
+            if (error) {
+                res.send(error);
+            } else {
+                res.send({
+                    message: 'DELETE success'
+                });
+            }
+        });
+});
+
 module.exports = router;

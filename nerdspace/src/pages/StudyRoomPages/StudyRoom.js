@@ -40,6 +40,7 @@ class StudyRoom extends React.Component {
 
   async leaveRoom(id) {
     //remove googleID from room
+      console.log("Leaving room");
     axios.delete(`http://localhost:5000/studyrooms/removeMember/${id}/${this.props.profile[0].googleId}`)
       .then(async res => {
         if (res.data.data === 1) {
@@ -61,6 +62,12 @@ class StudyRoom extends React.Component {
             .catch(err => {
               console.error(err);
             })
+            console.log("Here");
+
+            axios.delete(`http://localhost:5000/contacts/${id}/${this.props.profile[0].googleId}`)
+            .catch(err => {
+                console.error(err);
+            })
           //delete the images from firebase and cloudinary
           var imageArr = [];
           imageArr.push(this.state.imageUrl);
@@ -70,6 +77,8 @@ class StudyRoom extends React.Component {
       .catch(err => {
         console.error(err);
       })
+      console.log("2");
+
     //remove roomID from user
     axios.delete(`http://localhost:5000/users/removeRoom/${id}/${this.props.profile[0].googleId}`)
       .then(res => {
@@ -78,6 +87,11 @@ class StudyRoom extends React.Component {
       .catch(err => {
         console.error(err);
       })
+
+      axios.delete(`http://localhost:5000/contacts/${id}/${this.props.profile[0].googleId}`)
+        .catch(err => {
+            console.error(err);
+        })
   }
 
   editRoom(id, name, image) {
