@@ -190,14 +190,14 @@ class BuddyFinderForm extends React.Component {
                 <Col>
                     <div style={styles.container}>
                         <div style={styles.header}>
-                            <h1><strong>Find your ideal study buddy</strong></h1>
+                            <h2>Find your ideal study buddy</h2>
                             <h6>Fill in the desired attributes in your study buddy</h6>
                         </div>
                         <div>
                             <Form style={styles.form}>
                                 <fieldset>
                                     <Form.Group as={Row} onSubmit={this.findBuddy} style={{ padding: "1rem" }}>
-                                        <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "800", right: "1rem" }}>Gender</Form.Label>
+                                        <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "600", right: "1rem" }}>Gender</Form.Label>
                                         <Col sm={10}>
                                             <Form.Check
                                                 type="radio"
@@ -221,7 +221,7 @@ class BuddyFinderForm extends React.Component {
                                     </Form.Group>
                                 </fieldset>
                                 <Form.Group as={Row}>
-                                    <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "800" }}>Level of education</Form.Label>
+                                    <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "600"}}>Education Level</Form.Label>
                                     <Col sm={7} style={{ left: "1.5rem" }}>
                                         <Form.Control as="select" id="educationLevel" name="educationLevel" onChange={this.handleInputChange}>
                                             <option>Primary</option>
@@ -245,7 +245,7 @@ class BuddyFinderForm extends React.Component {
                                 </Form.Group>
                                 <fieldset>
                                     <Form.Group as={Row} onChange={this.handleInputChange}>
-                                        <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "800" }}>Interests</Form.Label>
+                                        <Form.Label as="legend" column sm={2} style={{ bottom: "1rem", fontWeight: "600" }}>Interests</Form.Label>
                                         <Col sm={10}>
                                             <Form.Check
                                                 type="radio"
@@ -295,7 +295,7 @@ class BuddyFinderForm extends React.Component {
                                                 label="Economics"
                                                 disabled={this.state.interestField}
                                             />
-                                            <Form.Control type="input" id="interest" name="this.state.name" placeholder="Others" onChange={this.handleInterestText} />
+                                            <Form.Control style={{marginTop:"10px"}} type="input" id="interest" name="this.state.name" placeholder="Others" onChange={this.handleInterestText} />
                                             <span style={{ color: "red" }}>{this.state.errors["interest"]}</span>
                                         </Col>
                                     </Form.Group>
@@ -327,7 +327,7 @@ const styles = {
         justifyContent: "center",
     },
     header: {
-        padding: "2rem",
+        paddingBottom: "2rem",
     },
     form: {
         justifyContent: "space-between",
