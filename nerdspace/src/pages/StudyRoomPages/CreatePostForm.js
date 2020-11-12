@@ -75,8 +75,6 @@ class CreatePostForm extends React.Component {
         .catch(err => {
           console.error(err);
         });
-        /*await createNewPost(this.state.title, this.state.content, images,
-        this.props.location.state.id, this.props.profile[0].googleId);*/
         this.returnToRoom();
       });
     } else {
@@ -89,10 +87,6 @@ class CreatePostForm extends React.Component {
         .catch(err => {
           console.error(err);
         })
-        /*await updateExistingPost(this.state.key,
-        this.state.title,
-        this.state.content);*/
-
         this.returnToRoom();
       });
     }
@@ -121,7 +115,7 @@ class CreatePostForm extends React.Component {
 
   render() {
     if (this.state.isAuthenticating) {
-      return <div className="container" style={styles.container}>
+      return <div className="container" style={{margin:"auto"}}>
         <CircularProgress/>
       </div>
     }
