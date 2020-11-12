@@ -38,6 +38,8 @@
     color: #0f4c75;
     padding: 20px;
     height: 50vh;
+    width: 47vw;
+    max-width: 52vw;
     overflow: scroll;
     overflow: auto;
 }
