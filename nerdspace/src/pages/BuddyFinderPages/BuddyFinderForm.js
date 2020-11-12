@@ -177,7 +177,7 @@ class BuddyFinderForm extends React.Component {
 
     render() {
         if (this.state.isAuthenticating) {
-            return <div style={styles.container}>
+            return <div className="container" style={{margin:"auto"}}>
                 <CircularProgress />
             </div>
         }

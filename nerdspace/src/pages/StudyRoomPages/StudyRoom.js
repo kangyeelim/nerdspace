@@ -64,7 +64,7 @@ class StudyRoom extends React.Component {
             })
             console.log("Here");
 
-            axios.delete(`http://localhost:5000/contacts/${id}/${this.props.profile[0].googleId}`)
+            axios.delete(`http://localhost:5000/contacts/deleteGroup/${id}/${this.props.profile[0].googleId}`)
             .catch(err => {
                 console.error(err);
             })
@@ -88,7 +88,7 @@ class StudyRoom extends React.Component {
         console.error(err);
       })
 
-      axios.delete(`http://localhost:5000/contacts/${id}/${this.props.profile[0].googleId}`)
+      axios.delete(`http://localhost:5000/contacts/deleteGroup/${id}/${this.props.profile[0].googleId}`)
         .catch(err => {
             console.error(err);
         })
@@ -100,7 +100,7 @@ class StudyRoom extends React.Component {
 
   render() {
     if (this.state.isAuthenticating) {
-      return <div className="container" style={styles.container}>
+      return <div className="container" style={{margin:"auto"}}>
         <CircularProgress/>
       </div>
     }

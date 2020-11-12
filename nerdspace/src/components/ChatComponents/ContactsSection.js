@@ -26,7 +26,6 @@ class ContactsSection extends React.Component {
         }).catch(err => {
             console.error(err);
         }).then(response => {
-            console.log("Response: " + response);
             this.setState({ contacts: response.data.contacts });
         });
     }

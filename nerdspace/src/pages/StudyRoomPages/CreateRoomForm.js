@@ -172,7 +172,7 @@ class CreateRoomForm extends React.Component {
 
   render() {
     if (!this.state.isLoaded) {
-      return <div className="container" style={styles.container}>
+      return <div className="container" style={{margin:"auto"}}>
         <CircularProgress/>
       </div>
     }

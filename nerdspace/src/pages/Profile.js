@@ -168,7 +168,7 @@ class Profile extends React.Component {
 
     render() {
       if (this.state.isAuthenticating) {
-        return <div style={styles.container}>
+        return <div className="container" style={{margin:"auto"}}>
           <CircularProgress/>
         </div>
       }
@@ -192,7 +192,7 @@ class Profile extends React.Component {
                     src={this.state.profilePic}
                     alt="Profile"
                   />
-                  <Card.Title> {this.props.profile[0].name}</Card.Title>
+                  <Card.Title style={{marginTop: "20px"}}> {this.props.profile[0].name}</Card.Title>
                   {this.state.isExistingProfileFound && (<Card.Body>
                   <Col>
                     <div><strong>Bio:</strong> {this.state.existingProfile.bio}</div>
