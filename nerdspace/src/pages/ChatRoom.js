@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import './General.css';
-import { Col, Row, Container } from 'react-bootstrap';
+import { createBrowserHistory } from 'history';
+import { Col, Row, Button } from 'react-bootstrap';
 import ChatMessageSection from '../components/ChatComponents/ChatMessagesSection';
 import ContactsSection from '../components/ChatComponents/ContactsSection';
 import { isTokenAccepted } from '../services/Auth';
@@ -10,6 +11,8 @@ import { Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NavBar from "../components/NavigationComponents/NavBar";
 import { Typography } from "@material-ui/core";
+
+export const history = createBrowserHistory({ forceRefresh: true });
 
 class ChatRoom extends React.Component {
     constructor(props) {
@@ -26,6 +29,7 @@ class ChatRoom extends React.Component {
         this.handleMsgChange = this.handleMsgChange.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.postChatMessage = this.postChatMessage.bind(this);
+        this.deleteChat = this.deleteChat.bind(this);
     }
 
     async componentDidMount() {
@@ -62,6 +66,16 @@ class ChatRoom extends React.Component {
         });
     }
 
+    deleteChat() {
+        axios.delete(`http://localhost:5000/contacts/${this.state.id}/${this.props.profile[0].googleId}`)
+            .catch(err => {
+                console.error(err);
+            })
+            .then(response => {
+                history.push('/chat/');
+            })
+    }
+
     render() {
       if (this.state.isAuthenticating) {
         return <div className="container" style={{margin:"auto"}}>
@@ -88,7 +102,8 @@ class ChatRoom extends React.Component {
                                 <Col md={8}>
                                     <ChatMessageSection id={this.state.id}/>
                                     <input name="chatInput" placeholder="send a message" onChange={this.handleMsgChange} onKeyDown={this.handleKeyDown}
-                                        value={this.msg} style={styles.input} /><br />
+                                            value={this.msg} style={styles.input} /><br />
+                                    <Button style={styles.button} variant="danger" onClick={this.deleteChat}>Delete Chat</Button>
                                 </Col>
                             )}
                         </Row>
