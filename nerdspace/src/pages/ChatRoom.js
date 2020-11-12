@@ -101,9 +101,11 @@ class ChatRoom extends React.Component {
                                 ) : (
                                 <Col md={8}>
                                     <ChatMessageSection id={this.state.id}/>
-                                    <input name="chatInput" placeholder="send a message" onChange={this.handleMsgChange} onKeyDown={this.handleKeyDown}
+                                    <div style={styles.bottom}>
+                                        <Button style={styles.button} variant="danger" onClick={this.deleteChat}>Delete Chat</Button>
+                                        <input name="chatInput" placeholder="send a message" onChange={this.handleMsgChange} onKeyDown={this.handleKeyDown}
                                             value={this.msg} style={styles.input} /><br />
-                                    <Button style={styles.button} variant="danger" onClick={this.deleteChat}>Delete Chat</Button>
+                                    </div>
                                 </Col>
                             )}
                         </Row>
@@ -119,13 +121,23 @@ const styles = {
         margin:"auto"
     },
     heading: {
-        display: "flex", alignItems: "center", justifyContent: "center", color: "#0f4c75"
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: "center", 
+        color: "#0f4c75"
     },
     input: {
         borderRadius: "20px",
         borderColor: "#a2d5f2",
-        width: "40vw", padding: "5px",
-        outline: "none"
+        width: "32vw",
+        padding: "5px",
+        outline: "none",
+        marginLeft: "5px",
+    },
+    bottom: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
     }
 }
 
