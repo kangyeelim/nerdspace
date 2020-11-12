@@ -64,6 +64,7 @@ class RoomSideBar extends React.Component {
   getAllMembers() {
     axios.get(`http://localhost:5000/studyrooms/byRoomID/${this.props.id}`)
       .then((response) => {
+        this.state.members = [];
         var members = response.data.data.members;
         Object.values(members).map((member) => {
           this.retrieveUserInfoForMembers(member);
@@ -106,6 +107,9 @@ class RoomSideBar extends React.Component {
     axios.post(`http://localhost:5000/studyrooms/addMembers`, {
         key: this.props.id,
         googleID: googleID
+    })
+    .then((response) => {
+      this.getAllMembers();
     })
     .catch(err => {
         console.error(err);
