@@ -95,7 +95,8 @@ router.route('/').post((req, res) => {
   const imageUrl = req.body.imageUrl;
   const isThereImage = req.body.isThereImage;
   const memberIDs = req.body.googleIDs;
-  var roomRef = db.ref('studyRooms').push();
+  const key = req.body.key;
+  var roomRef = db.ref('studyRooms').child(key);
   roomRef.set({
     'name': name,
     'imageUrl': imageUrl,

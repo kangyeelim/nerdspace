@@ -60,7 +60,7 @@ class CreateRoomForm extends React.Component {
                 type: "dm"
             }
         })
-        var contacts = await res.data.contacts;
+          var contacts = await res.data.contacts;
         this.setState({friends:contacts, isLoaded:true});
       } catch (error) {
         console.error(error);
@@ -92,12 +92,12 @@ class CreateRoomForm extends React.Component {
         })
         .then((response) => {
           console.log(response.data.chatID);
-        })
         axios.post('http://localhost:5000/studyrooms/', {
           name: this.state.name,
           isThereImage: (this.state.images.length == 1),
           imageUrl: imageUrl,
-          googleIDs: this.state.addedMembers
+          googleIDs: this.state.addedMembers,
+          key: response.data.chatID
         })
         .then((response) => {
           this.addRoomIdToUsers(response.data.data);
@@ -109,6 +109,7 @@ class CreateRoomForm extends React.Component {
         .catch(err => {
           console.error(err);
         });
+        })
       } else if (this.state.images.length <= 1 && this.state.isEditing) {
         /*axios.post(`http://localhost:5000/studyrooms/updateInfo`, {
           key: this.state.roomID,
@@ -196,7 +197,7 @@ class CreateRoomForm extends React.Component {
               <label style={styles.content} htmlFor="bio">Add Members: </label>
               {!this.state.isEditing && <div className="container" id="scrollableArea">
                 <Form>
-                { this.state.friends.map((contact) => {
+                  {this.state.friends.map((contact) => {
                   return (
                     <div key={`${contact.name}`} className="mb-3">
                     <Form.Check

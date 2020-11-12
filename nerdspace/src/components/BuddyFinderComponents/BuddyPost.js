@@ -7,16 +7,15 @@ import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardFooter, MDBCardGroup, MDBCon
 export default function BuddyPost(props) {
 
   return (
-    <MDBContainer style={{ minWidth: "50vw" }}>
-      <MDBCardGroup deck style={{alignSelf:'center', textAlign: "center", justifyContent: 'center'}}>
-        <MDBCard style={{ width: "60rem" }}>
-          <MDBCardBody>
-            <MDBCardTitle tag="h2" style={{fontSize: 30, fontWeight: 600, textDecoration: "underline"}}>Form {props.index}</MDBCardTitle>
 
-              <p style={{fontSize: 20, fontWeight: 600}}>Gender: {props.gender}</p>
-              <p style={{fontSize: 20, fontWeight: 600}}>Education Level: {props.educationLevel}</p>
-              <p style={{fontSize: 20, fontWeight: 600}}>Year Of Study: {props.yearOfStudy}</p>
-              <p style={{fontSize: 20, fontWeight: 600}}>Interest: {props.interest}</p>
+        <MDBCard style={{ width: "60rem" , marginBottom:"30px"}}>
+          <MDBCardBody>
+            <MDBCardTitle tag="h2" style={{fontSize: 22, textDecoration: "underline"}}>Form {props.index}</MDBCardTitle>
+
+              <p style={{fontSize: 18}}>Gender: {props.gender}</p>
+              <p style={{fontSize: 18}}>Education Level: {props.educationLevel}</p>
+              <p style={{fontSize: 18}}>Year Of Study: {props.yearOfStudy}</p>
+              <p style={{fontSize: 18}}>Interest: {props.interest}</p>
 
           </MDBCardBody>
           <MDBCardFooter small muted>
@@ -34,7 +33,6 @@ export default function BuddyPost(props) {
             </Row>
           </MDBCardFooter>
         </MDBCard>
-      </MDBCardGroup>
-    </MDBContainer>
+
   );
 }

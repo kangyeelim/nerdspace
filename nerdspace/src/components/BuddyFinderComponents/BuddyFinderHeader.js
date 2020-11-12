@@ -7,7 +7,7 @@ class BuddyFinderHeader extends React.Component {
         return (
             <div>
                 <div style={styles.header}>
-                    <h1 style={styles.headerText}><strong>Find your ideal study buddy</strong></h1> 
+                    <h2 style={{marginBottom:"20px"}}>Find your ideal study buddy</h2> 
                     <Button variant="primary" onClick={this.props.createBuddyForm}>Create a new form</Button>
                 </div>
             </div>
@@ -19,7 +19,7 @@ const styles = {
     header: {
         flexDirection: "column",
         justifyContent: "center",
-        padding: "2rem",
+        paddingBottom: "2rem",
     },
 }
 
