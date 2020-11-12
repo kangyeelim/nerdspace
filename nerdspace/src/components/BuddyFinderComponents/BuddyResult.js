@@ -11,10 +11,10 @@ export default function BuddyResult(props) {
             <MDBCardBody>
               <Card.Img variant="top" style={styles.image} src={props.imageUrl} />
               <MDBCardTitle tag="h5" style={{marginTop:"10px"}}>{props.name}</MDBCardTitle>
-                <p style={{fontSize: 16}}>Gender: {props.gender}</p>
-                <p style={{fontSize: 16}}>Email: {props.email}</p>
-                <p style={{fontSize: 16}}>Education Level: {props.educationLevel}</p>
-                <p style={{fontSize: 16}}>Year Of Study: {props.year}</p>
+                <p style={{fontSize: 15}}><strong>Gender:</strong> {props.gender}</p>
+                <p style={{fontSize: 15}}><strong>Email:</strong> {props.email}</p>
+                <p style={{fontSize: 15}}><strong>Education Level:</strong> {props.educationLevel}</p>
+                <p style={{fontSize: 15}}><strong>Year Of Study:</strong> {props.year}</p>
             </MDBCardBody>
             <MDBCardFooter muted>
               <Row style={{marginLeft: 10, marginRight:10, alignSelf:'right'}}>

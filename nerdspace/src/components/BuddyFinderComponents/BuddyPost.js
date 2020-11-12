@@ -12,10 +12,10 @@ export default function BuddyPost(props) {
           <MDBCardBody>
             <MDBCardTitle tag="h2" style={{fontSize: 22, textDecoration: "underline"}}>Form {props.index}</MDBCardTitle>
 
-              <p style={{fontSize: 18}}>Gender: {props.gender}</p>
-              <p style={{fontSize: 18}}>Education Level: {props.educationLevel}</p>
-              <p style={{fontSize: 18}}>Year Of Study: {props.yearOfStudy}</p>
-              <p style={{fontSize: 18}}>Interest: {props.interest}</p>
+              <p style={{fontSize: 16}}><strong>Gender:</strong> {props.gender}</p>
+              <p style={{fontSize: 16}}><strong>Education Level:</strong>  {props.educationLevel}</p>
+              <p style={{fontSize: 16}}><strong>Year Of Study:</strong>  {props.yearOfStudy}</p>
+              <p style={{fontSize: 16}}><strong>Interest:</strong>  {props.interest}</p>
 
           </MDBCardBody>
           <MDBCardFooter small muted>
