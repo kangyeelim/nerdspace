@@ -161,21 +161,85 @@ async function getName(id) {
     return name;
 }
 
+router.route('/deleteGroup/:key/:googleID').delete((req, res) => {
+    (async () => {
+        const key = req.params.key;
+        const memberID = req.params.googleID;
+        let ref = await db.ref('contact')
+            .child(memberID)
+            .child('group')
+            .child(key)
+
+        let snapshot = await ref.once('value');
+
+        if (snapshot.exists()) {
+            ref.remove(function (error) {
+                if (error) {
+                    res.send(error);
+                } else {
+                    res.send({
+                        message: 'DELETE success'
+                    });
+                }
+            });
+        } else {
+            res.send({
+                message: 'Nothing to delete'
+            });
+        }
+    })();
+});
+
 router.route('/:key/:googleID').delete((req, res) => {
-    const key = req.params.key;
-    const memberID = req.params.googleID;
-    db.ref('contact')
-        .child(memberID)
-        .child('group')
-        .child(key).remove(function (error) {
-            if (error) {
-                res.send(error);
-            } else {
-                res.send({
-                    message: 'DELETE success'
+    (async () => {
+        const key = req.params.key;
+        const memberID = req.params.googleID;
+        let ref = await db.ref('contact')
+            .child(memberID)
+            .child('group')
+            .child(key)
+
+        let snapshot = await ref.once('value');
+
+        if (snapshot.exists()) {
+            ref.remove(function (error) {
+                if (error) {
+                    res.send(error);
+                } else {
+                    res.send({
+                        message: 'DELETE success'
+                    });
+                }
+            });
+        } else {
+            let dmref = await db.ref('contact')
+                .child(memberID)
+                .child('dm')
+                .child(key)
+            let dmsnap = await dmref.once('value')
+            if (dmsnap.exists()) {
+                let user2 = dmsnap.val().userId
+                dmref.remove(function (error) {
+                    if (error) {
+                        res.send(error);
+                        return;
+                    }
                 });
+                db.ref('contact')
+                    .child(user2)
+                    .child('dm')
+                    .child(key).remove(function (error) {
+                        if (error) {
+                            res.send(error);
+                        } else {
+                            res.send({
+                                message: 'DELETE success'
+                            });
+                        }
+                    });
             }
-        });
+        }
+    })();
 });
 
 module.exports = router;
